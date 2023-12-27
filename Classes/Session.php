@@ -1,5 +1,5 @@
 <?php
-
+include "../../DataBase/Database.php";
 class Session
 {
     private $db;
@@ -33,7 +33,6 @@ class Session
         //assign result set
         $results = $this->db->resultset();
         return $results;
-
     }
     public function getNumero()
     {
@@ -88,7 +87,6 @@ class Session
         } else {
             return false;
         }
-
     }
 
     public function create($data)
@@ -112,6 +110,5 @@ class Session
         } else {
             return false;
         }
-
     }
 }

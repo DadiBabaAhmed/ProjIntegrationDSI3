@@ -1,0 +1,97 @@
+<?php
+session_start();
+require '../../DataBase/connect.php';
+?>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Seances CRUD</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <?php include('message.php'); ?>
+        <div class="card-header">
+            <h4>
+                <a href="index.php" class="btn btn-danger float-end">BACK</a>
+            </h4>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Résultats de la recherche</h4>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        if (isset($_POST['search'])) {
+                            $search = mysqli_real_escape_string($con, $_POST['search']);
+                            $query = "SELECT * FROM seances WHERE SEANCE = '$search' OR Horaire = '$search' OR HDeb = '$search' OR HFin = '$search'";
+                        } else {
+                            $query = "SELECT * FROM seances";
+                        }
+
+                        $query_run = mysqli_query($con, $query);
+
+                        if (mysqli_num_rows($query_run) > 0) {
+                            $seancesData = array();  // Create an array to store the rows
+
+                            while ($row = mysqli_fetch_assoc($query_run)) {
+                                $seancesData[] = $row;  // Add each row to the array
+                            }
+
+                            $_SESSION['seances'] = $seancesData;
+                        ?>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>SEANCE</th>
+                                        <th>Horaire</th>
+                                        <th>Heure de debut</th>
+                                        <th>Heure de fin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($query_run as $seance) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $seance['SEANCE']; ?></td>
+                                            <td><?= $seance['Horaire']; ?></td>
+                                            <td><?= $seance['HDeb']; ?></td>
+                                            <td><?= $seance['HFin']; ?></td>
+                                            <td>
+                                                <a href="seance-voir.php?SEANCE=<?= $seance['SEANCE']; ?>" class="btn btn-info btn-sm">Voir</a>
+                                                <form action="code.php" method="POST" class="d-inline">
+                                                    <button type="submit" name="supprimer_seance" value="<?= $seance['SEANCE']; ?>" class="btn btn-danger btn-sm">Supprimer</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <form method='POST' action='downloadPDF.php' class='resaultForm'>
+                                <input type='hidden' name='seances' value=' htmlspecialchars(json_encode($query_run))'>
+                                <button type='submit'>Imprimer</button>
+                            </form>
+                        <?php
+                        } else {
+                            echo "<h5> Aucune séance trouvée</h5>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
