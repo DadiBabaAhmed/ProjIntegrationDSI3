@@ -96,7 +96,17 @@ session_start();
             } else {
                 echo "Error in SQL statement: " . $this->db->error;
             }
-        }      
+        }
+        
+        public function getAllMatEtud(){
+            $sql = "SELECT NCE,NCIN FROM etudiant";
+            $result = $this->db->query($sql);
+            $mat = [];
+            while ($row = $result->fetch_assoc()) {
+                $mat[] = $row;
+            }
+            return $mat;
+        }
 }
     
 ?>

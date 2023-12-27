@@ -34,35 +34,35 @@ class Jour{
         return false;
     }
 
-    public function update($N°, $newDataArray)
-    {
-        $setClauses = [];
-        $bindValues = [];
-        $types = '';
-    
-        foreach ($newDataArray as $field => $value) {
-            $setClauses[] = "`$field` = ?";
-            $bindValues[] = $value;
-            $types .= $this->getBindType($value);
-        }
-    
-        $bindValues[] = $N°;
-    
-        $setClause = implode(', ', $setClauses);
-        $sql = "UPDATE `jours` SET $setClause WHERE `N°` = ?";
-    
-        $stmt = $this->db->prepare($sql);
-    
-        if ($stmt) {
-            $stmt->bind_param($types . 'i', ...$bindValues);
-            if ($stmt->execute()) {
-                $stmt->close();
-                return true;
-            }
-        }
-    
-        return false;
+    public function update($N, $newDataArray)
+{
+    $setClauses = [];
+    $bindValues = [];
+    $types = '';
+
+    foreach ($newDataArray as $field => $value) {
+        $setClauses[] = "`$field` = ?";
+        $bindValues[] = $value;
+        $types .= $this->getBindType($value);
     }
+
+    $bindValues[] = $N;
+
+    $setClause = implode(', ', $setClauses);
+    $sql = "UPDATE `jours` SET $setClause WHERE `N°` = ?";
+
+    $stmt = $this->db->prepare($sql);
+
+    if ($stmt) {
+        $stmt->bind_param($types . 'i', ...$bindValues);
+        if ($stmt->execute()) {
+            $stmt->close();
+            return true;
+        }
+    }
+
+    return false;
+}
 
     public function delete($N°)
     {
