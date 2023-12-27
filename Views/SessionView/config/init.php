@@ -6,15 +6,17 @@ session_start();
 require_once 'helpers/system_helper.php';
 
 
-require_once 'config/config.php';
+require_once '../../DataBase/config/config.php';
 //autoload function
 function my_autoload_register ($class_name) {
-    $filename = 'lib/' .$class_name. '.php';
+    $filename = '../../DataBase/' .$class_name. '.php';
+    //$filename2 = '../../Classes/' .$class_name. '.php';
     
     if (file_exists($filename) == false) {
         return false;
     }
     require_once ($filename);
+    //require_once ($filename2);
 }
 
 //Register the autoloader

@@ -5,7 +5,7 @@ class Session
     private $db;
     public function __construct()
     {
-        $this->db = new Database;
+        $this->db = new Database2;
     }
 
     //get all sessions

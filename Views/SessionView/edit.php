@@ -1,4 +1,7 @@
-<?php include_once 'config/init.php'; ?>
+<?php include_once 'config/init.php';
+include '../../Classes/Session.php'; 
+include '../../Classes/template.php';
+include '../../DataBase/database2.php';?>
 
 <?php
 
