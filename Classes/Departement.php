@@ -1,8 +1,10 @@
 <?php
-class Departement {
+class Departement
+{
     private $db;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->db = $db;
     }
 
@@ -18,7 +20,8 @@ class Departement {
         return $row;
     }
 
-    public function getAllDepartments() {
+    public function getAllDepartments()
+    {
         $query = "SELECT * FROM departements";
         $result = $this->db->query($query);
         $departments = [];
@@ -33,7 +36,8 @@ class Departement {
     }
 
     // Function to add a new department
-    public function addDepartment($data) {
+    public function addDepartment($data)
+    {
         if (!empty($data) && is_array($data)) {
             $columns = implode(', ', array_keys($data));
             $placeholders = implode(', ', array_fill(0, count($data), '?'));
@@ -65,24 +69,25 @@ class Departement {
     }
 
     // Function to update a department
-    public function updateDepartment($CodeDep, $newDataArray) {
+    public function updateDepartment($CodeDep, $newDataArray)
+    {
         $setClauses = [];
         $bindValues = [];
         $types = '';
-    
+
         foreach ($newDataArray as $field => $value) {
             $setClauses[] = "`$field` = ?";
             $bindValues[] = $value;
             $types .= $this->getBindType($value);
         }
-    
+
         $bindValues[] = $CodeDep;
-    
+
         $setClause = implode(', ', $setClauses);
         $sql = "UPDATE `departements` SET $setClause WHERE `CodeDep` = ?";
-    
+
         $stmt = $this->db->prepare($sql);
-    
+
         if ($stmt) {
             $stmt->bind_param($types . 's', ...$bindValues);
             $stmt->execute();
@@ -93,12 +98,20 @@ class Departement {
     }
 
     // Function to delete a department
-    public function deleteDepartment($CodeDep) {
-        $query = "DELETE FROM departements WHERE CodeDep = $CodeDep";
-        $result = $this->db->query($query);
-        $result->bind_param("s", $CodeDep);
-        $result->execute();
-        $result->close();
+    public function deleteDepartment($CodeDep)
+    {
+        $query = "DELETE FROM departements WHERE CodeDep = ?";
+        $stmt = $this->db->prepare($query);
+
+        if ($stmt) {
+            $stmt->bind_param("s", $CodeDep);
+            $stmt->execute();
+            $stmt->close();
+            return true;
+        } else {
+            echo "Error in SQL statement: " . $this->db->error;
+            return false;
+        }
     }
 
     private function getBindType($value) {
@@ -111,7 +124,8 @@ class Departement {
         }
     }
 
-    public function search($search) {
+    public function search($search)
+    {
         $query = "SELECT * FROM departements WHERE Departement LIKE '%$search%'
                                     OR Responsable LIKE '%$search%'
                                     OR MatProf LIKE '%$search%'
@@ -129,4 +143,3 @@ class Departement {
         return $departments;
     }
 }
-?>

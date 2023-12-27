@@ -126,5 +126,13 @@ class Gouvernorat{
         }
         return false;
     }
+
+    public function getAllCodes()
+    {
+        $sql = "SELECT `Gouv` FROM `gouvernorats`";
+        $result = $this->db->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
 }
 ?>

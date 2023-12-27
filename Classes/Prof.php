@@ -154,6 +154,15 @@ public function update($Matricule_Prof, $newDataArray) {
         }
     }
     
+    public function getAllMatProf(){
+        $sql = "SELECT Matricule, Nom, Prenom FROM prof";
+        $result = $this->db->query($sql);
+        $matricules = [];
+        while ($row = $result->fetch_assoc()) {
+            $matricules[] = $row;
+        }
+        return $matricules;
+    }
     
 }
 ?>
