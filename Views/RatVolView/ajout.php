@@ -3,6 +3,7 @@ ini_set("display_errors", "1");
 error_reporting(E_ALL);
 require_once("../../DataBase/connexion.php");
 
+
 $NumRattrapage = $_POST['NumRattrapage'];
 $MatProf = $_POST["MatProf"];
 $DateRattrapage = $_POST["DateRattrapage"];

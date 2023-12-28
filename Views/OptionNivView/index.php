@@ -1,4 +1,14 @@
-<?php include('../../DataBase/connect.php'); ?>
+<?php 
+    include('../../DataBase/connect.php'); 
+    include('../../DataBase/DataBase.php');
+    include('../../Classes/Option.php');
+
+    $db = new DataBase();
+    $option = new Option($db->getConnection());
+
+    $listOption = $option->getOptionsNames();
+
+?>
 
 <!-- Include Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -182,7 +192,12 @@ if(isset($_POST['buttonfiltre'])) {
                     </div>
                     <div class="form-group">
                         <label for="option">option</label>
-                        <input type="text" class="form-control" name="option" placeholder="enter option">
+                        <select class="form-control" name="option" id="option">
+                            <?php
+                            foreach ($listOption as $row) { ?>
+                                <option value="<?php echo $row['Code_Option '] ?>"><?php echo $row['Option_Name'] ?></option>";
+                            <?php } ?>
+                        </select>
                     </div>
 
                 </div>
@@ -217,7 +232,12 @@ if(isset($_POST['buttonfiltre'])) {
                     </div>
                     <div class="form-group">
                         <label for="option">option</label>
-                        <input type="text" class="form-control" name="option" id="option">
+                        <select class="form-control" name="option" id="option">
+                            <?php
+                            foreach ($listOption as $row) { ?>
+                                <option value="<?php echo $row['Code_Option '] ?>"><?php echo $row['Option_Name'] ?></option>";
+                            <?php } ?>
+                        </select>
                     </div>
                     <input type="text" class="form-control" name="id" id="id" style="display:none;">
                 </div>

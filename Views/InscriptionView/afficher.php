@@ -39,6 +39,7 @@ if(isset($_GET['action'])) {
                     </div>
 
                     <div class="container mt-1">
+                    <a href="ajout.php" class="btn btn-success">Ajouter une inscription</a> 
                         <form method="GET" action="">
                             <div class="form-group">
                                 <select class="form-select custom-width" id="searchField" name="searchField">

@@ -1,9 +1,19 @@
 <?php
 include '../../DataBase/Database.php';
 include '../../Classes/ProfSituation.php';
+include '../../Classes/Grade.php';
+include '../../Classes/Prof.php';
 
 $db = new Database();
 $profsituation = new Profsituation($db->getConnection());
+$grade = new Grades($db->getConnection());
+$prof = new Prof($db->getConnection());
+
+$gradeList = $grade->getAllGrades();
+$profList = $prof->getAllMatProf();
+$sql = "SELECT Annee, Numero  FROM session";
+$sessionList = $db->getConnection()->query($sql);
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form data
@@ -39,21 +49,31 @@ if (isset($_GET["CodeProf"])) {
 <html>
 
 <head>
-    <title>Add Profsituation</title>
+    <title>Edit Profsituation</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
-    <h1>Add Profsituation</h1>
+    <h1>Edit Profsituation</h1>
     <form method="POST" action="edit_profsituation.php">
     <input type="hidden" name="N°" value="<?php echo $cp; ?>">
         <div class="form-group">
             <label for="CodeProf">CodeProf:</label>
-            <input type="text" name="CodeProf" id="CodeProf" value="<?php echo $profsitData['CodeProf']; ?>"><br><br>
+            <select name="CodeProf" id="CodeProf">
+                <?php
+                foreach ($profList as $row) { ?>
+                    <option value="<?php echo $row['Matricule']?>" <?php if($row['Matricule'] === $profsitData['CodeProf']) {echo "selected";} ?>><?php echo $row['Nom'] ." " .$row['Prenom']?></option>
+                <?php } ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="Sess">Sess:</label>
-            <input type="text" name="Sess" id="Sess" value="<?php echo $profsitData['Sess']; ?>"><br><br>
+            <select name="Sess" id="Sess">
+                <?php
+                foreach ($sessionList as $row) { ?>
+                    <option value="<?php echo $row['Numero']?>" <?php if($row['Numero'] === $profsitData['Sess']) {echo "selected";} ?>><?php echo $row['Annee']?></option>
+                <?php } ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="Situation">Situation:</label>
@@ -61,9 +81,14 @@ if (isset($_GET["CodeProf"])) {
         </div>
         <div class="form-group">
             <label for="Grade">Grade:</label>
-            <input type="text" name="Grade" id="Grade" value="<?php echo $profsitData['Grade']; ?>"><br><br>
+            <select name="Grade" id="Grade">
+                <?php
+                foreach ($gradeList as $row) { ?>
+                    <option value="<?php echo $row['Grade']?>" <?php if($row['Grade'] === $profsitData['Grade']) {echo "selected";} ?>><?php echo $row['Grade']?></option>
+                <?php } ?>
+            </select>
         </div>
-        <input type="submit" value="Add Profsituation">
+        <input type="submit" value="Edit Profsituation">
         <a href="list_profsituations.php">Cancel</a>
     </form>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

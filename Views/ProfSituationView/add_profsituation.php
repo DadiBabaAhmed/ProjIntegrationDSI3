@@ -1,9 +1,19 @@
 <?php
 include '../../DataBase/Database.php';
 include '../../Classes/ProfSituation.php';
+include '../../Classes/Grade.php';
+include '../../Classes/Prof.php';
 
 $db = new Database();
 $profsituation = new Profsituation($db->getConnection());
+$grade = new Grades($db->getConnection());
+$prof = new Prof($db->getConnection());
+
+$gradeList = $grade->getAllGrades();
+$profList = $prof->getAllMatProf();
+$sql = "SELECT Annee, Numero  FROM session";
+$sessionList = $db->getConnection()->query($sql);
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form data
@@ -38,11 +48,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST" action="add_profsituation.php">
         <div class="form-group">
             <label for="CodeProf">CodeProf:</label>
-            <input type="text" name="CodeProf" id="CodeProf" required><br><br>
+             <select name="CodeProf" id="CodeProf">
+                <?php
+                foreach ($profList as $row) { ?>
+                    <option value="<?php echo $row['Matricule']?>"><?php echo $row['Nom'] ." " .$row['Prenom']?></option>
+                <?php } ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="Sess">Sess:</label>
-            <input type="text" name="Sess" id="Sess" required><br><br>
+            <select name="Sess" id="Sess">
+                <?php
+                foreach ($sessionList as $row) { ?>
+                    <option value="<?php echo $row['Numero']?>"><?php echo $row['Annee']?></option>
+                <?php } ?>
+            </select>
         </div>
         <div class="form-group">
             <label for="Situation">Situation:</label>
@@ -50,7 +70,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="Grade">Grade:</label>
-            <input type="text" name="Grade" id="Grade" required><br><br>
+            <select name="Grade" id="Grade">
+                <?php
+                foreach ($gradeList as $row) { ?>
+                    <option value="<?php echo $row['Grade']?>"><?php echo $row['Grade']?></option>
+                <?php } ?>
+            </select>
         </div>
         <input type="submit" value="Add Profsituation">
         <a href="list_profsituations.php">Cancel</a>

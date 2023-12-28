@@ -1,9 +1,19 @@
 <?php
 include '../../DataBase/Database.php';
 include '../../Classes/ProfSituation.php';
+include '../../Classes/Grade.php';
+include '../../Classes/Prof.php';
 
 $db = new Database();
 $profsituation = new Profsituation($db->getConnection());
+$grade = new Grades($db->getConnection());
+$prof = new Prof($db->getConnection());
+
+$gradeList = $grade->getAllGrades();
+$profList = $prof->getAllMatProf();
+$sql = "SELECT Annee, Numero  FROM session";
+$sessionList = $db->getConnection()->query($sql);
+
 $profsituationList = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $critere = $_POST["critere"];
@@ -23,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-    
+
     <div class="container">
         <form action="filtre_profsituations.php" method="post">
             <div class="wrapper">
@@ -45,21 +55,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </select>
                                 <br><br>
 
-                                <label for="critere">Valeur :</label>
-                                <input type="text" name="val" id="val" value="<?php echo isset($_POST['val']) ? $_POST['val'] : ''; ?>"><br><br>
-
-                                <script>
-                                    var critereSelect = document.getElementById("critere");
-                                    var valInput = document.getElementById("val");
-
-                                    critereSelect.addEventListener("change", function() {
-                                        if (critereSelect.value === "Code Prof" || critereSelect.value === "Sess") {
-                                            valInput.type = "number";
-                                        } else {
-                                            valInput.type = "text";
-                                        }
-                                    });
-                                </script>
+                                <label for="val">Valeur :</label>
+                                <div id="valeur">
+                                    <script>
+                                        var critereSelect = document.getElementById("critere");
+                                        var valInput = document.getElementById("valeur");
+                                        valInput.innerHTML = '';
+                                        var selectHtml = '<select name="val" id="val">';
+                                        <?php foreach ($profList as $row) { ?>
+                                            selectHtml += '<option value="<?php echo $row['Matricule']; ?>"><?php echo $row['Nom'] . ' ' . $row['Prenom']; ?></option>';
+                                        <?php } ?>
+                                        selectHtml += '</select>';
+                                        valInput.innerHTML = selectHtml;
+                                        critereSelect.addEventListener("change", function() {
+                                            if (critereSelect.value === "Situation") {
+                                                valInput.innerHTML = '';
+                                                valInput.innerHTML += "<input type='text' name='val' id='val'><br><br>";
+                                            } else if (critereSelect.value === "CodeProf") {
+                                                valInput.innerHTML = '';
+                                                var selectHtml = '<select name="val" id="val">';
+                                                <?php foreach ($profList as $row) { ?>
+                                                    selectHtml += '<option value="<?php echo $row['Matricule']; ?>"><?php echo $row['Nom'] . ' ' . $row['Prenom']; ?></option>';
+                                                <?php } ?>
+                                                selectHtml += '</select>';
+                                                valInput.innerHTML = selectHtml;
+                                            } else if (critereSelect.value === "Sess") {
+                                                valInput.innerHTML = '';
+                                                var selectHtml = '<select name="val" id="val">';
+                                                <?php foreach ($sessionList as $row) { ?>
+                                                    selectHtml += '<option value="<?php echo $row['Numero']; ?>"><?php echo $row['Annee']; ?></option>';
+                                                <?php } ?>
+                                                selectHtml += '</select>';
+                                                valInput.innerHTML = selectHtml;
+                                            } else if (critereSelect.value === "Grade") {
+                                                valInput.innerHTML = '';
+                                                var selectHtml = '<select name="val" id="val">';
+                                                <?php foreach ($gradeList as $row) { ?>
+                                                    selectHtml += '<option value="<?php echo $row['Grade']; ?>"><?php echo $row['Grade']; ?></option>';
+                                                <?php } ?>
+                                                selectHtml += '</select>';
+                                                valInput.innerHTML = selectHtml;
+                                            }
+                                        });
+                                    </script>
+                                </div>
                             </div>
 
                             <a class="btn btn-secondary" href="list_profsituations.php">Retour</a>
@@ -72,10 +111,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <th>Grade</th>
                                     <th>Actions</th>
                                 </tr>
-                                <?php foreach ($profsituationList as $profsituation) { ?>
-                                    <tr>
-                                        <td><?php echo $profsituation['CodeProf']; ?></td>
-                                        <td><?php echo $profsituation['Sess']; ?></td>
+                                <?php foreach ($profsituationList as $profsituation) {
+                                    $sql = "SELECT Annee FROM session WHERE Numero = " . $profsituation['Sess'] . "";
+                                    $sessionResult = $db->getConnection()->query($sql);
+
+                                    // Fetch the result and get the 'Annee' value
+                                    $sessionList = $sessionResult->fetch_assoc(); // Fetch the data as an associative array
+                                    $annee = $sessionList['Annee'];
+                                    $thisprof = $prof->getProf($profsituation['CodeProf']);
+                                    ?>
+                        
+                                        <tr>
+                                            <td><?php echo $thisprof['Nom'] . ' ' . $thisprof['Prenom']; ?></td>
+                                        <td><?php echo $annee ?></td>
                                         <td><?php echo $profsituation['Situation']; ?></td>
                                         <td><?php echo $profsituation['Grade']; ?></td>
                                         <td>

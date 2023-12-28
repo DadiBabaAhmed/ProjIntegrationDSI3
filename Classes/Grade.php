@@ -94,5 +94,12 @@ class Grades {
         }
         return false;
     }
+
+    public function getAllGrades()
+    {
+        $sql = "SELECT Grade FROM `grades`";
+        $result = $this->db->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }
 ?>

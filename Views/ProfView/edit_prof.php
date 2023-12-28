@@ -1,9 +1,16 @@
 <?php
 include "../../DataBase/Database.php";
 include "../../Classes/Prof.php";
+include '../../Classes/Grade.php';
+include '../../Classes/Departement.php';
 
 $db = new Database();
 $prof = new Prof($db->getConnection());
+$grade = new Grades($db->getConnection());
+$departement = new Departement($db->getConnection());
+
+$gradeList = $grade->getAllGrades();
+$departementList = $departement->getDepartmentsNames();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch and sanitize form data
@@ -168,7 +175,11 @@ if (isset($_GET["Matricule"])) {
 
             <div class="form-group">
                 <label for="Grade">Grade:</label>
-                <input type="text" class="form-control" name="Grade" id="Grade" value="<?php echo $profData["Grade"]; ?>">
+                <select class="form-control" name="Grade" id="Grade">
+                    <?php foreach ($gradeList as $row) { ?>
+                        <option class="form-control" value="<?php echo $row['Grade']; ?>"<?php if($row['Grade'] === $profData["Grade"]){echo "selected"; } ?>><?php echo $row['Grade']; ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
@@ -188,14 +199,11 @@ if (isset($_GET["Matricule"])) {
 
             <div class="form-group">
                 <label for="Département">Département:</label>
-                <input type="text" id="departement" name="departement" value="<?php echo $profData["Département"]; ?>">
-                <!--select name="departement" id="departement">
-                    <option value="Informatique">Informatique</option>
-                    <option value="Génie Civil">Génie Civil</option>
-                    <option value="Génie Mécanique">Génie Mécanique</option>
-                    <option value="Génie Electrique">Génie Electrique</option>
-                    <option value="Génie Industriel">Génie Industriel</option>
-                </select>  -->
+                <select class="form-control" name="departement" id="departement">
+                    <?php foreach ($departementList as $row) { ?>
+                        <option class="form-control" value="<?php echo $row['CodeDep']; ?>"<?php if($row['CodeDep'] === $profData["Département"]){echo "selected"; } ?>><?php echo $row['CodeDep']; ?>-<?php echo $row['Departement']; ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">

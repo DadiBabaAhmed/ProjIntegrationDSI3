@@ -1,9 +1,13 @@
 <?php
 include '../../DataBase/Database.php';
 include '../../Classes/ProfSituation.php';
+include '../../Classes/Grade.php';
+include '../../Classes/Prof.php';
 
 $db = new Database();
 $profsituation = new Profsituation($db->getConnection());
+$grade = new Grades($db->getConnection());
+$prof = new Prof($db->getConnection());
 $profsituationList = $profsituation->getAllProfSituation();
 
 ?>
@@ -13,7 +17,7 @@ $profsituationList = $profsituation->getAllProfSituation();
 <head>
     <title>Profsituation List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+
 </head>
 
 <body>
@@ -29,10 +33,20 @@ $profsituationList = $profsituation->getAllProfSituation();
                 <th>Grade</th>
                 <th>Actions</th>
             </tr>
-            <?php foreach ($profsituationList as $profsituation) { ?>
+            <?php foreach ($profsituationList as $profsituation) {
+                $sql = "SELECT Annee FROM session WHERE Numero = " . $profsituation['Sess'] . "";
+                $sessionResult = $db->getConnection()->query($sql);
+
+                // Fetch the result and get the 'Annee' value
+                $sessionList = $sessionResult->fetch_assoc(); // Fetch the data as an associative array
+                $annee = $sessionList['Annee'];
+
+                $thisprof = $prof->getProf($profsituation['CodeProf']);
+            ?>
+
                 <tr>
-                    <td><?php echo $profsituation['CodeProf']; ?></td>
-                    <td><?php echo $profsituation['Sess']; ?></td>
+                    <td><?php echo $thisprof['Nom'] . ' ' . $thisprof['Prenom']; ?></td>
+                    <td><?php echo $annee ?></td>
                     <td><?php echo $profsituation['Situation']; ?></td>
                     <td><?php echo $profsituation['Grade']; ?></td>
                     <td>
