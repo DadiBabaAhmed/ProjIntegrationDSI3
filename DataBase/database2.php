@@ -73,4 +73,10 @@ class Database2
     return $this->stmt->fetch(PDO::FETCH_OBJ);
   } 
 
+  //get connection
+  public function getConnection()
+  {
+    return $this->dbh;
+  }
+
 }

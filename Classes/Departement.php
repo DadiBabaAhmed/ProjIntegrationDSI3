@@ -34,6 +34,19 @@ class Departement
 
         return $departments;
     }
+    public function getAllDepartmentsNames()
+    {
+        $query = "SELECT Departement, CodeDep FROM departements";
+        $result = $this->db->query($query);
+        $departments_names = [];
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $departments_names[] = $row;
+            }
+        }
+
+        return $departments_names;
+    }
 
     // Function to add a new department
     public function addDepartment($data)

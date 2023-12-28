@@ -11,15 +11,15 @@ if (isset($_POST['del_id'])){
     $del_id = $_POST['del_id'];
     try {
         if ($session->deleteSession($del_id)) {
-            redirect('index.php', 'Session supprimee', 'success');
+            redirect('list_sessions.php', 'Session supprimee', 'success');
         } else {
-            redirect('index.php', 'Erreur lors de la suppression de la session.', 'error');
+            redirect('list_sessions.php', 'Erreur lors de la suppression de la session.', 'error');
         }
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
-            redirect('index.php', 'Impossible de supprimer cette session car elle est référencée par d\'autres données.', 'error');
+            redirect('list_sessions.php', 'Impossible de supprimer cette session car elle est référencée par d\'autres données.', 'error');
         } else {
-            redirect('index.php', 'Erreur lors de la suppression de la session.', 'error');
+            redirect('list_sessions.php', 'Erreur lors de la suppression de la session.', 'error');
         }
     }
 }

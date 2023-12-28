@@ -10,6 +10,12 @@
 </head>
 
 <body>
+    <h1>Liste Rattrapage</h1>
+    <div  id='printButtonContainer'>
+        <a href='formajout.php' class='btn btn-success' id='ajoutButton'>Ajout Rattrapage</a>
+        <button id='printButton' onclick='printDocument();' class='btn btn-info ' >Print</button>
+    </div>
+
     <?php
     include("header.php");
     ini_set("display_errors", "1");
@@ -17,16 +23,17 @@
     require_once("../../DataBase/connexion.php");
 
     try {
-        $filterField = isset($_GET['filterField']) ? $_GET['filterField'] : 'NumRatV'; 
-        $filterValue = isset($_GET['filterValue']) ? $_GET['filterValue'] : ''; 
+        $filterField = isset($_GET['filterField']) ? $_GET['filterField'] : 'NumRatV';
+        $filterValue = isset($_GET['filterValue']) ? $_GET['filterValue'] : '';
 
         $requete = "SELECT * FROM ratvol WHERE $filterField LIKE '%$filterValue%'";
 
         $resultat = $conn->query($requete);
 
+
         if ($resultat->rowCount() == 0) {
-            echo "La table ne contient aucun rattrapage...!<br>";
-        } else {
+            echo "<div class='alert alert-danger'>La table ne contient aucun rattrapage...!</div><br>";
+            } else {
             echo "<form method='get' action=''>";
             echo "<select name='filterField'>";
             echo "<option value='NumRatV' " . ($filterField === 'NumRatV' ? 'selected' : '') . ">NumRatV</option>";
@@ -43,91 +50,89 @@
             echo "<input type='text' name='filterValue' value='$filterValue' placeholder='Search...'>";
             echo "<input type='submit' value='Filter'>";
             echo "</form>";
+        } ?>
 
-            echo "<h1>Liste Rattrapage</h1>";
-            echo "<a href='formajout.php' class='btn btn-info mb-3' id='ajoutButton'>Ajout Rattrapage</a>";
-            echo "<table class='table table-sm'>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th>NumRatV</th>";
-            echo "<th>MatProf</th>";
-            echo "<th>DateRat</th>";
-            echo "<th>Seance</th>";
-            echo "<th>Session</th>";
-            echo "<th>Salle</th>";
-            echo "<th>Jour</th>";
-            echo "<th>CodeClasse</th>";
-            echo "<th>CodeMatiere</th>";
-            echo "<th>Etat</th>";
-            echo "<th class='action-elements'>Action</th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
+        <table class='table table-sm'>
+            <thead>
+                <tr>
+                    <th>NumRatV</th>
+                    <th>MatProf</th>
+                    <th>DateRat</th>
+                    <th>Seance</th>
+                    <th>Session</th>
+                    <th>Salle</th>
+                    <th>Jour</th>
+                    <th>CodeClasse</th>
+                    <th>CodeMatiere</th>
+                    <th>Etat</th>
+                    <th class='action-elements'>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
 
-            while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . $ligne['NumRatV'] . "</td>";
-                echo "<td>" . $ligne['MatProf'] . "</td>";
-                $date = new DateTime($ligne['DateRat']);
-                echo "<td>" . $date->format('d-m-y') . "</td>";
-                echo "<td>" . $ligne['Seance'] . "</td>";
-                echo "<td>" . $ligne['Session'] . "</td>";
-                echo "<td>" . $ligne['Salle'] . "</td>";
-                echo "<td>" . $ligne['Jour'] . "</td>";
-                echo "<td>" . $ligne['CodeClasse'] . "</td>";
-                echo "<td>" . $ligne['CodeMatiere'] . "</td>";
-                echo "<td>" . $ligne['Etat'] . "</td>";
-                echo "<td class='action-elements'>";
-                echo "<a href='formupdate.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-primary btn-sm'>Update</a> ";
-                echo "<a href='delete.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-danger btn-sm'>Delete</a> ";
-                echo "<button onclick='printDetails(" . json_encode($ligne) . ");' class='btn btn-info btn-sm'>Print Details</button>";
-                echo "</td>";
-                echo "</tr>";
-            }
-            echo "</tbody>";
-            echo "</table>";
+                while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr>";
+                    echo "<td>" . $ligne['NumRatV'] . "</td>";
+                    echo "<td>" . $ligne['MatProf'] . "</td>";
+                    $date = new DateTime($ligne['DateRat']);
+                    echo "<td>" . $date->format('d-m-y') . "</td>";
+                    echo "<td>" . $ligne['Seance'] . "</td>";
+                    echo "<td>" . $ligne['Session'] . "</td>";
+                    echo "<td>" . $ligne['Salle'] . "</td>";
+                    echo "<td>" . $ligne['Jour'] . "</td>";
+                    echo "<td>" . $ligne['CodeClasse'] . "</td>";
+                    echo "<td>" . $ligne['CodeMatiere'] . "</td>";
+                    echo "<td>" . $ligne['Etat'] . "</td>";
+                    echo "<td class='action-elements'>";
+                    echo "<a href='formupdate.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-primary btn-sm'>Update</a> ";
+                    echo "<a href='delete.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-danger btn-sm'>Delete</a> ";
+                    echo "<button onclick='printDetails(" . json_encode($ligne) . ");' class='btn btn-info btn-sm'>Print Details</button>";
+                    echo "</td>";
+                    echo "</tr>";
+                }
+                echo "</tbody>";
+                echo "</table>";
 
-            echo "<div class='d-flex justify-content-center mt-3' id='printButtonContainer'>";
-            echo "<button id='printButton' onclick='printDocument();' class='btn btn-success'>Print</button>";
-            echo "</div>";
-        }
+
+
     } catch (PDOException $e) {
         die($e->getMessage());
     }
     ?>
 
-    <script>
-        function printDocument() {
-            document.getElementById('printButton').style.display = 'none';
-            document.getElementById('ajoutButton').style.display = 'none';
-            document.getElementById('printButtonContainer').style.display = 'none';
+            <script>
+                function printDocument() {
+                    document.getElementById('printButton').style.display = 'none';
+                    document.getElementById('ajoutButton').style.display = 'none';
+                    document.getElementById('printButtonContainer').style.display = 'none';
 
-            let searchForm = document.querySelector('form');
-            searchForm.style.display = 'none';
+                    let searchForm = document.querySelector('form');
+                    searchForm.style.display = 'none';
 
-            let actionElements = document.querySelectorAll('.action-elements');
-            actionElements.forEach(function (el) {
-                el.style.display = 'none';
-            });
+                    let actionElements = document.querySelectorAll('.action-elements');
+                    actionElements.forEach(function (el) {
+                        el.style.display = 'none';
+                    });
 
-            document.body.offsetHeight;
-            window.print();
+                    document.body.offsetHeight;
+                    window.print();
 
-            setTimeout(() => {
-                searchForm.style.display = 'block';
-                actionElements.forEach(function (el) {
-                    el.style.display = '';
-                });
-                document.getElementById('ajoutButton').style.display = 'inline-block';
-                document.getElementById('printButton').style.display = 'block';
-                document.getElementById('printButtonContainer').style.display = 'block';
-            }, 500);
-        }
+                    setTimeout(() => {
+                        searchForm.style.display = 'block';
+                        actionElements.forEach(function (el) {
+                            el.style.display = '';
+                        });
+                        document.getElementById('ajoutButton').style.display = 'inline-block';
+                        document.getElementById('printButton').style.display = 'block';
+                        document.getElementById('printButtonContainer').style.display = 'block';
+                    }, 500);
+                }
 
-        function printDetails(details) {
-            let newWin = window.open('', '_blank');
+                function printDetails(details) {
+                    let newWin = window.open('', '_blank');
 
-            newWin.document.write(`
+                    newWin.document.write(`
             <html>
             <head>
                 <title>Details of Rattrapage ID ${details.NumRatV}</title>
@@ -169,8 +174,7 @@
             </body>
             </html>`);
 
-            newWin.document.close();
-            newWin.print();
-        }
-    </script>
-           
+                    newWin.document.close();
+                    newWin.print();
+                }
+            </script>

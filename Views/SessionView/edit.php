@@ -23,9 +23,9 @@ if (isset($_POST['submit'])) {
     $data['Anneab'] = $_POST['Anneab'];
     
     if ($session->updateSession($Numero, $data)) {
-        redirect('index.php', 'Votre session a ete mis a jour', 'success');
+        redirect('list_sessions.php', 'Votre session a ete mis a jour', 'success');
     } else {
-        redirect('index.php', 'Erreur lors de la mise a jour de la session', 'error');
+        redirect('list_sessions.php', 'Erreur lors de la mise a jour de la session', 'error');
         //var_dump($data);
         //print_r($Numero);
     }

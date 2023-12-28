@@ -43,7 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>Semaine List</h1>
-        <a href="add_semaine.php" class="btn btn-success">Add Semaine</a>
+        <a href="list_semaines.php" class="btn btn-primary">Retour</a>
+        <br>
+        <br>    
         <form action="filtre_semaines.php" method="POST">
             <label for="critere">Filter by:</label>
             <select name="critere" id="critere">
@@ -54,23 +56,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </select>
             <input type="text" name="val" id="val" placeholder="Enter value">
             <script>
-                    var critereSelect = document.getElementById("critere");
-                    var valInput = document.getElementById("val");
+                var critereSelect = document.getElementById("critere");
+                var valInput = document.getElementById("val");
 
-                    critereSelect.addEventListener("change", function() {
-                        if (critereSelect.value === "NumSem") {
-                            valInput.type = "number";
-                        } else if (critereSelect.value === "DateDebut") {
-                            valInput.type = "date";
-                        } else if (critereSelect.value === "DateFin") {
-                            valInput.type = "date";
-                        } else if (critereSelect.value === "Session") {
-                            valInput.type = "number";
-                        }
-                    });
-                </script>
+                critereSelect.addEventListener("change", function () {
+                    if (critereSelect.value === "NumSem") {
+                        valInput.type = "number";
+                    } else if (critereSelect.value === "DateDebut") {
+                        valInput.type = "date";
+                    } else if (critereSelect.value === "DateFin") {
+                        valInput.type = "date";
+                    } else if (critereSelect.value === "Session") {
+                        valInput.type = "number";
+                    }
+                });
+            </script>
             <button type="submit">Filter</button>
         </form>
+        <br>
         <table class="table">
             <thead>
                 <tr>
@@ -82,15 +85,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($semaineList as $semaine) { ?>
+                <?php foreach ($semaineList as $semaine) {
+                    $sql = "SELECT Annee, Sem FROM session WHERE Numero = " . $semaine['Session'] . "";
+                    $sessionResult = $db->getConnection()->query($sql);
+
+                    // Fetch the result and get the 'Annee' value
+                    $sessionList = $sessionResult->fetch_assoc(); // Fetch the data as an associative array
+                    $annee = $sessionList['Annee']."-".$sessionList['Sem']; ?>
                     <tr>
-                        <td><?php echo $semaine['NumSem']; ?></td>
-                        <td><?php echo $semaine['DateDebut']; ?></td>
-                        <td><?php echo $semaine['DateFin']; ?></td>
-                        <td><?php echo $semaine['Session']; ?></td>
                         <td>
-                            <a href="edit_semaine.php?idSem=<?php echo $semaine['idSem']; ?>" class="btn btn-primary">Edit</a>
-                            <a href="delete_semaine.php?idSem=<?php echo $semaine['idSem']; ?>" class="btn btn-danger">Delete</a>
+                            <?php echo $semaine['NumSem']; ?>
+                        </td>
+                        <td>
+                            <?php echo $semaine['DateDebut']; ?>
+                        </td>
+                        <td>
+                            <?php echo $semaine['DateFin']; ?>
+                        </td>
+                        <td>
+                            <?php echo $annee ?>
+                        </td>
+                        <td>
+                            <a href="edit_semaine.php?idSem=<?php echo $semaine['idSem']; ?>"
+                                class="btn btn-primary">Edit</a>
+                            <a href="delete_semaine.php?idSem=<?php echo $semaine['idSem']; ?>"
+                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 <?php } ?>

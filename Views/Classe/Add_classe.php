@@ -2,11 +2,17 @@
 
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
+include "../../Classes/Departement.php";
 
 $db = new Database();
 $classes = new Classe($db->getConnection());
 
+$departement = new Departement($db->getConnection());
+$departementList = $departement->getAllDepartmentsNames();
+//var_dump($departementList);
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    
     // Validate and process form data to add a new classe
     // Retrieve and sanitize POST data
     $codClasse = $_POST['CodClasse'];
@@ -62,9 +68,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <input type="text" class="form-control" name="IntClasse" id="IntClasse">
             </div>
 
+            
             <div class="form-group">
                 <label for="Département">Département:</label>
-                <input type="text" class="form-control" name="Département" id="Département">
+                <select class="form-control" name="Département" id="Département">
+                    <?php foreach ($departementList as $dep) { ?>
+                        <option value= "<?php echo $dep['CodeDep'] ; ?>"><?php echo $dep['Departement']." - ".$dep['CodeDep']?> </option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">

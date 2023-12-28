@@ -22,7 +22,7 @@ require '../../DataBase/connect.php';
                 <div class="card">
                     <div class="card-header">
                         <h4>Details de la seance
-                            <a href="index.php" class="btn btn-danger float-end">BACK</a>
+                            <a href="list_seances.php" class="btn btn-danger float-end">BACK</a>
                         </h4>
                     </div>
                     <div class="card-body">

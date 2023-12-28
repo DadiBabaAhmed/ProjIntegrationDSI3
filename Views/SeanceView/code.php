@@ -12,13 +12,13 @@ if(isset($_POST['supprimer_seance']))
     if($query_run)
     {
         $_SESSION['message'] = "Seance supprimer avec succees";
-        header("Location: index.php");
+        header("Location: list_seances.php");
         exit(0);
     }
     else
     {
         $_SESSION['message'] = "Seance pas supprimer";
-        header("Location: index.php");
+        header("Location: list_seances.php");
         exit(0);
     }
 }
@@ -37,13 +37,13 @@ if(isset($_POST['modifier_seance']))
     if($query_run)
     {
         $_SESSION['message'] = "Seance modifier avec success!";
-        header("Location: index.php");
+        header("Location: list_seances.php");
         exit(0);
     }
     else
     {
         $_SESSION['message'] = "Seance pas trouvee";
-        header("Location: index.php");
+        header("Location: list_seances.php");
         exit(0);
     }
 

@@ -103,7 +103,7 @@
 <body>
     <!-- Header Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark p-4">
-        <a class="navbar-brand" href="index.php">
+        <a class="navbar-brand" href="list_sessions.php">
             <?php echo SITE_TITLE; ?>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -113,7 +113,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="list_sessions.php">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="create.php">Create</a>

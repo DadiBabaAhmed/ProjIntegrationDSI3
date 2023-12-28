@@ -21,9 +21,9 @@ if (isset($_POST['submit'])) {
     $data['Anneab'] = $_POST['Anneab'];
     
     if ($session->create($data)) {
-        redirect('index.php', 'Votre session a ete ajoutee', 'success');
+        redirect('list_sessions.php', 'Votre session a ete ajoutee', 'success');
     } else {
-        redirect('index.php', 'Erreur lors de l\'ajout de la session', 'error');
+        redirect('list_sessions.php', 'Erreur lors de l\'ajout de la session', 'error');
     }
 }
 

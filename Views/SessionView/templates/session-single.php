@@ -27,7 +27,7 @@
         <div class="col-md-8 offset-md-2">
             <div class="card">
                 <div class="card-body text-center">
-                    <a href="index.php" class="btn btn-primary mr-2">Retourner</a>
+                    <a href="list_sessions.php" class="btn btn-primary mr-2">Retourner</a>
                     <a href="edit.php?id=<?php echo $session->Numero; ?>" class="btn btn-secondary mr-2">Modifier</a>
                     <form style="display: inline;" method="post" action="vdel.php">
                         <input type="hidden" name="del_id" value="<?php echo $session->Numero; ?>">

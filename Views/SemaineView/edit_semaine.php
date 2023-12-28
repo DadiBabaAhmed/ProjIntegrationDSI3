@@ -13,9 +13,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "DateFin" => $_POST["DateFin"],
         "Session" => $_POST["Session"]
     ];
-    $semaine->update($idSem, $semaineData);
-    header("Location: list_semaines.php");
-    exit();
+    try {
+        $semaine->update($idSem, $semaineData);
+        header("Location: list_semaines.php");
+        exit();
+    } catch (mysqli_sql_exception $e) {
+        if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+            echo "<div class='alert alert-danger'>Error: semaine deja existe.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+        }
+}
 }
 
 if (isset($_GET["idSem"])) {
@@ -49,11 +57,11 @@ if (isset($_GET["idSem"])) {
             </div>
             <div class="form-group">
                 <label for="DateDebut">DateDebut:</label>
-                <input type="datetime-local" class="form-control" name="DateDebut" id="DateDebut" value="<?php echo $semaineData['DateDebut']; ?>">
+                <input type="date" class="form-control" name="DateDebut" id="DateDebut" value="<?php echo $semaineData['DateDebut']; ?>">
             </div>
             <div class="form-group">
                 <label for="DateFin">DateFin:</label>
-                <input type="datetime-local" class="form-control" name="DateFin" id="DateFin" value="<?php echo $semaineData['DateFin']; ?>">
+                <input type="date" class="form-control" name="DateFin" id="DateFin" value="<?php echo $semaineData['DateFin']; ?>">
             </div>
             <div class="form-group">
                 <label for="Session">Session:</label>
