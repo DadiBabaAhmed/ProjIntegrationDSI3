@@ -18,7 +18,7 @@ require '../../DataBase/connect.php';
         <?php include('message.php'); ?>
         <div class="card-header">
             <h4>
-                <a href="list_seances.php" class="btn btn-danger float-end">BACK</a>
+                <a href="index.php" class="btn btn-danger float-end">BACK</a>
             </h4>
         </div>
         <div class="row">

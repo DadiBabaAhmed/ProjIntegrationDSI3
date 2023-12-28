@@ -1,9 +1,13 @@
 <?php
 include "../../DataBase/Database.php";
 include "../../Classes/Matieres.php";
+include "../../Classes/Departement.php";
 
 $db = new Database();
 $matieres = new Matieres($db->getConnection());
+$departement = new Departement($db->getConnection());
+
+$departementList = $departement->getDepartmentsNames();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Process form data to update a matiere
@@ -73,6 +77,11 @@ if (isset($_GET["Code_Matiere"])) {
 
                 <div class="form-group">
                     <label for="Departement">Departement:</label>
+                    <select name="Departement" id="Departement">
+                        <?php
+                        foreach ($departementList as $row) { ?>
+                            <option value="<?php echo $row['CodeDep'] ?>"<?php if($row['CodeDep']===$matiere["Departement"]) {echo "selected";} ?>><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
+                        <?php } ?>
                     <input type="text" class="form-control" name="Departement" id="Departement" value="<?php echo $matiere["Departement"]; ?>">
                 </div>
 
@@ -118,12 +127,12 @@ if (isset($_GET["Code_Matiere"])) {
 
                 <div class="form-group">
                     <label for="DateDeb">Date Debut:</label>
-                    <input type="text" class="form-control" name="DateDeb" id="DateDeb" value="<?php echo $matiere["DateDeb"]; ?>">
+                    <input type="date" class="form-control" name="DateDeb" id="DateDeb" value="<?php echo $matiere["DateDeb"]; ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="DateFin">Date Fin:</label>
-                    <input type="text" class="form-control" name="DateFin" id="DateFin" value="<?php echo $matiere["DateFin"]; ?>">
+                    <input type="date" class="form-control" name="DateFin" id="DateFin" value="<?php echo $matiere["DateFin"]; ?>">
                 </div>
 
                 <!-- Add more fields as necessary -->

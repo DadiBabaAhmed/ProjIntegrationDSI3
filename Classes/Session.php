@@ -111,5 +111,4 @@ class Session
             return false;
         }
     }
-
 }

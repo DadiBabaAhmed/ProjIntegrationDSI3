@@ -1,9 +1,13 @@
 <?php
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
+include "../../Classes/Departement.php";
 
 $db = new Database();
 $classes = new Classe($db->getConnection());
+
+$departement = new Departement($db->getConnection());
+$departementList = $departement->getDepartmentsNames();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Process form data to update a class
@@ -76,9 +80,12 @@ if (isset($_GET["id"])) {
                     </div>
 
                     <div class="form-group">
-                        <label for="Département">Département:</label>
-                        <input type="text" class="form-control" name="Département" id="Département"
-                            value="<?php echo $class["Département"]; ?>">
+                    <label for="Département">Département:</label>
+                <select class="form-control" name="Département" id="Département">
+                    <?php foreach ($departementList as $dep) { ?>
+                        <option value= "<?php echo $dep['CodeDep'] ; ?>" <?php if($dep['CodeDep'] === $class["Département"]){echo "selected"; }?>><?php echo $dep['Departement']." - ".$dep['CodeDep']?> </option>
+                    <?php } ?>
+                </select>
                     </div>
 
                     <div class="form-group">

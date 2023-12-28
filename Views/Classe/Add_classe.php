@@ -1,5 +1,4 @@
 <?php
-
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
 include "../../Classes/Departement.php";
@@ -8,7 +7,7 @@ $db = new Database();
 $classes = new Classe($db->getConnection());
 
 $departement = new Departement($db->getConnection());
-$departementList = $departement->getAllDepartmentsNames();
+$departementList = $departement->getDepartmentsNames();
 //var_dump($departementList);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

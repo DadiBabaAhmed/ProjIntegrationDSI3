@@ -47,6 +47,10 @@ $matiereList = $matieres->getMatieres();
                 <?php
                 // Assuming $matiereList is an array of matiere objects fetched from the database
                 foreach ($matiereList as $matiere) {
+                    /*$dateDeb = new DateTime($matiere["DateDeb"]);
+                    $matiere["DateDeb"] = $dateDeb->format('Y-m-d');
+                    $dateFin = new DateTime($matiere["DateFin"]);
+                    $matiere["DateFin"] = $dateFin->format('Y-m-d');*/
                     echo '<tr>';
                     echo '<td>' . $matiere["Code_Matiere"] . '</td>';
                     echo '<td>' . $matiere["Nom_Matiere"] . '</td>';

@@ -12,7 +12,7 @@ if (isset($_SESSION['seances'])) {
 
     $pdf->SetTextColor(0, 0, 255); // Set text color to blue
     $pdf->SetFont('Arial', 'U', 12); // Underlined and 12pt font
-    $pdf->Cell(0, 10, 'Go Back', 0, 1, 'L', false, 'list_seances.php'); // Add link
+    $pdf->Cell(0, 10, 'Go Back', 0, 1, 'L', false, 'index.php'); // Add link
     $pdf->Ln(10); // Add some space
 
     // Reset text color and font

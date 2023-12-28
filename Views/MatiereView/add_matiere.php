@@ -1,10 +1,14 @@
 <?php
 include "../../DataBase/Database.php";
 include "../../Classes/Matieres.php";
+include "../../Classes/Departement.php";
 
 // Create a database connection
 $db = new Database();
 $matieres = new Matieres($db->getConnection());
+$departement = new Departement($db->getConnection());
+
+$departementList = $departement->getDepartmentsNames();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate and process form data to add a new matiere
@@ -66,7 +70,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="Departement">Departement:</label>
-                <input type="text" class="form-control" name="Departement" id="Departement" required>
+                <select name="Departement" id="Departement">
+                    <?php
+                    foreach ($departementList as $row) { ?>
+                        <option value="<?php echo $row['CodeDep'] ?>"><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
+                    <?php } ?>
             </div>
 
 
@@ -124,13 +132,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="DateDeb">DateDeb:</label>
-                <input type="text" class="form-control" name="DateDeb" id="DateDeb" required>
+                <input type="date" class="form-control" name="DateDeb" id="DateDeb" required>
             </div>
 
 
             <div class="form-group">
                 <label for="DateFin">DateFin:</label>
-                <input type="text" class="form-control" name="DateFin" id="DateFin" required>
+                <input type="date" class="form-control" name="DateFin" id="DateFin" required>
 
             </div>
 
