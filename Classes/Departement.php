@@ -155,4 +155,19 @@ class Departement
 
         return $departments;
     }
+
+    public function getDepartmentsNames()
+    {
+        $query = "SELECT CodeDep, Departement FROM departements";
+        $result = $this->db->query($query);
+        $departments = [];
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $departments[] = $row;
+            }
+        }
+
+        return $departments;
+    }
 }

@@ -1,4 +1,14 @@
-<?php include('../../DataBase/connect.php'); ?>
+<?php 
+    include('../../DataBase/connect.php'); 
+    include('../../DataBase/DataBase.php');
+    include('../../Classes/Option.php');
+
+    $db = new DataBase();
+    $option = new Option($db->getConnection());
+
+    $listOption = $option->getOptionsNames();
+
+?>
 
 <!-- Include Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -7,7 +17,7 @@
 <?php
 $searchNiveau = "";
 
-if (isset($_POST['ajouter'])) {
+if(isset($_POST['ajouter'])) {
     $niveau = $_POST['niveau'];
     $option = $_POST['option'];
 
@@ -15,7 +25,7 @@ if (isset($_POST['ajouter'])) {
     $checkQuery = "SELECT * FROM `optionniveau` WHERE `Niveau` = '$niveau' AND `Option` = '$option'";
     $checkResult = mysqli_query($con, $checkQuery);
 
-    if (mysqli_num_rows($checkResult) > 0) {
+    if(mysqli_num_rows($checkResult) > 0) {
         // L'enregistrement existe déjà, afficher un message d'erreur
         $Message = "Erreur : L'enregistrement  existe déjà.";
     } else {
@@ -23,13 +33,13 @@ if (isset($_POST['ajouter'])) {
         $query = "INSERT INTO `optionniveau` (`Niveau`, `Option`) VALUES ('$niveau', '$option')";
         $result = mysqli_query($con, $query);
 
-        if (!$result) {
-            die("Query failed: " . mysqli_error($con));
+        if(!$result) {
+            die("Query failed: ".mysqli_error($con));
         }
     }
 }
 
-if (isset($_POST['modifier'])) {
+if(isset($_POST['modifier'])) {
     $id = $_POST['id'];
     $niveau = $_POST['niveau'];
     $option = $_POST['option'];
@@ -40,25 +50,25 @@ if (isset($_POST['modifier'])) {
     $query = "UPDATE `optionniveau` SET `Niveau` = '$niveau', `Option` = '$option' WHERE `id` = '$id'";
     $result = mysqli_query($con, $query);
 
-    if (!$result) {
-        die("Query failed: " . mysqli_error($con));
+    if(!$result) {
+        die("Query failed: ".mysqli_error($con));
     }
 
 }
 
-if (isset($_POST['supprimer'])) {
+if(isset($_POST['supprimer'])) {
     $id = $_POST['id'];
 
     // Requête de suppression
     $query = "DELETE FROM `optionniveau` WHERE `id` = '$id'";
     $result = mysqli_query($con, $query);
 
-    if (!$result) {
-        die("Query failed: " . mysqli_error($con));
+    if(!$result) {
+        die("Query failed: ".mysqli_error($con));
     }
 }
 
-if (isset($_POST['buttonfiltre'])) {
+if(isset($_POST['buttonfiltre'])) {
     $searchNiveau = $_POST['searchNiveau'];
 }
 ?>
@@ -79,10 +89,10 @@ if (isset($_POST['buttonfiltre'])) {
                 $queryNiveaux = "SELECT DISTINCT `Niveau` FROM `optionniveau`";
                 $resNiveaux = mysqli_query($con, $queryNiveaux);
 
-                if (!$resNiveaux) {
-                    die("query failed" . mysqli_error($con));
+                if(!$resNiveaux) {
+                    die("query failed".mysqli_error($con));
                 } else {
-                    while ($rowNiveau = mysqli_fetch_assoc($resNiveaux)) {
+                    while($rowNiveau = mysqli_fetch_assoc($resNiveaux)) {
                         $selected = isset($_GET['searchNiveau']) && $_GET['searchNiveau'] == $rowNiveau['Niveau'] ? 'selected' : '';
                         echo "<option value='{$rowNiveau['Niveau']}' $selected>{$rowNiveau['Niveau']}</option>";
                     }
@@ -107,18 +117,18 @@ if (isset($_POST['buttonfiltre'])) {
             </thead>
             <tbody>
                 <?php
-                if ($searchNiveau == "") {
+                if($searchNiveau == "") {
                     $query = "select * from optionniveau ";
                 } else {
-                    $query = "select * from optionniveau where Niveau =" . $searchNiveau;
+                    $query = "select * from optionniveau where Niveau =".$searchNiveau;
                 }
 
                 $res = mysqli_query($con, $query);
 
-                if (!$res) {
-                    die("query failed" . mysqli_error($con));
+                if(!$res) {
+                    die("query failed".mysqli_error($con));
                 } else {
-                    while ($row = mysqli_fetch_assoc($res)) {
+                    while($row = mysqli_fetch_assoc($res)) {
                         ?>
                         <tr>
 
@@ -182,7 +192,12 @@ if (isset($_POST['buttonfiltre'])) {
                     </div>
                     <div class="form-group">
                         <label for="option">option</label>
-                        <input type="text" class="form-control" name="option" placeholder="enter option">
+                        <select class="form-control" name="option" id="option">
+                            <?php
+                            foreach ($listOption as $row) { ?>
+                                <option value="<?php echo $row['Code_Option '] ?>"><?php echo $row['Option_Name'] ?></option>";
+                            <?php } ?>
+                        </select>
                     </div>
 
                 </div>
@@ -217,7 +232,12 @@ if (isset($_POST['buttonfiltre'])) {
                     </div>
                     <div class="form-group">
                         <label for="option">option</label>
-                        <input type="text" class="form-control" name="option" id="option">
+                        <select class="form-control" name="option" id="option">
+                            <?php
+                            foreach ($listOption as $row) { ?>
+                                <option value="<?php echo $row['Code_Option '] ?>"><?php echo $row['Option_Name'] ?></option>";
+                            <?php } ?>
+                        </select>
                     </div>
                     <input type="text" class="form-control" name="id" id="id" style="display:none;">
                 </div>

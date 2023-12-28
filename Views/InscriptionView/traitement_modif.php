@@ -66,9 +66,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $conn->exec($sql_Update);
+        header("Location: afficher.php");
         echo "Données mises à jour avec succès dans la table 'Inscriptions'.";
     } catch (PDOException $e) {
         echo "Erreur lors de la mise à jour des données : " . $e->getMessage();
+        echo "<a href='modifier_by_num.php'>Retour</a>";
     }
 }
 

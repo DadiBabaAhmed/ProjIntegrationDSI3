@@ -50,9 +50,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(19, $noteST);
 
         $stmt->execute();
+        header("Location: afficher.php");
         echo "Données insérées avec succès dans la table 'Inscriptions'.";
     } catch (PDOException $e) {
         echo "Erreur lors de l'insertion des données : " . $e->getMessage();
+        echo "<a href='ajouter.php'>Retour</a>";
     }
 }
 ?>
