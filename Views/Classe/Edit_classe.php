@@ -2,12 +2,16 @@
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
 include "../../Classes/Departement.php";
+include "../../Classes/Option.php";
 
 $db = new Database();
 $classes = new Classe($db->getConnection());
-
 $departement = new Departement($db->getConnection());
+$option = new Option($db->getConnection());
+
 $departementList = $departement->getDepartmentsNames();
+$listOption = $option->getOptionsNames();
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Process form data to update a class
@@ -90,8 +94,11 @@ if (isset($_GET["id"])) {
 
                     <div class="form-group">
                         <label for="Opti_on">Opti_on:</label>
-                        <input type="text" class="form-control" name="Opti_on" id="Opti_on"
-                            value="<?php echo $class["Opti_on"]; ?>">
+                        <select class="form-control" name="Opti_on" id="Opti_on">
+                            <?php foreach ($listOption as $opt) { ?>
+                                <option value= "<?php echo $opt['Code_Option'] ; ?>" <?php if($opt['Code_Option'] === $class["Opti_on"]){echo "selected"; }?>><?php echo $opt['Option_Name']?> </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <div class="form-group">

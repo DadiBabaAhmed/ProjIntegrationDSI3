@@ -13,6 +13,7 @@
 
 <body>
     <div class="container">
+        <h2 class="text-center">Liste des Départements</h2>
         <?php
         // Inclure le code de connexion à la base de données
         // require '../departements/connexion.php';
@@ -42,17 +43,19 @@
                 <input type="text" name="search" class="form-control" placeholder="Rechercher...">
             </div>
             <button type="submit" class="btn btn-primary">Rechercher</button>
-            <a class="btn btn-secondary" href="list_departements.php">Cancel</a>
+            <a class="btn btn-secondary" href="list_departements.php">Retour</a>
+            
         </form>
+        <br>
         <!-- Tableau -->
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
+                    <th>CodeDep</th>
                     <th>Département</th>
                     <th>Responsable</th>
-                    <th>MatProf</th>
+                    <th>Matricule Responsable</th>
                     <th>DépartementARAB</th>
-                    <th>CodeDep</th>
                     <th>Action</th>
                 </tr>
             </thead>

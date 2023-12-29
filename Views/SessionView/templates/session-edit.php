@@ -107,7 +107,7 @@
                             value="<?php echo $session->Anneab; ?>">
                         <span class="error-message" id="AnneabError"></span>
                     </div>
-                    <a href="list_sessions.php" class="btn btn-secondary mr-2">Retourner</a>
+                    <a href="index.php" class="btn btn-secondary mr-2">Retourner</a>
                     <input type="submit" class="btn btn-primary m-2" value="Editer" name="submit">
                 </form>
             </div>

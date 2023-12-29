@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>List Matieres</h2>
-        <a href="add_matiere.php" class="btn btn-success">Add Matiere</a>
+        <a href="list_matieres.php" class="btn btn-success">List Matiere</a>
         <form method="POST" action="filtere_matieres.php">
             <div class="form-group">
                 <label for="critere">Filter by:</label>

@@ -16,12 +16,18 @@ $matiereList = $matieres->getMatieres();
     <title>List Matieres</title>
     <!-- Add Bootstrap CSS or your preferred CSS framework -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .container {
+        margin: 70px 90px 90px 90px;
+    }
+</style>
 </head>
 
 <body>
     <div class="container">
         <h2>List Matieres</h2>
         <a href="add_matiere.php" class="btn btn-success">Add Matiere</a>
+        <a href="filtere_matieres.php" class="btn btn-primary">filter</a>
         <table class="table">
             <thead>
                 <tr>

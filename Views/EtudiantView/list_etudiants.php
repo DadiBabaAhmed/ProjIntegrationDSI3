@@ -18,7 +18,8 @@ $etudiants = $etudiant->read();
 <body>
     <div class="container">
         <h2 class="mt-3">List of Etudiants</h2>
-        <a class="btn btn-primary mt-3" href="add_etudiant.php">Add Etudiant</a>
+        <a class="btn btn-primary mt-3" href="list_etudiants_reduced.php">Informations réduites</a>
+            <a class="btn btn-primary mt-3" href="add_etudiant.php">Add Etudiant</a>
         <a class="btn btn-primary mt-3" href="filtre_etudiant.php">filtrage et print</a>
     </div>
     <table id="table-to-print" class="table table-striped mt-3">

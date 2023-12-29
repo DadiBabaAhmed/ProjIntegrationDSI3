@@ -45,115 +45,135 @@ if (isset($_GET["Code_Matiere"])) {
 
     // Example HTML form for editing a matiere
     // You need to adjust this form to match your field names and structure
-?>
-<!DOCTYPE html>
-<html>
+    ?>
+    <!DOCTYPE html>
+    <html>
 
-<head>
-    <title>Edit Matiere</title>
-    <!-- Add Bootstrap CSS or your preferred CSS framework -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+    <head>
+        <title>Edit Matiere</title>
+        <!-- Add Bootstrap CSS or your preferred CSS framework -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
 
-<body>
-    <div class="container">
-        <h2>Edit Matiere</h2>
-        <?php
-        // Assuming $matiere is the retrieved matiere data from the database
-        if (isset($matiere) && !empty($matiere)) {
-        ?>
-            <form method="POST" action="edit_matiere.php">
-                <input type="hidden" name="Code_Matiere" value="<?php echo $matiere["Code_Matiere"]; ?>">
+    <body>
+        <div class="container">
+            <h2>Edit Matiere</h2>
+            <?php
+            // Assuming $matiere is the retrieved matiere data from the database
+            if (isset($matiere) && !empty($matiere)) {
+                ?>
+                <form method="POST" action="edit_matiere.php">
+                    <input type="hidden" name="Code_Matiere" value="<?php echo $matiere["Code_Matiere"]; ?>">
 
-                <div class="form-group">
-                    <label for="Nom_Matiere">Nom Matiere:</label>
-                    <input type="text" class="form-control" name="Nom_Matiere" id="Nom_Matiere" value="<?php echo $matiere["Nom_Matiere"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Nom_Matiere">Nom Matiere:</label>
+                        <input type="text" class="form-control" name="Nom_Matiere" id="Nom_Matiere"
+                            value="<?php echo $matiere["Nom_Matiere"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Coef_Matiere">Coef Matiere:</label>
-                    <input type="text" class="form-control" name="Coef_Matiere" id="Coef_Matiere" value="<?php echo $matiere["Coef_Matiere"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Coef_Matiere">Coef Matiere:</label>
+                        <input type="text" class="form-control" name="Coef_Matiere" id="Coef_Matiere"
+                            value="<?php echo $matiere["Coef_Matiere"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Departement">Departement:</label>
-                    <select name="Departement" id="Departement">
-                        <?php
-                        foreach ($departementList as $row) { ?>
-                            <option value="<?php echo $row['CodeDep'] ?>"<?php if($row['CodeDep']===$matiere["Departement"]) {echo "selected";} ?>><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
-                        <?php } ?>
-                    <input type="text" class="form-control" name="Departement" id="Departement" value="<?php echo $matiere["Departement"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Departement">Departement:</label>
+                        <select class="form-control" name="Departement" id="Departement">
+                            <?php
+                            foreach ($departementList as $row) { ?>
+                                <option value="<?php echo $row['CodeDep'] ?>" <?php if ($row['CodeDep'] === $matiere["Departement"]) {
+                                       echo "selected";
+                                   } ?>>
+                                    <?php echo $row['CodeDep'] ?>-
+                                    <?php echo $row['Departement'] ?>
+                                </option>";
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Semestre">Semestre:</label>
+                        <select class="form-control" name="Semestre" id="Semestre" required>
+                            <option value="1" <?php if ($matiere["Semestre"] == "1")
+                                echo "selected"; ?>>1</option>
+                            <option value="2" <?php if ($matiere["Semestre"] == "2")
+                                echo "selected"; ?>>2</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="Semestre">Semestre:</label>
-                    <input type="text" class="form-control" name="Semestre" id="Semestre" value="<?php echo $matiere["Semestre"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Options">Options:</label>
+                        <input type="text" class="form-control" name="Options" id="Options"
+                            value="<?php echo $matiere["Options"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Options">Options:</label>
-                    <input type="text" class="form-control" name="Options" id="Options" value="<?php echo $matiere["Options"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Nb_Heure_CI">Nb Heure CI:</label>
+                        <input type="text" class="form-control" name="Nb_Heure_CI" id="Nb_Heure_CI"
+                            value="<?php echo $matiere["Nb_Heure_CI"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Nb_Heure_CI">Nb Heure CI:</label>
-                    <input type="text" class="form-control" name="Nb_Heure_CI" id="Nb_Heure_CI" value="<?php echo $matiere["Nb_Heure_CI"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Nb_Heure_TP">Nb Heure TP:</label>
+                        <input type="text" class="form-control" name="Nb_Heure_TP" id="Nb_Heure_TP"
+                            value="<?php echo $matiere["Nb_Heure_TP"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Nb_Heure_TP">Nb Heure TP:</label>
-                    <input type="text" class="form-control" name="Nb_Heure_TP" id="Nb_Heure_TP" value="<?php echo $matiere["Nb_Heure_TP"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="TypeLabo">Type Labo:</label>
+                        <input type="text" class="form-control" name="TypeLabo" id="TypeLabo"
+                            value="<?php echo $matiere["TypeLabo"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="TypeLabo">Type Labo:</label>
-                    <input type="text" class="form-control" name="TypeLabo" id="TypeLabo" value="<?php echo $matiere["TypeLabo"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Bonus">Bonus:</label>
+                        <input type="text" class="form-control" name="Bonus" id="Bonus"
+                            value="<?php echo $matiere["Bonus"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Bonus">Bonus:</label>
-                    <input type="text" class="form-control" name="Bonus" id="Bonus" value="<?php echo $matiere["Bonus"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="Categories">Categories:</label>
+                        <input type="text" class="form-control" name="Categories" id="Categories"
+                            value="<?php echo $matiere["Categories"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="Categories">Categories:</label>
-                    <input type="text" class="form-control" name="Categories" id="Categories" value="<?php echo $matiere["Categories"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="SousCategories">Sous Categories:</label>
+                        <input type="text" class="form-control" name="SousCategories" id="SousCategories"
+                            value="<?php echo $matiere["SousCategories"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="SousCategories">Sous Categories:</label>
-                    <input type="text" class="form-control" name="SousCategories" id="SousCategories" value="<?php echo $matiere["SousCategories"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="DateDeb">Date Debut:</label>
+                        <input type="date" class="form-control" name="DateDeb" id="DateDeb"
+                            value="<?php echo $matiere["DateDeb"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="DateDeb">Date Debut:</label>
-                    <input type="date" class="form-control" name="DateDeb" id="DateDeb" value="<?php echo $matiere["DateDeb"]; ?>">
-                </div>
+                    <div class="form-group">
+                        <label for="DateFin">Date Fin:</label>
+                        <input type="date" class="form-control" name="DateFin" id="DateFin"
+                            value="<?php echo $matiere["DateFin"]; ?>">
+                    </div>
 
-                <div class="form-group">
-                    <label for="DateFin">Date Fin:</label>
-                    <input type="date" class="form-control" name="DateFin" id="DateFin" value="<?php echo $matiere["DateFin"]; ?>">
-                </div>
+                    <!-- Add more fields as necessary -->
 
-                <!-- Add more fields as necessary -->
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a class="btn btn-secondary" href="list_matieres.php">Cancel</a>
+                </form>
+                <?php
+            } else {
+                echo "Matiere not found.";
+            }
+            ?>
+        </div>
 
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-                <a class="btn btn-secondary" href="list_matieres.php">Cancel</a>
-            </form>
-        <?php
-        } else {
-            echo "Matiere not found.";
-        }
-        ?>
-    </div>
+        <!-- Add Bootstrap JavaScript or your preferred JS framework -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 
-    <!-- Add Bootstrap JavaScript or your preferred JS framework -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+    </html>
 
-</html>
-
-<?php
+    <?php
 }
 ?>
