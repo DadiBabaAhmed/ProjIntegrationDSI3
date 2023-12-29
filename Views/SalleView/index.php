@@ -159,28 +159,28 @@ $departementList = $departement->getDepartmentsNames();
             </select>
             <br>
             <label for="categorie">Catégorie:</label>
-            <input type="text" name="categorie" required>
+            <input type="text" name="categorie" >
             <br>
             <label for="responsable">Responsable:</label>
-            <input type="text" name="responsable" required>
+            <input type="text" name="responsable" >
             <br>
             <label for="charge">Charge:</label>
-            <input type="number" name="charge" required>
+            <input type="number" name="charge" >
             <br>
             <label for="nb_place_examen">Nb places examen:</label>
-            <input type="number" name="nb_place_examen" required>
+            <input type="number" name="nb_place_examen" >
             <br>
             <label for="nb_lignes">Nb lignes:</label>
-            <input type="number" name="nb_lignes" required>
+            <input type="number" name="nb_lignes" >
             <br>
             <label for="nb_col">Nb colonnes:</label>
-            <input type="number" name="nb_col" required>
+            <input type="number" name="nb_col" >
             <br>
             <label for="nb_surv">Nb Surveillants:</label>
-            <input type="number" name="nb_surv" required>
+            <input type="number" name="nb_surv" >
             <br>
             <label for="type">Type:</label>
-            <input type="text" name="type" required>
+            <input type="text" name="type" >
             <br>
             <label for="disponible">Disponibilité</label>
 

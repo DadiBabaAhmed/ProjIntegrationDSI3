@@ -25,12 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Add more fields as needed
     ];
 
-    // Call the class's function to add the jour
-    $jour->add($jourData);
-
-    // Redirect to a success page or display a success message
-    header('Location: list_jours.php');
-    exit;
+    try
+    {
+        $jour->add($jourData);
+        header('Location: list_jours.php');
+        exit;
+    }
+    catch (mysqli_sql_exception $e)
+    {
+        if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+            echo "<div class='alert alert-danger'>Error: jour deja existe: changer N°.</div>";
+        } 
+        else {
+            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+        }
+    }
+    
 }
 ?>
 

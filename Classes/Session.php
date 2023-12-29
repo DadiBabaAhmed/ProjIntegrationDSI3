@@ -12,7 +12,7 @@ class Session
 
     public function getAllSessions()
     {
-        $this->db->query("SELECT * FROM session");
+        $this->db->query("SELECT * FROM session order by Annee desc");
         //assign result set
         $results = $this->db->resultSet();
         return $results;

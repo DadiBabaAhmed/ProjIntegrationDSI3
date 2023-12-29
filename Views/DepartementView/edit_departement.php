@@ -24,9 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "MatProf" => $matprof,
         "DepartementARAB" => $_POST["DepartementARAB"]
     ];
-    $departement->updateDepartment($CodeDep, $departementData);
-    header("Location: list_departements.php");
-    exit();
+    try {
+        $departement->updateDepartment($CodeDep, $departementData);
+        header("Location: list_departements.php");
+        exit();
+    } catch (Exception $e) {
+        echo "An error occurred: " . $e->getMessage();
+    }
 }
 
 if (isset($_GET["CodeDep"])) {
@@ -44,18 +48,18 @@ if (isset($_GET["CodeDep"])) {
 <html>
 
 <head>
-    <title>Edit Semaine</title>
+    <title>Edit departement</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h2>Edit Semaine</h2>
+        <h2>Edit departement</h2>
         <form method="POST" action="edit_departement.php">
             <input type="hidden" name="CodeDep" value="<?php echo $CodeDep; ?>">
             <div class="form-group">
                 <label for="CodeDep">CodeDep:</label>
-                <input type="text" class="form-control" name="CodeDep" id="CodeDep" value="<?php echo $departementData['CodeDep']; ?>">
+                <input type="text" class="form-control" name="CodeDep" id="CodeDep" value="<?php echo $departementData['CodeDep']; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="Departement">Departement:</label>

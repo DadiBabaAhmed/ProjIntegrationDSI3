@@ -6,18 +6,22 @@ include "../../Classes/Matieres.php";
 $db = new Database();
 $matieres = new Matieres($db->getConnection());
 
-if (isset($_GET["Code_Matiere"])) {
-    // If the Code_Matiere is provided in the URL, confirm and perform the delete
-    $codeMatiere = $_GET["Code_Matiere"];
-    $matieres->deleteMatiere($codeMatiere);
-    header("Location: list_matieres.php");
-    exit();
-} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Code_Matiere"])) {
-    // If the form is submitted and the Code_Matiere is provided, confirm and perform the delete
-    $codeMatiere = $_POST["Code_Matiere"];
-    $matieres->deleteMatiere($codeMatiere);
-    header("Location: list_matieres.php");
-    exit();
+if (isset($_GET["Code_Matiere"]) || ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Code_Matiere"]))) {
+    $codeMatiere = isset($_GET["Code_Matiere"]) ? $_GET["Code_Matiere"] : $_POST["Code_Matiere"];
+
+    try {
+        // Validate and sanitize the input (consider using prepared statements)
+        $matieres->deleteMatiere($codeMatiere);
+        header("Location: list_matieres.php?delete_success=1");
+        exit();
+    } catch (mysqli_sql_exception $e) {
+        // Handle the exception here
+        if ($e->getCode() == 1451) {
+            echo "<div class='alert alert-danger'>Error: Cannot delete matiere - it is referenced in other data. Please remove related records first.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>An error occurred: " . $e->getMessage() . "</div>";
+        }
+    }
 }
 ?>
 
@@ -37,7 +41,7 @@ if (isset($_GET["Code_Matiere"])) {
 
         <?php
         if (isset($_GET["Code_Matiere"])) {
-            echo '<a class="btn btn-danger" href="delete_matiere.php?Code_Matiere=' . $_GET["Code_Matiere"] . '">Confirm Delete</a>';
+            echo '<a class="btn btn-danger" href="delete_matiere.php?Code_Matiere=' . $_GET["Code_Matiere"] . '">Confirm Delete</a><a class="btn btn-secondary" href="list_matieres.php">Cancel</a>';
         } else {
             // If Code_Matiere is not provided in the URL, show a form to enter Code_Matiere
             echo '<form method="POST" action="delete_matiere.php">

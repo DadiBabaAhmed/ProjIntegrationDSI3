@@ -18,7 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add"])) {
     $count = $result->fetch_assoc()['count'];
 
     if ($count > 0) {
-        echo("Error, a Salle with the same name already exists");
+        echo '<head> <style>.btn-primary { background-color: #007bff; border: 1px solid #007bff; color: #fff; } .btn-primary:hover { background-color: #0056b3; border: 1px solid #0056b3; color: #fff; }
+        .alert-danger { background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        </style></head>';
+        echo '<div class="alert alert-danger" role="alert">Error: Salle existante</div>';
+        echo '<a href="index.php" class="btn btn-primary" >Return</a>';
     } else {
         $insertion = "INSERT INTO Salle (Salle, Departement, Categorie, Responsable, Charge, Nb_place_examen, Nb_lignes, Nb_col, Nb_surv, Type, Disponible) 
                       VALUES ('$salle', '$departement', '$categorie', '$responsable', $charge, $nb_place_examen, $nb_lignes, $nb_col, $nb_surv, '$type', '$disponible')";

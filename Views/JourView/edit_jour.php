@@ -53,7 +53,7 @@ if (isset($_GET["N°"])) {
         <input type="hidden" name="N°" value="<?php echo $N°; ?>">
             <div class="form-group">
                 <label for="N°">N°:</label>
-                <input type="text" class="form-control" id="N°" name="N°" value="<?php echo $jourData['N°']; ?>">
+                <input type="text" class="form-control" id="N°" name="N°" value="<?php echo $jourData['N°']; ?>" disabled>
             </div>
             <div class="form-group">
                 <label for="Lundi">Lundi:</label>

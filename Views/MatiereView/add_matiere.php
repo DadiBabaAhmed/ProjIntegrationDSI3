@@ -2,11 +2,17 @@
 include "../../DataBase/Database.php";
 include "../../Classes/Matieres.php";
 include "../../Classes/Departement.php";
+include('../../Classes/Option.php');
+
+
 
 // Create a database connection
 $db = new Database();
 $matieres = new Matieres($db->getConnection());
 $departement = new Departement($db->getConnection());
+
+$option = new Option($db->getConnection());
+$listOption = $option->getOptionsNames();
 
 $departementList = $departement->getDepartmentsNames();
 
@@ -28,12 +34,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $dateDeb = $_POST['DateDeb'];
     $dateFin = $_POST['DateFin'];
 
-    // Add the matiere to the database
-    $matieres->addMatiere($codeMatiere, $nomMatiere, $coefMatiere, $departement, $semestre, $options, $nbHeureCI, $nbHeureTP, $typeLabo, $bonus, $categories, $sousCategories, $dateDeb, $dateFin);
 
-    // Redirect to the matieres list page
-    header("Location: list_matieres.php");
-    exit();
+    try
+    {
+        $matieres->addMatiere($codeMatiere, $nomMatiere, $coefMatiere, $departement, $semestre, $options, $nbHeureCI, $nbHeureTP, $typeLabo, $bonus, $categories, $sousCategories, $dateDeb, $dateFin);
+        header('Location: list_matieres.php');
+        exit;
+    }
+    catch (mysqli_sql_exception $e)
+    {
+        if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+            echo "<div class='alert alert-danger'>Error: matiere deja existe: changer Code_Matiere.</div>";
+        } 
+        else {
+            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+        }
+    }
 }
 ?>
 
@@ -70,24 +86,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="Departement">Departement:</label>
-                <select name="Departement" id="Departement">
+                <select class="form-control" name="Departement" id="Departement">
                     <?php
                     foreach ($departementList as $row) { ?>
-                        <option value="<?php echo $row['CodeDep'] ?>"><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
+                        <option value="<?php echo $row['CodeDep'] ?>">
+                            <?php echo $row['CodeDep'] ?>-
+                            <?php echo $row['Departement'] ?>
+                        </option>";
                     <?php } ?>
+                </select>
             </div>
 
 
             <div class="form-group">
-                <label for="Semestre">Semestre:</label>
-                <input type="text" class="form-control" name="Semestre" id="Semestre" required>
-            </div>
+                <div class="form-group">
+                    <label for="Semestre">Semestre:</label>
+                    <select class="form-control" name="Semestre" id="Semestre" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
 
 
             <div class="form-group">
-                <label for="Options">Options:</label>
-                <input type="text" class="form-control" name="Options" id="Options" required>
-            </div>
+                        <label for="option">option</label>
+                        <select class="form-control" name="Options" id="option">
+                            <?php
+                            foreach ($listOption as $row) { ?>
+                                <option value="<?php echo $row['Code_Option'] ?>"><?php echo $row['Option_Name'] ?></option>";
+                            <?php } ?>
+                        </select>
+                    </div>
 
 
             <div class="form-group">

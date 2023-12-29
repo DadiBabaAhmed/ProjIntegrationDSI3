@@ -35,13 +35,13 @@ $depList = $departement->getAllDepartments();
     <div class="container">
         <h1>Departement List</h1>
         <a href="add_departement.php" class="btn btn-success">Add Departement</a>
-        <a href="filtre_departement.php" class="btn btn-success">Recherche</a>
+        <a href="filtre_departement.php" class="btn btn-primary">Recherche</a>
         <table>
             <tr>
                 <th>CodeDep</th>
                 <th>Departement</th>
                 <th>Responsable</th>
-                <th>MatProf</th>
+                <th>Matricule Responsable</th>
                 <th>DepartementARAB</th>
             </tr>
             <?php foreach ($depList as $dep) { ?>
