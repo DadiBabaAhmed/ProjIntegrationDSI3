@@ -12,6 +12,8 @@ $departement = new Departement($db->getConnection());
 $gradeList = $grade->getAllGrades();
 $departementList = $departement->getDepartmentsNames();
 
+$errors = [];
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch and sanitize form data
     // ... (Fetch all POST data and sanitize it)
@@ -64,10 +66,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "TypeEnsg" => $_POST['TypeEnsg'],
         "ControlAcces" => $_POST['ControlAcces']
     ];
-    // Insert the professor data into the database
-    $prof->add($profData);
-    header("Location: list_profs.php");
-    exit();
+    
+    $requiredFields = [
+        "Matricule", "Nom", "Prénom", "CIN_ou_Passeport", // Add all required fields here
+    ];
+
+    // Validate required fields
+    foreach ($requiredFields as $field) {
+        if (empty($_POST[$field])) {
+            $errors[] = ucfirst($field) . " is required.";
+        } else {
+            // Sanitize the input (Example: trim spaces)
+            $profData[$field] = trim($_POST[$field]);
+        }
+    }
+
+    // Check if there are any errors
+    if (empty($errors)) {
+        // Insert the professor data into the database
+        $prof->add($profData);
+        header("Location: list_profs.php");
+        exit();
+    }
 }
 ?>
 

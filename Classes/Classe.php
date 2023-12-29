@@ -128,6 +128,24 @@ class Classe
         return $classes;
     }
 
+    public function checkClassExists($codClasse) {
+        $query = "SELECT COUNT(*) AS count FROM your_table_name WHERE CodClasse = ?";
+        
+        // Prepare and bind the statement
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("s", $codClasse);
+        
+        // Execute the query
+        $stmt->execute();
+        
+        // Fetch the result
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        
+        // Check if count is greater than 0, indicating existence
+        return $row['count'] > 0;
+    }
+
 }
 ?>
 

@@ -5,20 +5,31 @@ include "../../Classes/Gouvernorat.php";
 $db = new Database();
 $Gouvernorat = new Gouvernorat($db->getConnection());
 
+$errors = [];
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $Gouv = $_POST["Gouv"];
-    $CodePostal = $_POST["CodePostal"];
-    $GouvernoratData = [
-        "Gouv" => $_POST["Gouv"],
-        "CodePostal" => $_POST["CodePostal"]
-    ];
-    $Gouvernorat->add($GouvernoratData);
-    header("Location: list_Gouvernorats.php");
-    exit();
+    if (empty($_POST["Gouv"])) {
+        $errors[] = "Please enter the Gouvernorat name.";
+    }
+
+    if (empty($_POST["CodePostal"])) {
+        $errors[] = "Please enter the postal code.";
+    }
+
+    if (empty($errors)) {
+        $Gouv = $_POST["Gouv"];
+        $CodePostal = $_POST["CodePostal"];
+        $GouvernoratData = [
+            "Gouv" => $Gouv,
+            "CodePostal" => $CodePostal
+        ];
+        $Gouvernorat->add($GouvernoratData);
+        header("Location: list_Gouvernorats.php");
+        exit();
+    }
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -28,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
-
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
@@ -36,6 +46,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <div class="page-header">
                         <h2>Add Gouvernorat</h2>
                     </div>
+                    <?php if (!empty($errors)) : ?>
+                        <div class="alert alert-danger">
+                            <ul>
+                                <?php foreach ($errors as $error) : ?>
+                                    <li><?php echo $error; ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
                     <form action="add_Gouvernorat.php" method="post">
                         <div class="form-group">
                             <label>le nom de Gouvernorat</label>

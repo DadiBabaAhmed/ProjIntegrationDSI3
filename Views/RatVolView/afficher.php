@@ -75,8 +75,7 @@
                     echo "<tr>";
                     echo "<td>" . $ligne['NumRatV'] . "</td>";
                     echo "<td>" . $ligne['MatProf'] . "</td>";
-                    $date = new DateTime($ligne['DateRat']);
-                    echo "<td>" . $date->format('d-m-y') . "</td>";
+                    echo "<td>" .  $ligne['DateRat']. "</td>";
                     echo "<td>" . $ligne['Seance'] . "</td>";
                     echo "<td>" . $ligne['Session'] . "</td>";
                     echo "<td>" . $ligne['Salle'] . "</td>";

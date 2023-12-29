@@ -12,31 +12,34 @@ $gouvernorat = new Gouvernorat($db->getConnection());
 $listclasses = $classe->getClasseNames();
 $listgouvernorats = $gouvernorat->getAllCodes();
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        if (!preg_match("/^\d{8}$/", $_POST["NCIN"])) {
-            $_SESSION['message'] = "NCIN doit contenir exactement 8 chiffres.";
-            header("Location: add_etudiant.php");
-            exit();
-        }
+$sql = "SELECT DISTINCT Annee, Sem FROM Session";
+$result = $db->getConnection()->query($sql);
 
-        // Validate NCE (6 characters, first letter in caps and rest numbers)
-        if (!preg_match("/^[A-Z]\d{5}$/", $_POST["NCE"])) {
-            $_SESSION['message'] = "NCE doit commencer par une lettre majuscule suivie de 5 chiffres.";
-            header("Location: add_etudiant.php");
-            exit();
-        }
-        $dateOfBirth = $_POST["DateNais"];
-        if (strtotime($dateOfBirth) === false || strtotime($dateOfBirth) > strtotime('-18 years')) {
-            $_SESSION['message'] = "La date de naissance doit être valide et au moins 18 ans en arrière.";
-            header("Location: add_etudiant.php");
-            exit();
-        }
-        if (!isset($_POST["Sexe"])) {
-            $_SESSION['message'] = "Veuillez sélectionner le sexe.";
-            header("Location: add_etudiant.php");
-            exit();
-        }
+$errorMessages = [];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Validation checks
+    if (!preg_match("/^\d{8}$/", $_POST["NCIN"])) {
+        $errorMessages[] = "NCIN doit contenir exactement 8 chiffres.";
+    }
+
+    if (!preg_match("/^[A-Z]\d{5}$/", $_POST["NCE"])) {
+        $errorMessages[] = "NCE doit commencer par une lettre majuscule suivie de 5 chiffres.";
+    }
+
+    $dateOfBirth = $_POST["DateNais"];
+    if (strtotime($dateOfBirth) === false || strtotime($dateOfBirth) > strtotime('-18 years')) {
+        $errorMessages[] = "La date de naissance doit être valide et au moins 18 ans en arrière.";
+    }
+
+    if (!isset($_POST["Sexe"])) {
+        $errorMessages[] = "Veuillez sélectionner le sexe.";
+    }
+
+    // Add more validation checks as needed
+
+    // Check if there are any errors before creating the student
+    if (empty($errorMessages)) {
         $etudiant->create(
             $_POST["Nom"],
             $_POST["DateNais"],
@@ -76,7 +79,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         );
         header("Location: list_etudiants.php");
         exit();
+    } else {
+        $_SESSION['errorMessages'] = $errorMessages;
+        header("Location: add_etudiant.php");
+        exit();
     }
+}
+
+// Display error messages if they exist in the session
+if (isset($_SESSION['errorMessages'])) {
+    $errorMessages = $_SESSION['errorMessages'];
+    unset($_SESSION['errorMessages']); // Clear the session variable
 }
 ?>
 
@@ -87,29 +100,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Add Etudiant</title>
     <!-- Add Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .error-message {
+            margin-bottom: 10px;
+            padding: 10px;
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+        }
+    </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Add Etudiant</h2>
+        <?php if (!empty($errorMessages)) : ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach ($errorMessages as $errorMessage) : ?>
+                        <li><?php echo $errorMessage; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
         <form method="POST" action="add_etudiant.php">
             <div class="form-group">
-                <label for="Nom">Nom:</label>
+                <label for="Nom">Nom:<span class="required-indicator">*</span></label>
                 <input type="text" class="form-control" name="Nom" placeholder="Nom" required>
             </div>
 
             <div class="form-group">
-                <label for="DateNais">DateNais:</label>
+                <label for="DateNais">DateNais:<span class="required-indicator">*</span></label>
                 <input type="date" class="form-control" name="DateNais" id="DateNais" placeholder="DateNais" required>
             </div>
 
             <div class="form-group">
-                <label for="NCIN">NCIN:</label>
+                <label for="NCIN">NCIN:<span class="required-indicator">*</span></label>
                 <input type="text" class="form-control" name="NCIN" placeholder="NCIN" required>
             </div>
 
             <div class="form-group">
-                <label for="NCE">NCE:</label>
+                <label for="NCE">NCE:<span class="required-indicator">*</span></label>
                 <input type="text" class="form-control" name="NCE" placeholder="NCE" required>
             </div>
 
@@ -119,13 +150,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <div class="form-group">
-                <label for="Prénom">Prénom:</label>
+                <label for="Prénom">Prénom:<span class="required-indicator">*</span></label>
                 <input type="text" class="form-control" name="Prénom" placeholder="Prénom" required>
             </div>
 
             <div class="form-group">
                 <label for="Sexe">Sexe:</label>&emsp;
-                <input type="radio" name="Sexe" value="1"> &ensp; Male &emsp;
+                <input type="radio" name="Sexe" value="1" checked> &ensp; Male &emsp;
                 <input type="radio" name="Sexe" value="2"> &ensp; Female
             </div>
 
@@ -170,12 +201,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="AnnéeUnversitaire">AnnéeUnversitaire:</label>
-                <input type="text" class="form-control" name="AnnéeUnversitaire" placeholder="AnnéeUnversitaire">
+                <select name="AnnéeUnversitaire" class="form-control">
+                    <?php foreach ($result as $row) : ?>
+                        <option value="<?php echo $row["Annee"]; ?>"><?php echo $row["Annee"]; ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="Semestre">Semestre:</label>
-                <input type="number" class="form-control" name="Semestre" placeholder="Semestre">
+                <select name="Semestre" class="form-control">
+                    <option value="1">Semestre 1</option>
+                    <option value="2">Semestre 2</option>
+                </select>
             </div>
 
             <div class="form-check">

@@ -63,8 +63,10 @@ class Repartition
             $stmt->bind_param($types . 's', ...$bindValues);
             $stmt->execute();
             $stmt->close();
+            return true;
         } else {
             echo "Error in SQL statement: " . $this->db->error;
+            return false;
         }
     }
 

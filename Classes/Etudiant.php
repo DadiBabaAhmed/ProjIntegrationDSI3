@@ -97,6 +97,18 @@ session_start();
                 echo "Error in SQL statement: " . $this->db->error;
             }
         }
+
+        public function search($critere, $val) {
+            $sql = "SELECT * FROM `etudiant` WHERE `$critere` = ?";
+            $stmt = $this->db->prepare($sql);
+            if ($stmt) {
+                $stmt->bind_param('s', $val);
+                $stmt->execute();
+                return $stmt->get_result();
+            } else {
+                echo "Error in SQL statement: " . $this->db->error;
+            }
+        }
         
         public function getAllMatEtud(){
             $sql = "SELECT NCE,NCIN FROM etudiant";
@@ -106,6 +118,17 @@ session_start();
                 $mat[] = $row;
             }
             return $mat;
+        }
+
+        public function getEtudiant($ncin) {
+            $sql = "SELECT * FROM etudiant WHERE NCIN = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param("s", $ncin);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $stmt->close();
+            return $row;
         }
 }
     

@@ -48,7 +48,7 @@ $classList = $classes->getClasses();
                     <th>CodClasse</th>
                     <th>IntClasse</th>
                     <th>Département</th>
-                    <th>Opti_on</th>
+                    <th>Option</th>
                     <th>Niveau</th>
                     <th>IntCalsseArabB</th>
                     <th>OptionAaraB</th>

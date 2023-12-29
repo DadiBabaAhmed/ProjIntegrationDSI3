@@ -15,7 +15,7 @@ try {
     header('Location: affichage.php');
     exit;  
 } catch(PDOException $e) {
-    echo "Erreur : " . $e->getMessage();
+    echo "Erreur : " . $e->getMessage(). "<a href='affichage.php'>Retour</a>";
 }
 
 $conn = null;

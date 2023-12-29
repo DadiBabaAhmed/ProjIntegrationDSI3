@@ -38,9 +38,15 @@ if (isset($_GET["id"])) {
         if (isset($_GET["id"])) {
             echo '<a class="btn btn-danger" href="delete_classe.php?id=' . $_GET["id"] . '">Confirm Delete</a>';
         } else {
+            $classesList= $classes->getClasses();
             // If ID is not provided in the URL, show a form to enter ID
             echo '<form method="POST" action="delete_classe.php">
-                <input type="text" name="id" placeholder="Enter Class ID">
+                <label for="id">Class ID:</label>
+                <select class="form-control" name="id" id="id">';
+                foreach ($classesList as $classe) {
+                    echo '<option value="' . $classe["id"] . '">' . $classe["CodClasse"] . '</option>';
+                }
+                echo '</select>
                 <button type="submit" class="btn btn-danger">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_classes.php">Cancel</a>
             </form>';
