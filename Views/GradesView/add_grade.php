@@ -5,6 +5,8 @@ include "../../Classes/Grade.php";
 $db = new Database();
 $grades = new Grades($db->getConnection());
 
+$errors = [];
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate and process form data to add a new grade
     // Retrieve and sanitize POST data
@@ -16,12 +18,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $chargeCI = $_POST['ChargeCI'];
     $chargeTotal = $_POST['ChargeTotal'];
 
-    // Add the grade to the database
-    $grades->addGrade($grade, $chargeTP, $chargeC, $chargeTD, $gradeArab, $chargeCI, $chargeTotal);
+    // Check for empty fields
+    if (empty($grade)) {
+        $errors[] = "Please enter the Grade.";
+    }
+    // Check for other required fields and validate if necessary
 
-    // Redirect to the grades list page
-    header("Location: list_grades.php");
-    exit();
+    if (empty($errors)) {
+        // Add the grade to the database
+        $grades->addGrade($grade, $chargeTP, $chargeC, $chargeTD, $gradeArab, $chargeCI, $chargeTotal);
+
+        // Redirect to the grades list page
+        header("Location: list_grades.php");
+        exit();
+    }
 }
 ?>
 
@@ -29,16 +39,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html>
 
 <head>
-    <title>Edit Grade</title>
+    <title>Add Grade</title>
     <!-- Add Bootstrap CSS or your preferred CSS framework -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h2>Edit Grade</h2>
+        <h2>Add Grade</h2>
+        <?php if (!empty($errors)) : ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach ($errors as $error) : ?>
+                        <li><?php echo $error; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
-            <form method="POST" action="add_grade.php">
+        <form method="POST" action="add_grade.php">
                 <input type="hidden" name="Grade">
                 
                 <div class="form-group">

@@ -5,12 +5,10 @@ include "../../Classes/Grade.php";
 $db = new Database();
 $grades = new Grades($db->getConnection());
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Process form data to update a grade
-    // Retrieve and sanitize POST data
-    // ...
+$errors = [];
 
-    // Example validation and update (replace this with your validation and update process)
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve and sanitize POST data
     $gradeId = $_POST["Grade"];
     $newData = [
         "Grade" => $_POST["Grade"],
@@ -23,18 +21,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Add more fields as necessary
     ];
 
-    $grades->updateGrade($gradeId, $newData);
-    header("Location: list_grades.php");
-    exit();
+    // Example validation - add your validation logic here
+    if (empty($newData['Grade'])) {
+        $errors[] = "Grade cannot be empty.";
+    }
+
+    if (empty($errors)) {
+        $grades->updateGrade($gradeId, $newData);
+        header("Location: list_grades.php");
+        exit();
+    }
 }
 
 if (isset($_GET["Grade"])) {
     $gradeId = $_GET["Grade"];
     $grade = $grades->getGradeById($gradeId);
-
-    // Example HTML form for editing a grade
-    // You need to adjust this form to match your field names and structure
-    // Replace the input values with data from the $grade array
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,10 +49,17 @@ if (isset($_GET["Grade"])) {
 <body>
     <div class="container">
         <h2>Edit Grade</h2>
-        <?php
-        // Assuming $grade is the retrieved grade data from the database
-        if (isset($grade) && !empty($grade)) {
-        ?>
+        <?php if (isset($grade) && !empty($grade)) : ?>
+            <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger">
+                    <ul>
+                        <?php foreach ($errors as $error) : ?>
+                            <li><?php echo $error; ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
             <form method="POST" action="edit_grade.php">
                 <input type="hidden" name="Grade" value="<?php echo $grade["Grade"]; ?>">
                 
@@ -95,11 +103,9 @@ if (isset($_GET["Grade"])) {
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a class="btn btn-secondary" href="list_grades.php">Cancel</a>
             </form>
-        <?php
-        } else {
-            echo "Grade not found.";
-        }
-        ?>
+            <?php else : ?>
+            <p>Grade not found.</p>
+        <?php endif; ?>
     </div>
 
     <!-- Add Bootstrap JavaScript or your preferred JS framework -->

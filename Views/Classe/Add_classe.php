@@ -2,20 +2,20 @@
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
 include "../../Classes/Departement.php";
-include('../../Classes/Option.php');
+include('../../Classes/OptionNiveau.php');
 
 $db = new Database();
 $classes = new Classe($db->getConnection());
 $departement = new Departement($db->getConnection());
-$option = new Option($db->getConnection());
+$optionniv = new OptionNiveau($db->getConnection());
 
 $departementList = $departement->getDepartmentsNames();
-$listOption = $option->getOptionsNames();
+$listOption = $optionniv->getOptionsNames();
 
 //var_dump($departementList);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    
+
     // Validate and process form data to add a new classe
     // Retrieve and sanitize POST data
     $codClasse = $_POST['CodClasse'];
@@ -30,18 +30,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $codeEtape = $_POST['CodeEtape'];
     $codeSalima = $_POST['CodeSalima'];
 
-    // Add the classe to the database
-    try{
-        $classes->addClass($codClasse, $intClasse, $departement, $optiOn, $niveau, $intCalsseArabB, $optionAaraB, $departementAaraB, $niveauAaraB, $codeEtape, $codeSalima);   
-        // Redirect to the classes list page
-        header("Location: list_classes.php");
-        exit();
-    }
-    catch (mysqli_sql_exception $e) {
-        if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
-            echo "<div class='alert alert-danger'>Error: classe '$codClasse' deja existe.</div>";
-        } else {
-            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+    $validFormat = preg_match('/^[A-Z]{3}' . preg_quote($niveau, '/') . '\.\d+$/', $codClasse);
+    if (!$validFormat) {
+        echo "<div class='alert alert-danger'>Error: CodClasse format is invalid. Please follow this format ZZZ + NIVEAU + . + 9 </div>";
+        // Optionally, redirect back to the form
+        // header("Location: add_classe.php");
+        // exit();
+    } else {
+        try {
+            $classes->addClass($codClasse, $intClasse, $departement, $optiOn, $niveau, $intCalsseArabB, $optionAaraB, $departementAaraB, $niveauAaraB, $codeEtape, $codeSalima);
+            // Redirect to the classes list page
+            header("Location: list_classes.php");
+            exit();
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+                echo "<div class='alert alert-danger'>Error: classe '$codClasse' deja existe.</div>";
+            } else {
+                echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+            }
         }
     }
 }
@@ -62,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <form method="POST" action="add_classe.php">
             <div class="form-group">
-                <label for="CodClasse">Code Classe:</label>
+                <label for="CodClasse">Code Classe:<span class="required-indicator">*</span></label>
                 <input type="text" class="form-control" name="CodClasse" id="CodClasse" required>
             </div>
 
@@ -71,12 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <input type="text" class="form-control" name="IntClasse" id="IntClasse">
             </div>
 
-            
+
             <div class="form-group">
                 <label for="Département">Département:</label>
                 <select class="form-control" name="Département" id="Département">
                     <?php foreach ($departementList as $dep) { ?>
-                        <option value= "<?php echo $dep['CodeDep'] ; ?>"><?php echo $dep['Departement']." - ".$dep['CodeDep']?> </option>
+                        <option value="<?php echo $dep['CodeDep']; ?>"><?php echo $dep['Departement'] . " - " . $dep['CodeDep'] ?> </option>
                     <?php } ?>
                 </select>
             </div>
@@ -85,14 +91,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label for="Opti_on">Opti_on:</label>
                 <select class="form-control" name="Opti_on" id="Opti_on">
                     <?php foreach ($listOption as $opt) { ?>
-                        <option value= "<?php echo $opt['Code_Option'] ; ?>"><?php echo $opt['Option_Name']?> </option>
+                        <option value="<?php echo $opt['Option']; ?>"><?php echo $opt['Option'] ?> </option>
                     <?php } ?>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="Niveau">Niveau:</label>
-                <input type="text" class="form-control" name="Niveau" id="Niveau">
+                <select class="form-control" name="Niveau" id="Niveau">
+                    <?php foreach ($listOption as $opt) { ?>
+                        <option value="<?php echo $opt['Niveau']; ?>"><?php echo $opt['Niveau'] ?> </option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">

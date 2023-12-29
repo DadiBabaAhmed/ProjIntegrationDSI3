@@ -4,16 +4,25 @@ include "../../Classes/Etudiant.php";
 
 $db = new Database();
 $etudiant = new Etudiant($db->getConnection());
-$etudiants = $etudiant->read();
+$filteredetudiant = [];
 $filterOptions = [
-    "CodClasse" => "Code de Classe",
     "sexe" => "Sexe",
     "dispenser" => "Dispenser",
+];
+$filterOptions2 = [
+    "NCIN" => "NCIN",
+    "CodClasse" => "Code de Classe",
+    "DateNais" => "Date de Naissance",
+    "Gouvernorat" => "Gouvernorat",
 ];
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $filterValues = [];
+    $searchValues = [];
+
+    $etudiants_data = [];
+    $etudiants1_data = [];
 
     foreach ($filterOptions as $key => $value) {
         if (isset($_POST[$key]) && !empty($_POST[$key])) {
@@ -21,7 +30,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    $etudiants = $etudiant->filterEtudiants($filterValues);
+    $critere = $_POST["critere"];
+    $val = $_POST["val"];
+
+    $etudiants1 = $etudiant->filterEtudiants($filterValues);
+    $etudiants = $etudiant->search($critere, $val);
+
+    while ($row = $etudiants->fetch_assoc()) {
+        $etudiants_data[] = $row;
+    }
+
+    // Fetch data from search result set
+    $etudiants1_data = [];
+    while ($row = $etudiants1->fetch_assoc()) {
+        $etudiants1_data[] = $row;
+    }
+
+    // Find common elements by comparing values
+    $filteredetudiant = [];
+    if(!empty($etudiants_data) && !empty($etudiants1_data)){
+    foreach ($etudiants_data as $data1) {
+        foreach ($etudiants1_data as $data2) {
+            if ($data1 === $data2) {
+                $filteredetudiant[] = $data1;
+                break;
+            }
+        }
+    }
+}
+else if(!empty($etudiants_data) && empty($etudiants1_data)){
+    $filteredetudiant = $etudiants_data;
+}
+else if(empty($etudiants_data) && !empty($etudiants1_data)){
+    $filteredetudiant = $etudiants1_data;
+}
+else{
+    $filteredetudiant = [];
+}
 }
 ?>
 
@@ -62,186 +107,199 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="container">
         <h2 class="mt-3 m-0">List of Etudiants</h2>
         <form method="POST" class="mt-3">
-        <?php foreach ($filterOptions as $key => $value) : ?>
-        <div class="form-row">
-            <label for="<?php echo $key; ?>"><?php echo $value; ?>:</label>&emsp;
-            <?php if ($key === "sexe") : ?>
-                <input type="radio" name="<?php echo $key; ?>" value="1"> &ensp; Male &emsp;
-                <input type="radio" name="<?php echo $key; ?>" value="2"> &ensp; Female
-            <?php elseif ($key === "dispenser") : ?>
-                <input type="checkbox" name="<?php echo $key; ?>" id="<?php echo $key; ?>">&ensp; <?php echo $value; ?>
-            <?php else : ?>
-                <input type="text" name="<?php echo $key; ?>" id="<?php echo $key; ?>" class="form-control" placeholder="<?php echo $value; ?> Filter">
-            <?php endif; ?>
-        </div>
-    <?php endforeach; ?>
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <button type="button" class="btn btn-success" id="exportButton">Export to Excel</button>
-                </div>
-                <div class="col-md-4">
-                    <br>
-                    <a class="btn btn-secondary" href="list_etudiants.php">Return</a>
-                </div>
+            <select name="critere" id="critere" class="form-control">
+                <?php foreach ($filterOptions2 as $key => $value) : ?>
+                    <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
+                <?php endforeach; ?>
+            </select>
+            <div class="form-group">
+                <label for="critere">Filter Value:</label>
+                <input type="text" name="val" id="val" class="form-control" placeholder="Enter Filter Value">
             </div>
-        </form>
-        <table id="table-to-print" class="table table-striped mt-3">
-            <thead>
+            <?php foreach ($filterOptions as $key => $value) : ?>
+                <div class="form-row">
+                    <label for="<?php echo $key; ?>"><?php echo $value; ?>:</label>&emsp;
+                    <?php if ($key === "sexe") : ?>
+                        <input type="radio" name="<?php echo $key; ?>" value="1"> &ensp; Male &emsp;
+                        <input type="radio" name="<?php echo $key; ?>" value="2"> &ensp; Female
+                    <?php elseif ($key === "dispenser") : ?>
+                        <input type="checkbox" name="<?php echo $key; ?>" id="<?php echo $key; ?>">&ensp; <?php echo $value; ?>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="button" class="btn btn-success" id="exportButton">Export to Excel</button>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <a class="btn btn-secondary" href="list_etudiants.php">Return</a>
+            </div>
+    </div>
+    </form>
+    <table id="table-to-print" class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>NCIN</th>
+
+                <th>Nom</th>
+
+                <th>Date de Naissance</th>
+
+                <th>NCE</th>
+
+                <th>Type de Bac</th>
+
+                <th>Prénom</th>
+
+                <th>Sexe</th>
+
+                <th>Lieu de Naissance</th>
+
+                <th>Adresse</th>
+
+                <th>Ville</th>
+
+                <th>Code Postal</th>
+
+                <th>Numéro de Téléphone</th>
+
+                <th>Code de Classe</th>
+
+                <th>Décision du Conseil</th>
+
+                <th>Année Universitaire</th>
+
+                <th>Semestre</th>
+
+                <th>Dispenser</th>
+
+                <th>Années d'Opt</th>
+
+                <th>Date Première Inscription</th>
+
+                <th>Gouvernorat</th>
+
+                <th>Mention du Bac</th>
+
+                <th>Nationalité</th>
+
+                <th>Code CNSS</th>
+
+                <th>Nom Arabe</th>
+
+                <th>Prénom Arabe</th>
+
+                <th>Lieu de Naissance Arabe</th>
+
+                <th>Adresse Arabe</th>
+
+                <th>Ville Arabe</th>
+
+                <th>Gouvernorat Arabe</th>
+
+                <th>Type de Bac (AB)</th>
+
+                <th>Photo</th>
+
+                <th>Origine</th>
+
+                <th>Situation de Départ</th>
+
+                <th>NBAC</th>
+
+                <th>Redoublement</th>
+
+                <th>Edit</th>
+
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($filteredetudiant as $row) : ?>
                 <tr>
-                    <th>NCIN</th>
+                    <td><?php echo $row["NCIN"] ?? "vide"; ?></td>
 
-                    <th>Nom</th>
+                    <td><?php echo $row["Nom"] ?? "vide"; ?></td>
 
-                    <th>Date de Naissance</th>
+                    <td><?php echo $row["DateNais"] ?? "vide"; ?></td>
 
-                    <th>NCE</th>
+                    <td><?php echo $row["NCE"] ?? "vide"; ?></td>
 
-                    <th>Type de Bac</th>
+                    <td><?php echo $row["TypBac"] ?? "vide"; ?></td>
 
-                    <th>Prénom</th>
+                    <td><?php echo $row["Prénom"] ?? "vide"; ?></td>
 
-                    <th>Sexe</th>
+                    <td><?php if ($row["Sexe"] == 1) {
+                            echo "Homme";
+                        } else if ($row["Sexe"] == 2) {
+                            echo "femme";
+                        } else {
+                            "vide";
+                        } ?></td>
 
-                    <th>Lieu de Naissance</th>
+                    <td><?php echo $row["LieuNais"] ?? "vide"; ?></td>
 
-                    <th>Adresse</th>
+                    <td><?php echo $row["Adresse"] ?? "vide"; ?></td>
 
-                    <th>Ville</th>
+                    <td><?php echo $row["Ville"] ?? "vide"; ?></td>
 
-                    <th>Code Postal</th>
+                    <td><?php echo $row["CodePostal"] ?? "vide"; ?></td>
 
-                    <th>Numéro de Téléphone</th>
+                    <td><?php echo $row["N°Tél"] ?? "vide"; ?></td>
 
-                    <th>Code de Classe</th>
+                    <td><?php echo $row["CodClasse"] ?? "vide"; ?></td>
 
-                    <th>Décision du Conseil</th>
+                    <td><?php echo $row["DécisionduConseil"] ?? "vide"; ?></td>
 
-                    <th>Année Universitaire</th>
+                    <td><?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?></td>
 
-                    <th>Semestre</th>
+                    <td><?php echo $row["Semestre"] ?? "vide"; ?></td>
 
-                    <th>Dispenser</th>
+                    <td><?php echo $row["Dispenser"] ?? "vide"; ?></td>
 
-                    <th>Années d'Opt</th>
+                    <td><?php echo $row["Anneesopt"] ?? "vide"; ?></td>
 
-                    <th>Date Première Inscription</th>
+                    <td><?php echo $row["DatePremièreInscp"] ?? "vide"; ?></td>
 
-                    <th>Gouvernorat</th>
+                    <td><?php echo $row["Gouvernorat"] ?? "vide"; ?></td>
 
-                    <th>Mention du Bac</th>
+                    <td><?php echo $row["Mention du Bac"] ?? "vide"; ?></td>
 
-                    <th>Nationalité</th>
+                    <td><?php echo $row["Nationalité"] ?? "vide"; ?></td>
 
-                    <th>Code CNSS</th>
+                    <td><?php echo $row["CodeCNSS"] ?? "vide"; ?></td>
 
-                    <th>Nom Arabe</th>
+                    <td><?php echo $row["NomArabe"] ?? "vide"; ?></td>
 
-                    <th>Prénom Arabe</th>
+                    <td><?php echo $row["PrenomArabe"] ?? "vide"; ?></td>
 
-                    <th>Lieu de Naissance Arabe</th>
+                    <td><?php echo $row["LieuNaisArabe"] ?? "vide"; ?></td>
 
-                    <th>Adresse Arabe</th>
+                    <td><?php echo $row["AdresseArabe"] ?? "vide"; ?></td>
 
-                    <th>Ville Arabe</th>
+                    <td><?php echo $row["VilleArabe"] ?? "vide"; ?></td>
 
-                    <th>Gouvernorat Arabe</th>
+                    <td><?php echo $row["GouvernoratArabe"] ?? "vide"; ?></td>
 
-                    <th>Type de Bac (AB)</th>
+                    <td><?php echo $row["TypeBacAB"] ?? "vide"; ?></td>
 
-                    <th>Photo</th>
+                    <td><?php echo $row["Photo"] ?? "vide"; ?></td>
 
-                    <th>Origine</th>
+                    <td><?php echo $row["Origine"] ?? "vide"; ?></td>
 
-                    <th>Situation de Départ</th>
+                    <td><?php echo $row["SituationDpart"] ?? "vide"; ?></td>
 
-                    <th>NBAC</th>
+                    <td><?php echo $row["NBAC"] ?? "vide"; ?></td>
 
-                    <th>Redoublement</th>
+                    <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
 
-                    <th>Edit</th>
-
-                    <th>Delete</th>
+                    <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
+                    <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Delete</a></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $etudiants->fetch_assoc()) : ?>
-                    <tr>
-                        <td><?php echo $row["NCIN"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Nom"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["DateNais"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["NCE"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["TypBac"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Prénom"] ?? "vide"; ?></td>
-
-                        <td><?php if($row["Sexe"] ==1){echo "Homme";}else if($row["Sexe"] ==2){echo "femme";} else{ "vide";} ?></td>
-
-                        <td><?php echo $row["LieuNais"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Adresse"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Ville"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["CodePostal"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["N°Tél"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["CodClasse"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["DécisionduConseil"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Semestre"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Dispenser"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Anneesopt"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["DatePremièreInscp"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Gouvernorat"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Mention du Bac"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Nationalité"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["CodeCNSS"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["NomArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["PrenomArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["LieuNaisArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["AdresseArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["VilleArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["GouvernoratArabe"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["TypeBacAB"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Photo"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Origine"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["SituationDpart"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["NBAC"] ?? "vide"; ?></td>
-
-                        <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
-
-                        <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
-                        <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Delete</a></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
     </div>
 
     <!-- Add Bootstrap JavaScript (Popper.js and Bootstrap JS) if needed -->
@@ -249,33 +307,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-    function exportToCSV() {
-        const table = document.getElementById("table-to-print");
-        const rows = table.querySelectorAll("tr");
-        let csv = [];
+        function exportToCSV() {
+            const table = document.getElementById("table-to-print");
+            const rows = table.querySelectorAll("tr");
+            let csv = [];
 
-        for (const row of rows) {
-            const rowData = [];
-            for (const cell of row.querySelectorAll("td, th")) {
-                rowData.push(cell.innerText);
+            for (const row of rows) {
+                const rowData = [];
+                for (const cell of row.querySelectorAll("td, th")) {
+                    rowData.push(cell.innerText);
+                }
+                csv.push(rowData.join(","));
             }
-            csv.push(rowData.join(","));
+
+            const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "etudiants.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
-        const csvContent = "data:text/csv;charset=utf-8," + csv.join("\n");
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "etudiants.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    document.getElementById("exportButton").addEventListener("click", function() {
-        exportToCSV();
-    });
-</script>
+        document.getElementById("exportButton").addEventListener("click", function() {
+            exportToCSV();
+        });
+    </script>
 </body>
 
 </html>

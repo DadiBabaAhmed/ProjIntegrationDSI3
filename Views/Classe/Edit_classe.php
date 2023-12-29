@@ -2,16 +2,15 @@
 include "../../DataBase/Database.php";
 include "../../Classes/Classe.php";
 include "../../Classes/Departement.php";
-include "../../Classes/Option.php";
+include('../../Classes/OptionNiveau.php');
 
 $db = new Database();
 $classes = new Classe($db->getConnection());
 $departement = new Departement($db->getConnection());
-$option = new Option($db->getConnection());
+$optionniv = new OptionNiveau($db->getConnection());
 
 $departementList = $departement->getDepartmentsNames();
-$listOption = $option->getOptionsNames();
-
+$listOption = $optionniv->getOptionsNames();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Process form data to update a class
@@ -29,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "NiveauAaraB" => $_POST["NiveauAaraB"],
         "CodeEtape" => $_POST["CodeEtape"],
         "CodeSalima" => $_POST["CodeSalima"]
-        // Add more fields as necessary
     ];
     try {
         $classes->updateClass($classId, $newData);
@@ -37,9 +35,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     } catch (mysqli_sql_exception $e) {
         if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
-            echo "<div class='alert alert-danger'>Error: A class with code '{$newData["CodClasse"]}' already exists.</div>";
+            echo "<div class='alert alert-danger'>Error: A class with code '{$newData["CodClasse"]}' already exists.</div>
+            <br><a href='edit_classe.php?id=" . $classId . "' class='btn btn-primary'>Retour to Edit</a>";
         } else {
-            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>
+            <br><a href='edit_classe.php?id=" . $classId . "' class='btn btn-primary'>Retour to Edit</a>";
         }
     }
 }
@@ -47,10 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_GET["id"])) {
     $classId = $_GET["id"];
     $class = $classes->getClassById($classId);
-
-    // Example HTML form for editing a class
-    // You need to adjust this form to match your field names and structure
-    // Replace the input values with data from the $class array
     ?>
     <!DOCTYPE html>
     <html>
@@ -74,7 +70,7 @@ if (isset($_GET["id"])) {
                     <div class="form-group">
                         <label for="CodClasse">CodClasse:</label>
                         <input type="text" class="form-control" name="CodClasse" id="CodClasse"
-                            value="<?php echo $class["CodClasse"]; ?>">
+                            value="<?php echo $class["CodClasse"]; ?>" disabled>
                     </div>
 
                     <div class="form-group">
@@ -96,15 +92,18 @@ if (isset($_GET["id"])) {
                         <label for="Opti_on">Opti_on:</label>
                         <select class="form-control" name="Opti_on" id="Opti_on">
                             <?php foreach ($listOption as $opt) { ?>
-                                <option value= "<?php echo $opt['Code_Option'] ; ?>" <?php if($opt['Code_Option'] === $class["Opti_on"]){echo "selected"; }?>><?php echo $opt['Option_Name']?> </option>
+                                <option value= "<?php echo $opt['Option'] ; ?>" <?php if($opt['Option'] === $class["Opti_on"]){echo "selected"; }?>><?php echo $opt['Option']?> </option>
                             <?php } ?>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="Niveau">Niveau:</label>
-                        <input type="text" class="form-control" name="Niveau" id="Niveau"
-                            value="<?php echo $class["Niveau"]; ?>">
+                        <select class="form-control" name="Niveau" id="Niveau">
+                            <?php foreach ($listOption as $opt) { ?>
+                                <option value= "<?php echo $opt['Niveau'] ; ?>" <?php if($opt['Niveau'] === $class["Niveau"]){echo "selected"; }?>><?php echo $opt['Niveau']?> </option>
+                            <?php } ?>
+                        </select>
                     </div>
 
                     <div class="form-group">

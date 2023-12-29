@@ -47,8 +47,7 @@ if (isset($_GET['NumIns'])) {
                     <h1 class="mb-4 text-danger">Ajouter une Inscription</h1>
                     <form action="traitement_modif.php" method="post" onsubmit="">
 
-                        <label for="NumIns" class="form-label text-primary">Numero D' inscription :</label>
-                        <input type="text" id="NumIns" name="NumIns" required class="form-control" placeholder="Entrez numero d'inscription " value="<?php echo $resultat['NumIns'] ?>">
+                        <input type="hidden" id="NumIns" name="NumIns" required class="form-control" placeholder="Entrez numero d'inscription " value="<?php echo $resultat['NumIns'] ?>">
 
 
                         <label for="CodeClasse" class="form-label text-primary">Code de la Classe :</label>
@@ -162,7 +161,7 @@ if (isset($_GET['NumIns'])) {
                         <br>
 
                         <div class="mb-3">
-                            <input type="reset" value="Annuler" class="btn btn-danger" id="annulerButton">
+                            <a href="afficher.php" class="btn btn-danger" id="annulerButton">Annuler</a>
                             <input type="submit" value="Modifier l'Inscription" class="btn btn-success">
                         </div>
                         <br>

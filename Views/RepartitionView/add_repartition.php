@@ -1,37 +1,61 @@
 <?php
 include "../../DataBase/Database.php";
 include "../../Classes/Repartition.php";
+include "../../Classes/Prof.php";
+include "../../Classes/Classe.php";
+include "../../Classes/Matieres.php";
 
 $db = new Database();
-$repartition = new Repartition($db->getConnection());
+$conn = $db->getConnection();
+$repartition = new Repartition($conn);
+$prof = new Prof($conn);
+$classe = new Classe($conn);
+$matiere = new Matieres($conn);
+
+$profList = $prof->getAllMatProf();
+$classeList = $classe->getClasseNames();
+$matiereList = $matiere->getMatieres();
+
+$sql = "SELECT Numero FROM session";
+$sessionList = $conn->query($sql);
+
+$sql1 = "SELECT NumSem FROM semaine";
+$semaineList = $conn->query($sql1);
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch and sanitize form data
     // ... (Fetch all POST data and sanitize it)
-
-    $repartitionData = [
-        "NumSes" => $_POST["NumSes"],
-        "NSemDeb" => $_POST["NSemDeb"],
-        "NSemFin" => $_POST["NSemFin"],
-        "TypeSeance" => $_POST["TypeSeance"],
-        "NbGrp" => $_POST["NbGrp"],
-        "NBHDT" => $_POST["NBHDT"],
-        "CodeClasse" => $_POST["CodeClasse"],
-        "CodeProf" => $_POST["CodeProf"],
-        "CodeMat" => $_POST["CodeMat"],
-        "NBHD" => $_POST["NBHD"],
-        "TypeGest" => $_POST["TypeGest"],
-    ];
-
-    $added = $repartition->add($repartitionData);
-
-    if ($added) {
-        // Successfully added, redirect to a success page or perform further actions
-        header("Location: list_repartitions.php");
-        exit();
+    
+    // Check if NSemDeb is inferior to NSemFin
+    if ($_POST["NSemDeb"] < $_POST["NSemFin"]) {
+        $repartitionData = [
+            "NumSes" => $_POST["NumSes"],
+            "NSemDeb" => $_POST["NSemDeb"],
+            "NSemFin" => $_POST["NSemFin"],
+            "TypeSeance" => $_POST["TypeSeance"],
+            "NbGrp" => $_POST["NbGrp"],
+            "NBHDT" => $_POST["NBHDT"],
+            "CodeClasse" => $_POST["CodeClasse"],
+            "CodeProf" => $_POST["CodeProf"],
+            "CodeMat" => $_POST["CodeMat"],
+            "NBHD" => $_POST["NBHD"],
+            "TypeGest" => $_POST["TypeGest"],
+        ];
+    
+        $added = $repartition->add($repartitionData);
+    
+        if ($added) {
+            // Successfully added, redirect to a success page or perform further actions
+            header("Location: list_repartitions.php");
+            exit();
+        } else {
+            // Handle failure or show error message
+            echo "<div class='alert alert-danger'>Failed to add Repartition data! </div>";
+        }
     } else {
-        // Handle failure or show error message
-        echo "Failed to add Repartition data!";
+        // NSemDeb is not inferior to NSemFin, show error message
+        echo "<div class='alert alert-danger'> NSemDeb should be inferior to NSemFin! </div>";
     }
 }
 ?>
@@ -53,17 +77,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="NumSes">NumSes</label>
-                <input type="text" class="form-control" name="NumSes" id="NumSes">
+                <select name="NumSes" id="NumSes" class="form-control">
+                    <?php
+                    foreach ($sessionList as $row) { ?>
+                        <option value="<?php echo $row['Numero'] ?>"><?php echo $row['Numero'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="NSemDeb">NSemDeb</label>
-                <input type="text" class="form-control" name="NSemDeb" id="NSemDeb">
+                <select name="NSemDeb" id="NSemDeb" class="form-control">
+                    <?php
+                    foreach ($semaineList as $row) { ?>
+                        <option value="<?php echo $row['NumSem'] ?>"><?php echo $row['NumSem'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="NSemFin">NSemFin</label>
-                <input type="text" class="form-control" name="NSemFin" id="NSemFin">
+                <select name="NSemFin" id="NSemFin" class="form-control">
+                    <?php
+                    foreach ($semaineList as $row) { ?>
+                        <option value="<?php echo $row['NumSem'] ?>"><?php echo $row['NumSem'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
@@ -83,17 +122,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
                 <label for="CodeClasse">CodeClasse</label>
-                <input type="text" class="form-control" name="CodeClasse" id="CodeClasse">
+                <select name="CodeClasse" id="CodeClasse" class="form-control">
+                    <?php
+                    foreach ($classeList as $row) { ?>
+                        <option value="<?php echo $row['CodClasse'] ?>"><?php echo $row['CodClasse'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="CodeProf">CodeProf</label>
-                <input type="text" class="form-control" name="CodeProf" id="CodeProf">
+                <select name="CodeProf" id="CodeProf" class="form-control">
+                    <?php
+                    foreach ($profList as $row) { ?>
+                        <option value="<?php echo $row['Matricule'] ?>"><?php echo $row['Matricule'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="CodeMat">CodeMat</label>
-                <input type="text" class="form-control" name="CodeMat" id="CodeMat">
+                <select name="CodeMat" id="CodeMat" class="form-control">
+                    <?php
+                    foreach ($matiereList as $row) { ?>
+                        <option value="<?php echo $row['Code_Matiere'] ?>"><?php echo $row['Code_Matiere'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="form-group">

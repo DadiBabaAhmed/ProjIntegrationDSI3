@@ -71,7 +71,7 @@ $result = $db->getConnection()->query($sql);
             <label for="Oui_Rachat" class="form-check-label text-light">Oui</label>
             <input type="radio" id="Oui_Rachat" name="Rachat" value="1" class="form-check-input">
             <label for="Non_Rachat" class="form-check-label text-light">Non</label>
-            <input type="radio" id="Non_Rachat" name="Rachat" value="0" class="form-check-input">
+            <input type="radio" id="Non_Rachat" name="Rachat" value="0" class="form-check-input" checked>
             <br>
 
             <label for="MoyGen" class="form-label text-primary">Moyenne Générale :</label>
@@ -82,7 +82,7 @@ $result = $db->getConnection()->query($sql);
             <label for="Oui_Dispense" class="form-check-label text-light">Oui</label>
             <input type="radio" id="Oui_Dispense" name="Dispense" value="1" class="form-check-input">
             <label for="Non_Dispense" class="form-check-label text-light">Non</label>
-            <input type="radio" id="Non_Dispense" name="Dispense" value="0" class="form-check-input">
+            <input type="radio" id="Non_Dispense" name="Dispense" value="0" class="form-check-input" checked>
             <br>
 
             <label for="TauxAbsences" class="form-label text-primary">Taux d'Absences :</label>
@@ -93,7 +93,7 @@ $result = $db->getConnection()->query($sql);
             <label for="Oui_Redouble" class="form-check-label text-light">Oui</label>
             <input type="radio" id="Oui_Redouble" name="Redouble" value="1" class="form-check-input">
             <label for="Non_Redouble" class="form-check-label text-light">Non</label>
-            <input type="radio" id="Non_Redouble" name="Redouble" value="0" class="form-check-input">
+            <input type="radio" id="Non_Redouble" name="Redouble" value="0" class="form-check-input" checked>
             <br>
 
             <label for="StOuv" class="form-label text-primary">Statut Ouverture :</label>

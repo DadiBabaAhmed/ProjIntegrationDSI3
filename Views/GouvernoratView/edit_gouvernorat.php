@@ -5,17 +5,31 @@ include "../../Classes/Gouvernorat.php";
 $db = new Database();
 $Gouvernorat = new Gouvernorat($db->getConnection());
 
+$errors = [];
+$Gouv = '';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $Gouv = $_POST["Gouv"];
-    $CodePostal = $_POST["CodePostal"];
-    $GouvernoratData = [
-        "Gouv" => $_POST["Gouv"],
-        "CodePostal" => $_POST["CodePostal"]
-    ];
-    $Gouvernorat->update($Gouv, $GouvernoratData);
-    header("Location: list_Gouvernorats.php");
-    exit();
+    if (empty($_POST["Gouv"])) {
+        $errors[] = "Please enter the Gouvernorat name.";
+    }
+
+    if (empty($_POST["CodePostal"])) {
+        $errors[] = "Please enter the postal code.";
+    }
+
+    if (empty($errors)) {
+        $Gouv = $_POST["Gouv"];
+        $CodePostal = $_POST["CodePostal"];
+        $GouvernoratData = [
+            "Gouv" => $Gouv,
+            "CodePostal" => $CodePostal
+        ];
+        $Gouvernorat->update($Gouv, $GouvernoratData);
+        header("Location: list_Gouvernorats.php");
+        exit();
+    }
 }
+
 if (isset($_GET["Gouv"])) {
     $Gouv = $_GET["Gouv"];
 
@@ -38,15 +52,24 @@ if (isset($_GET["Gouv"])) {
 <body>
     <div class="container">
         <h2>Edit Gouvernorat</h2>
+        <?php if (!empty($errors)) : ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach ($errors as $error) : ?>
+                        <li><?php echo $error; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
         <form method="POST" action="edit_Gouvernorat.php">
-        <input type="hidden" name="Gouv" value="<?php echo $Gouv; ?>">
+            <input type="hidden" name="Gouv" value="<?php echo $Gouv; ?>">
             <div class="form-group">
                 <label for="Gouv">Gouvernorat:</label>
                 <input type="text" class="form-control" id="Gouv" name="Gouv" value="<?php echo $GouvernoratData['Gouv']; ?>">
             </div>
             <div class="form-group">
                 <label for="CodePostal">Code Postal:</label>
-                <input type="text" class="form-control" id="CodePostal" name="CodePostal" value="<?php echo $GouvernoratData['CodePostal']; ?>">
+                <input type="number" class="form-control" id="CodePostal" name="CodePostal" value="<?php echo $GouvernoratData['CodePostal']; ?>">
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
             <a class="btn btn-secondary" href="list_departements.php">Cancel</a>
