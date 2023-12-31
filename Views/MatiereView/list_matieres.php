@@ -12,6 +12,7 @@ $matiereList = $matieres->getMatieres();
 <!DOCTYPE html>
 <html>
 
+
 <head>
     <title>List Matieres</title>
     <!-- Add Bootstrap CSS or your preferred CSS framework -->
@@ -22,6 +23,8 @@ $matiereList = $matieres->getMatieres();
     }
 </style>
 </head>
+<?php include '../inc/header.php'; ?>
+
 
 <body>
     <div class="container">

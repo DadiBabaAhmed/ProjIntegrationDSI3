@@ -6,6 +6,7 @@ $db = new Database();
 $departement = new Departement($db->getConnection());
 
 $departementList = $departement->getDepartmentsNames();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -150,6 +151,7 @@ $departementList = $departement->getDepartmentsNames();
             <label for="salle">Nom salle:</label>
             <input type="text" name="salle" required>
             <br>
+            <div>
             <label for="departement">Département:</label>
             <select name="departement" id="departement">
                 <?php
@@ -157,6 +159,7 @@ $departementList = $departement->getDepartmentsNames();
                     <option value="<?php echo $row['CodeDep'] ?>"><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
                 <?php } ?>
             </select>
+            </div>
             <br>
             <label for="categorie">Catégorie:</label>
             <input type="text" name="categorie" >

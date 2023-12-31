@@ -28,6 +28,7 @@ if(isset($_GET['action'])) {
         margin: 0 0 0 auto;
     }
 </style>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">

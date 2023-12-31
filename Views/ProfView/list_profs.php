@@ -17,6 +17,7 @@ $professors = $prof->getAllProfessors(); // Assuming you have a method to fetch 
     <!-- Add Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">

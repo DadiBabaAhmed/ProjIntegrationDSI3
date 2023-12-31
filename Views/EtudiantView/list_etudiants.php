@@ -14,7 +14,7 @@ $etudiants = $etudiant->read();
     <title>List Etudiants</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
+<?php include '../inc/header.php'; ?>
 <body>
     <div class="container">
         <h2 class="mt-3">List of Etudiants</h2>

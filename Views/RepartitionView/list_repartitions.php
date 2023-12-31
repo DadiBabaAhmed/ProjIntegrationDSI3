@@ -30,6 +30,7 @@ $repList = $repartition->getAllRepartitions();
         }
     </style>
 </head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">

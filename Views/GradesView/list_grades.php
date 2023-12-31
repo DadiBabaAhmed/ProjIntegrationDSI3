@@ -17,6 +17,7 @@ $gradeList = $grades->getGrades();
     <!-- Add Bootstrap CSS or your preferred CSS framework -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">

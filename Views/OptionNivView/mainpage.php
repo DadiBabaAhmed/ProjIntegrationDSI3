@@ -73,6 +73,10 @@ if (isset($_POST['buttonfiltre'])) {
 }
 ?>
 
+<head>
+    <title>OptionNiveau</title>
+</head>
+<?php include '../inc/header.php'; ?>
 
 
 <div class="container" style="margin-top: 100px;">

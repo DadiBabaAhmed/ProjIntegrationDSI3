@@ -16,10 +16,10 @@ $profList = $prof->getAllMatProf();
 $classeList = $classe->getClasseNames();
 $matiereList = $matiere->getMatieres();
 
-$sql = "SELECT Numero FROM session";
+$sql = "SELECT distinct Numero FROM session";
 $sessionList = $conn->query($sql);
 
-$sql1 = "SELECT NumSem FROM semaine";
+$sql1 = "SELECT distinct NumSem FROM semaine";
 $semaineList = $conn->query($sql1);
 
 

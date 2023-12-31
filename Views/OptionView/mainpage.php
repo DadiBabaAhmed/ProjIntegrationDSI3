@@ -74,8 +74,10 @@ if(isset($_POST['ajouter'])) {
         $searchDepartement = $_POST['searchDepartement'];
     }
     ?>
-
-
+<head>
+    <title>Options</title>
+</head>
+<?php include '../inc/header.php'; ?>
 
     <div class="container" style="margin-top: 100px;">
         <div class="d-flex justify-content-between align-items-center mb-3">

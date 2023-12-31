@@ -24,16 +24,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add"])) {
         echo '<div class="alert alert-danger" role="alert">Error: Salle existante</div>';
         echo '<a href="index.php" class="btn btn-primary" >Return</a>';
     } else {
-        $insertion = "INSERT INTO Salle (Salle, Departement, Categorie, Responsable, Charge, Nb_place_examen, Nb_lignes, Nb_col, Nb_surv, Type, Disponible) 
-                      VALUES ('$salle', '$departement', '$categorie', '$responsable', $charge, $nb_place_examen, $nb_lignes, $nb_col, $nb_surv, '$type', '$disponible')";
+        if ($salle && $departement && $categorie && $responsable && $charge && $nb_place_examen && $nb_lignes && $nb_col && $nb_surv && $type && $disponible) {
+            $insertion = "INSERT INTO Salle (Salle, Departement, Categorie, Responsable, Charge, Nb_place_examen, Nb_lignes, Nb_col, Nb_surv, Type, Disponible) 
+                          VALUES ('$salle', '$departement', '$categorie', '$responsable', $charge, $nb_place_examen, $nb_lignes, $nb_col, $nb_surv, '$type', '$disponible')";
 
-        if ($con->query($insertion) === true) {
-            echo "Data inserted";
+            if ($con->query($insertion) === true) {
+                echo "Data inserted";
 
-            header('Location: view.php');
-            exit();
+                header('Location: view.php');
+                exit();
+            } else {
+                echo "Error: " . $insertion . "<br>" . $con->error;
+            }
         } else {
-            echo "Error: " . $insertion . "<br>" . $con->error;
+            echo "Error: Missing values";
         }
     }
 }

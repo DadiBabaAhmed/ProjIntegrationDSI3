@@ -14,7 +14,10 @@
 
     <title>Seances CRUD</title>
 </head>
+<?php include '../inc/header.php'; ?>
+
 <body>
+    
   
     <div class="container mt-4">
 

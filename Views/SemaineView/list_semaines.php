@@ -30,6 +30,7 @@ $semaineList = $semaine->getAllSemaines();
         }
     </style>
 </head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">
