@@ -5,25 +5,11 @@
     <title>Liste des enregistrements DossierEtud</title>
     <!-- Add Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            padding: 20px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        a {
-            color: blue;
-        }
-
-        a:hover {
-            text-decoration: none;
-            color: #007bff;
-        }
-    </style>
 </head>
+<?php
+include "../../DataBase/connexion.php";
+include '../inc/header.php';
+?>
 
 <body>
     <div class="container">
@@ -45,9 +31,6 @@
             <tbody>
 
                 <?php
-                // Replace these with your database connection details
-                include "../../DataBase/connexion.php";
-
                 try {
                     // SQL query to select data from the "DossierEtud" table
                     $sql = "SELECT * FROM DossierEtud";

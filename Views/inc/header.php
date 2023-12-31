@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="css/styles.css">
-    <title>Sessions</title>
+    <title>Scolarite</title>
     <?php
     $urls = array();
     $scripts = array(

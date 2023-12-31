@@ -16,27 +16,9 @@ $classList = $classes->getClasses();
     <title>List Classes</title>
     <!-- Add Bootstrap CSS or your preferred CSS framework -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        * {
-            margin-right: 200px;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            padding: 20px;
-        }
-        .container {
-            margin: 0 auto;
-        }
-        .table {
-            margin-top: 20px;
-        }
-        .btn {
-            margin-right: 5px;
-        }
-    </style>
-</head>
 
+</head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">

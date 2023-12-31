@@ -53,7 +53,6 @@ if (isset($_POST['modifier'])) {
     if (!$result) {
         die("Query failed: " . mysqli_error($con));
     }
-
 }
 
 if (isset($_POST['supprimer'])) {
@@ -77,7 +76,6 @@ if (isset($_POST['buttonfiltre'])) {
     <title>OptionNiveau</title>
 </head>
 <?php include '../inc/header.php'; ?>
-
 
 <div class="container" style="margin-top: 100px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -133,7 +131,7 @@ if (isset($_POST['buttonfiltre'])) {
                     die("query failed" . mysqli_error($con));
                 } else {
                     while ($row = mysqli_fetch_assoc($res)) {
-                        ?>
+                ?>
                         <tr>
 
                             <td>
@@ -144,9 +142,7 @@ if (isset($_POST['buttonfiltre'])) {
                             </td>
 
                             <td>
-                                <button class="btn btn-primary open-modal-modifier" data-toggle="modal"
-                                    data-target="#modifierModal"
-                                    data-parametres='{"id": "<?php echo $row['id']; ?>", "niveau": "<?php echo $row['Niveau']; ?>", "option": "<?php echo $row['Option']; ?>"}'>
+                                <button class="btn btn-primary open-modal-modifier" data-toggle="modal" data-target="#modifierModal" data-parametres='{"id": "<?php echo $row['id']; ?>", "niveau": "<?php echo $row['Niveau']; ?>", "option": "<?php echo $row['Option']; ?>"}'>
                                     Modifier
                                 </button>
                             </td>
@@ -163,7 +159,7 @@ if (isset($_POST['buttonfiltre'])) {
                             </td>
 
                         </tr>
-                        <?php
+                <?php
                     }
                 }
                 ?>
@@ -174,8 +170,7 @@ if (isset($_POST['buttonfiltre'])) {
 
 <!-- Modal ajout -->
 <form method="post">
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -216,8 +211,7 @@ if (isset($_POST['buttonfiltre'])) {
 
 <!-- Modal modif -->
 <form method="post">
-    <div class="modal fade" id="modifierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="modifierModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -262,8 +256,8 @@ if (isset($_POST['buttonfiltre'])) {
 
 <!-- Include Bootstrap JS (optional, only if you need Bootstrap features that require JS) -->
 <script>
-    $(document).ready(function () {
-        $('.open-modal-modifier').click(function () {
+    $(document).ready(function() {
+        $('.open-modal-modifier').click(function() {
             var parametres = $(this).data('parametres');
             var id = parametres.id;
             var niveau = parametres.niveau;

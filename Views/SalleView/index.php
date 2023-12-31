@@ -134,8 +134,8 @@ $departementList = $departement->getDepartmentsNames();
         }
     </style>
 </head>
-
 <nav>
+    <div><a class="nav-link" href="../../index.php">Home</a></div>
     <div onclick="toggleSection('insert')" data-section="insert">Insert</div>
     <div onclick="toggleSection('update')" data-section="update">Update</div>
     <div onclick="toggleSection('delete')" data-section="delete">Delete</div>
@@ -152,38 +152,38 @@ $departementList = $departement->getDepartmentsNames();
             <input type="text" name="salle" required>
             <br>
             <div>
-            <label for="departement">Département:</label>
-            <select name="departement" id="departement">
-                <?php
-                foreach ($departementList as $row) { ?>
-                    <option value="<?php echo $row['CodeDep'] ?>"><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
-                <?php } ?>
-            </select>
+                <label for="departement">Département:</label>
+                <select name="departement" id="departement">
+                    <?php
+                    foreach ($departementList as $row) { ?>
+                        <option value="<?php echo $row['CodeDep'] ?>"><?php echo $row['CodeDep'] ?>-<?php echo $row['Departement'] ?></option>";
+                    <?php } ?>
+                </select>
             </div>
             <br>
             <label for="categorie">Catégorie:</label>
-            <input type="text" name="categorie" >
+            <input type="text" name="categorie">
             <br>
             <label for="responsable">Responsable:</label>
-            <input type="text" name="responsable" >
+            <input type="text" name="responsable">
             <br>
             <label for="charge">Charge:</label>
-            <input type="number" name="charge" >
+            <input type="number" name="charge">
             <br>
             <label for="nb_place_examen">Nb places examen:</label>
-            <input type="number" name="nb_place_examen" >
+            <input type="number" name="nb_place_examen">
             <br>
             <label for="nb_lignes">Nb lignes:</label>
-            <input type="number" name="nb_lignes" >
+            <input type="number" name="nb_lignes">
             <br>
             <label for="nb_col">Nb colonnes:</label>
-            <input type="number" name="nb_col" >
+            <input type="number" name="nb_col">
             <br>
             <label for="nb_surv">Nb Surveillants:</label>
-            <input type="number" name="nb_surv" >
+            <input type="number" name="nb_surv">
             <br>
             <label for="type">Type:</label>
-            <input type="text" name="type" >
+            <input type="text" name="type">
             <br>
             <label for="disponible">Disponibilité</label>
 
