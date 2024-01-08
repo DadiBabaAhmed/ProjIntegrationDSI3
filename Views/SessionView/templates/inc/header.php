@@ -103,7 +103,7 @@
 <body>
     <!-- Header Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark p-4">
-        <a class="navbar-brand" href="../../../../index.php">
+        <a class="navbar-brand" href="../../../../../ProjIntegrationDSI3/">
             <?php echo SITE_TITLE; ?>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

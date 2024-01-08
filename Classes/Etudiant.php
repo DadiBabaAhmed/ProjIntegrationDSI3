@@ -119,6 +119,15 @@ session_start();
             }
             return $mat;
         }
+        public function getAllMatEtud2(){
+            $sql = "SELECT NCE,NCIN, Nom, Prénom FROM etudiant";
+            $result = $this->db->query($sql);
+            $mat = [];
+            while ($row = $result->fetch_assoc()) {
+                $mat[] = $row;
+            }
+            return $mat;
+        }
 
         public function getEtudiant($ncin) {
             $sql = "SELECT * FROM etudiant WHERE NCIN = ?";

@@ -8,7 +8,7 @@ $db = new Database();
 $Etudiant = new Etudiant($db->getConnection());
 
 
-$result = $Etudiant->getAllMatEtud();
+$result = $Etudiant->getAllMatEtud2();
 
 // SQL query to select data from the "Piece" table
 $sql = "SELECT Typepiece,LibPiece FROM Piece";
@@ -47,7 +47,7 @@ $annsession = $conn->query($query);
                 <select class="form-control" name="MatEtud" id="MatEtud">
                     <?php
                     foreach ($result as $row) {
-                        echo "<option value=" . $row['NCE'] . ">" . $row['NCE'] . "</option>";
+                        echo "<option value=" . $row['NCE'] . ">" . $row['Nom'] ." ". $row['Prénom']. "</option>";
                     }
                     ?>
                 </select>
