@@ -140,7 +140,7 @@ $etudiants = $etudiant->read();
                     <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
 
                     <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
-                    <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Delete</a></td>
+                    <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>" onclick="return confirm('Are you sure you want to delete this Etudiant?');">Delete</a></td>
                 </tr>
             <?php endwhile; ?>
         </tbody>

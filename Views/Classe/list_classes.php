@@ -61,9 +61,10 @@ $classList = $classes->getClasses();
                     echo '<td>' . $class["CodeSalima"] . '</td>';
 
                     echo '<td>
-                            <a href="edit_classe.php?id=' . $class["id"] . '" class="btn btn-primary">Edit</a>
-                            <a href="delete_classe.php?id=' . $class["id"] . '" class="btn btn-danger">Delete</a>
-                          </td>';
+                            <a href="edit_classe.php?id=' . $class["id"] . '" class="btn btn-primary">Edit</a>'; ?>
+                    <a href="delete_classe.php?id=<?php echo $class['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Classe?');">Delete</a>
+                <?php
+                    echo '</td>';
 
                     echo '</tr>';
                 }

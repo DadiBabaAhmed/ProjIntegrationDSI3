@@ -113,7 +113,7 @@
                         <td class="HeaderColumn2">
                             <form style="display: inline;" method="post" action="vdel.php">
                                 <input type="hidden" name="del_id" value="<?php echo $session->Numero; ?>">
-                                <input type="submit" class="btn btn-danger" value="Supprimer">
+                                <input type="submit" class="btn btn-danger" value="Supprimer" onclick="return confirm(`Are you sure you want to delete this Session?`);">
                         </td>
                         </form>
                     </tr>

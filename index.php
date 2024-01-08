@@ -30,8 +30,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Scolarité</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -45,48 +44,31 @@
         <div class="card mt-3">
             <div class="card-body">
                 <h5 class="card-title">Bonjour, Admin</h5>
-                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search for items..."
-                    class="form-control mt-3">
+                <input type="text" id="searchInput" onkeyup="filterItems()" placeholder="Search for items..." class="form-control mt-3">
                 <div class="list-group">
                     <!-- Add icons to the list items -->
-                    <a href="Views/Classe/list_classes.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-chalkboard"></i> Classe</a>
-                    <a href="Views/DepartementView/list_departements.php"
-                        class="list-group-item list-group-item-action"><i class="fas fa-building"></i> Departement</a>
-                    <a href="Views/DossierEtudPieceView/affichage.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-file"></i> Dossier Etud Piece</a>
-                    <a href="Views/EtudiantView/list_etudiants.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-user-graduate"></i> Etudiant</a>
-                    <a href="Views/SessionView/list_sessions.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-calendar-alt"></i> Session</a>
-                    <a href="Views/GouvernoratView/list_gouvernorats.php"
-                        class="list-group-item list-group-item-action"><i class="fas fa-map-marker-alt"></i>
+                    <a href="Views/Classe/list_classes.php" class="list-group-item list-group-item-action"><i class="fas fa-chalkboard"></i> Classe</a>
+                    <a href="Views/DepartementView/list_departements.php" class="list-group-item list-group-item-action"><i class="fas fa-building"></i> Departement</a>
+                    <a href="Views/DossierEtudPieceView/affichage.php" class="list-group-item list-group-item-action"><i class="fas fa-file"></i> Dossier Etud Piece</a>
+                    <a href="Views/EtudiantView/list_etudiants.php" class="list-group-item list-group-item-action"><i class="fas fa-user-graduate"></i> Etudiant</a>
+                    <a href="Views/SessionView/list_sessions.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-alt"></i> Session</a>
+                    <a href="Views/GouvernoratView/list_gouvernorats.php" class="list-group-item list-group-item-action"><i class="fas fa-map-marker-alt"></i>
                         Gouvernorats</a>
-                    <a href="Views/OptionView/mainpage.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-check"></i> Option</a>
-                    <a href="Views/OptionNivView/mainpage.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-layer-group"></i> OptionNiveau</a>
-                    <a href="Views/GradesView/list_grades.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-graduation-cap"></i> Grades</a>
-                    <a href="Views/InscriptionView/afficher.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-clipboard-check"></i> Inscription</a>
-                    <a href="Views/JourView/list_jours.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-calendar-day"></i> Jours</a>
-                    <a href="Views/MatiereView/list_matieres.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-book"></i> Matieres</a>
-                    <a href="Views/ProfsituationView/list_profsituations.php"
-                        class="list-group-item list-group-item-action"><i class="fas fa-user-tie"></i>
+                    <a href="Views/OptionView/mainpage.php" class="list-group-item list-group-item-action"><i class="fas fa-check"></i> Option</a>
+                    <a href="Views/OptionNivView/mainpage.php" class="list-group-item list-group-item-action"><i class="fas fa-layer-group"></i> OptionNiveau</a>
+                    <a href="Views/GradesView/list_grades.php" class="list-group-item list-group-item-action"><i class="fas fa-graduation-cap"></i> Grades</a>
+                    <a href="Views/InscriptionView/afficher.php" class="list-group-item list-group-item-action"><i class="fas fa-clipboard-check"></i> Inscription</a>
+                    <a href="Views/JourView/list_jours.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-day"></i> Jours</a>
+                    <a href="Views/MatiereView/list_matieres.php" class="list-group-item list-group-item-action"><i class="fas fa-book"></i> Matieres</a>
+                    <a href="Views/ProfsituationView/list_profsituations.php" class="list-group-item list-group-item-action"><i class="fas fa-user-tie"></i>
                         Profsituations</a>
-                    <a href="Views/ProfView/list_profs.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-chalkboard-teacher"></i> Profs</a>
-                    <a href="Views/RepartitionView/list_repartitions.php"
-                        class="list-group-item list-group-item-action"><i class="fas fa-tasks"></i> Repartitions</a>
-                    <a href="Views/SalleView/" class="list-group-item list-group-item-action"><i
-                            class="fas fa-door-open"></i> Salles</a>
-                    <a href="Views/SeanceView/list_seances.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-clock"></i> Seances</a>
-                    <a href="Views/SemaineView/list_semaines.php" class="list-group-item list-group-item-action"><i
-                            class="fas fa-calendar-week"></i> Semaines</a>
+                    <a href="Views/ProfView/list_profs.php" class="list-group-item list-group-item-action"><i class="fas fa-chalkboard-teacher"></i> Profs</a>
+                    <a href="Views/RatVolView/afficher.php" class="list-group-item list-group-item-action">
+                        <i class="fas fa-exclamation-triangle"></i> Rattrapage</a>
+                    <a href="Views/RepartitionView/list_repartitions.php" class="list-group-item list-group-item-action"><i class="fas fa-tasks"></i> Repartitions</a>
+                    <a href="Views/SalleView/" class="list-group-item list-group-item-action"><i class="fas fa-door-open"></i> Salles</a>
+                    <a href="Views/SeanceView/list_seances.php" class="list-group-item list-group-item-action"><i class="fas fa-clock"></i> Seances</a>
+                    <a href="Views/SemaineView/list_semaines.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-week"></i> Semaines</a>
                     <!-- Repeat for other list items -->
                 </div>
             </div>

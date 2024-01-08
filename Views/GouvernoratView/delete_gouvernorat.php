@@ -4,7 +4,7 @@ include "../../Classes/Gouvernorat.php";
 
 $db = new Database();
 $Gouvernorat = new Gouvernorat($db->getConnection());
-
+try{
 if (isset($_GET["Gouv"])) {
     $Gouv = $_GET["Gouv"];
     $Gouvernorat->delete($Gouv);
@@ -16,6 +16,11 @@ if (isset($_GET["Gouv"])) {
     $Gouvernorat->delete($Gouv);
     header("Location: list_gouvernorats.php");
     exit();
+}
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_gouvernorats.php">Go back to list</a>';
 }
 ?>
 
@@ -37,10 +42,16 @@ if (isset($_GET["Gouv"])) {
         if (isset($_GET["Gouv"])) {
             echo '<a class="btn btn-danger" href="delete_gouvernorat.php?Gouv=' . $_GET["Gouv"] . '">Confirm Delete</a>';
         } else {
+            $gouvernoratList = $Gouvernorat->getGovernorats();
             // If Gouv is not provided in the URL, show a form to enter Gouv
             echo '<form method="POST" action="delete_gouvernorat.php">
-                <input type="number" name="Gouv" placeholder="Enter Gouv">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="Gouv">Gouvernorat:</label>
+                <select class="form-control" name="Gouv" id="Gouv">';
+            foreach ($gouvernoratList as $gov) {
+                echo '<option value="' . $gov["Gouv"] . '">' . $gov["Gouv"] . '</option>';
+            }
+            echo '</select>;
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this gouvernorat?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_gouvernorats.php">Cancel</a>
             </form>';
         }

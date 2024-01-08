@@ -31,7 +31,7 @@
                     <a href="edit.php?id=<?php echo $session->Numero; ?>" class="btn btn-secondary mr-2">Modifier</a>
                     <form style="display: inline;" method="post" action="vdel.php">
                         <input type="hidden" name="del_id" value="<?php echo $session->Numero; ?>">
-                        <input type="submit" class="btn btn-danger" value="Supprimer">
+                        <input type="submit" class="btn btn-danger" value="Supprimer" onclick="return confirm(`Are you sure you want to delete this Session?`);">
                     </form>
                 </div>
             </div>

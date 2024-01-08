@@ -54,7 +54,7 @@ $gradeList = $grades->getGrades();
 
                     echo '<td>
                             <a href="edit_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-primary">Edit</a>
-                            <a href="delete_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-danger">Delete</a>
+                            <a href="delete_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this grade?`);">Delete</a>
                           </td>';
 
                     echo '</tr>';

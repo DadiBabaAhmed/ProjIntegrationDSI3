@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <td><?php echo $jour['Code Prof']; ?></td>
                                         <td>
                                             <a href="edit_jour.php?N°=<?php echo $jour['N°']; ?>" class="btn btn-primary">Edit</a>
-                                            <a href="delete_jour.php?N°=<?php echo $jour['N°']; ?>" class="btn btn-danger">Delete</a>
+                                            <a href="delete_jour.php?N°=<?php echo $jour['N°']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this jour?`);">Delete</a>
                                         </td>
                                     </tr>
                             <?php }

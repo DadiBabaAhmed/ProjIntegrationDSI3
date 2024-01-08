@@ -48,11 +48,23 @@ session_start();
         }
     
         public function delete($ncin) {
-            $sql = "DELETE FROM etudiant WHERE NCIN = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bind_param("s", $ncin);
-            $stmt->execute();
-            $stmt->close();
+            try {
+                $sql = "DELETE FROM etudiant WHERE NCIN = ?";
+                $stmt = $this->db->prepare($sql);
+                
+                if (!$stmt) {
+                    throw new Exception("Error preparing statement: " . $this->db->error);
+                }
+        
+                $stmt->bind_param("s", $ncin);
+                if (!$stmt->execute()) {
+                    throw new Exception("Error executing statement: " . $stmt->error);
+                }
+                
+                $stmt->close();
+            } catch (Exception $e) {
+                throw new Exception("Error deleting record: " . $e->getMessage());
+            }
         }
     
         private function getBindType($value) {

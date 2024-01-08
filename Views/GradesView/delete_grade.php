@@ -5,18 +5,24 @@ include "../../Classes/Grade.php";
 $db = new Database();
 $grades = new Grades($db->getConnection());
 
-if (isset($_GET["Grade"])) {
-    // If the grade ID is provided in the URL, confirm and perform the delete
-    $gradeId = $_GET["Grade"];
-    $grades->deleteGrade($gradeId);
-    header("Location: list_grades.php");
-    exit();
-} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Grade"])) {
-    // If the form is submitted and the grade ID is provided, confirm and perform the delete
-    $gradeId = $_POST["Grade"];
-    $grades->deleteGrade($gradeId);
-    header("Location: list_grades.php");
-    exit();
+try {
+    if (isset($_GET["Grade"])) {
+        // If the grade ID is provided in the URL, confirm and perform the delete
+        $gradeId = $_GET["Grade"];
+        $grades->deleteGrade($gradeId);
+        header("Location: list_grades.php");
+        exit();
+    } elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Grade"])) {
+        // If the form is submitted and the grade ID is provided, confirm and perform the delete
+        $gradeId = $_POST["Grade"];
+        $grades->deleteGrade($gradeId);
+        header("Location: list_grades.php");
+        exit();
+    }
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage() . "</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_grades.php">Go back to list</a>';
 }
 ?>
 
@@ -36,12 +42,18 @@ if (isset($_GET["Grade"])) {
 
         <?php
         if (isset($_GET["Grade"])) {
-            echo '<a class="btn btn-danger" href="delete_grade.php?Grade=' . $_GET["Grad"] . '">Confirm Delete</a>';
+            echo '<a class="btn btn-danger" href="delete_grade.php?Grade=' . $_GET["Grade"] . '">Confirm Delete</a>';
         } else {
+            $gradeList = $grades->getAllGrades();
             // If NCIN is not provided in the URL, show a form to enter NCIN
             echo '<form method="POST" action="delete_grade.php">
-                <input type="text" name="Grade" placeholder="Enter Grade">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="Grade">Grade:</label>
+                <select class="form-control" name="Grade" id="Grade">';
+            foreach ($gradeList as $grade) {
+                echo '<option value="' . $grade["Grade"] . '">' . $grade["Grade"] . '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this grade?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_grades.php">Cancel</a>
             </form>';
         }

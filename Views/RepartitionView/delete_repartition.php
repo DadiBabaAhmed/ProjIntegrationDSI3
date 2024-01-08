@@ -5,6 +5,7 @@ include "../../Classes/Repartition.php";
 $db = new Database();
 $repartition = new Repartition($db->getConnection());
 
+try{
 if (isset($_GET["Numdist"])) {
     $Numdist = $_GET["Numdist "];
     $repartition->delete($Numdist);
@@ -16,6 +17,11 @@ if (isset($_GET["Numdist"])) {
     $repartition->delete($Numdist);
     header("Location: list_repartitions.php");
     exit();
+}
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_repartitions.php">Go back to list</a>';
 }
 ?>
 
@@ -37,10 +43,16 @@ if (isset($_GET["Numdist"])) {
         if (isset($_GET["Numdist"])) {
             echo '<a class="btn btn-danger" href="delete_repartition.php?Numdist=' . $_GET["Numdist"] . '">Confirm Delete</a>';
         } else {
+            $repartitionList = $repartition->getAllRepartitions();
             // If Matricule Prof is not provided in the URL, show a form to enter Matricule Prof
             echo '<form method="POST" action="delete_repartition.php">
-                <input type="text" name="Numdist" placeholder="Enter Numdist">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="Numdist">Numdist:</label>
+                <select class="form-control" name="Numdist" id="Numdist">';
+            foreach ($repartitionList as $repart) {
+                echo '<option value="' . $repart["Numdist"] . '">' . $repart["Numdist"] . '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this repartition?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_repartitions.php">Cancel</a>
             </form>';
         }

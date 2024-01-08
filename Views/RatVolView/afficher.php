@@ -8,19 +8,22 @@
     <title>Liste Rattrapage</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<?php
+include("header.php");
+ini_set("display_errors", "1");
+error_reporting(E_ALL);
+require_once("../../DataBase/connexion.php");
+include '../inc/header.php'; ?>
 
 <body>
     <h1>Liste Rattrapage</h1>
-    <div  id='printButtonContainer'>
+    <div id='printButtonContainer'>
         <a href='formajout.php' class='btn btn-success' id='ajoutButton'>Ajout Rattrapage</a>
-        <button id='printButton' onclick='printDocument();' class='btn btn-info ' >Print</button>
+        <button id='printButton' onclick='printDocument();' class='btn btn-info '>Print</button>
     </div>
 
     <?php
-    include("header.php");
-    ini_set("display_errors", "1");
-    error_reporting(E_ALL);
-    require_once("../../DataBase/connexion.php");
+
 
     try {
         $filterField = isset($_GET['filterField']) ? $_GET['filterField'] : 'NumRatV';
@@ -33,7 +36,7 @@
 
         if ($resultat->rowCount() == 0) {
             echo "<div class='alert alert-danger'>La table ne contient aucun rattrapage...!</div><br>";
-            } else {
+        } else {
             echo "<form method='get' action=''>";
             echo "<select name='filterField'>";
             echo "<option value='NumRatV' " . ($filterField === 'NumRatV' ? 'selected' : '') . ">NumRatV</option>";
@@ -69,36 +72,33 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
+            <?php
 
-                while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>";
-                    echo "<td>" . $ligne['NumRatV'] . "</td>";
-                    echo "<td>" . $ligne['MatProf'] . "</td>";
-                    echo "<td>" .  $ligne['DateRat']. "</td>";
-                    echo "<td>" . $ligne['Seance'] . "</td>";
-                    echo "<td>" . $ligne['Session'] . "</td>";
-                    echo "<td>" . $ligne['Salle'] . "</td>";
-                    echo "<td>" . $ligne['Jour'] . "</td>";
-                    echo "<td>" . $ligne['CodeClasse'] . "</td>";
-                    echo "<td>" . $ligne['CodeMatiere'] . "</td>";
-                    echo "<td>" . $ligne['Etat'] . "</td>";
-                    echo "<td class='action-elements'>";
-                    echo "<a href='formupdate.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-primary btn-sm'>Update</a> ";
-                    echo "<a href='delete.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-danger btn-sm'>Delete</a> ";
-                    echo "<button onclick='printDetails(" . json_encode($ligne) . ");' class='btn btn-info btn-sm'>Print Details</button>";
-                    echo "</td>";
-                    echo "</tr>";
-                }
-                echo "</tbody>";
-                echo "</table>";
-
-
-
-    } catch (PDOException $e) {
-        die($e->getMessage());
-    }
-    ?>
+            while ($ligne = $resultat->fetch(PDO::FETCH_ASSOC)) {
+                echo "<tr>";
+                echo "<td>" . $ligne['NumRatV'] . "</td>";
+                echo "<td>" . $ligne['MatProf'] . "</td>";
+                echo "<td>" .  $ligne['DateRat'] . "</td>";
+                echo "<td>" . $ligne['Seance'] . "</td>";
+                echo "<td>" . $ligne['Session'] . "</td>";
+                echo "<td>" . $ligne['Salle'] . "</td>";
+                echo "<td>" . $ligne['Jour'] . "</td>";
+                echo "<td>" . $ligne['CodeClasse'] . "</td>";
+                echo "<td>" . $ligne['CodeMatiere'] . "</td>";
+                echo "<td>" . $ligne['Etat'] . "</td>";
+                echo "<td class='action-elements'>";
+                echo "<a href='formupdate.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-primary btn-sm'>Update</a> ";
+                echo "<a href='delete.php?NumRatV=" . $ligne['NumRatV'] . "' class='btn btn-danger btn-sm' onclick='return confirm(`Are you sure you want to delete this rattrapage?`);'>Delete</a> ";
+                echo "<button onclick='printDetails(" . json_encode($ligne) . ");' class='btn btn-info btn-sm'>Print Details</button>";
+                echo "</td>";
+                echo "</tr>";
+            }
+            echo "</tbody>";
+            echo "</table>";
+        } catch (PDOException $e) {
+            die($e->getMessage());
+        }
+            ?>
 
             <script>
                 function printDocument() {
@@ -110,7 +110,7 @@
                     searchForm.style.display = 'none';
 
                     let actionElements = document.querySelectorAll('.action-elements');
-                    actionElements.forEach(function (el) {
+                    actionElements.forEach(function(el) {
                         el.style.display = 'none';
                     });
 
@@ -119,7 +119,7 @@
 
                     setTimeout(() => {
                         searchForm.style.display = 'block';
-                        actionElements.forEach(function (el) {
+                        actionElements.forEach(function(el) {
                             el.style.display = '';
                         });
                         document.getElementById('ajoutButton').style.display = 'inline-block';

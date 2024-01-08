@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $critere = $_POST["critere"];
     $val = $_POST["val"];
     $gradeList = $grades->search($critere, $val);
-}else {
+} else {
     $gradeList = $grades->getGrades();
 }
 
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                         echo '<td>
                             <a href="edit_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-primary">Edit</a>
-                            <a href="delete_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-danger">Delete</a>
+                            <a href="delete_grade.php?Grade=' . $grade["Grade"] . '" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this grade?`);">Delete</a>
                           </td>';
 
                                         echo '</tr>';

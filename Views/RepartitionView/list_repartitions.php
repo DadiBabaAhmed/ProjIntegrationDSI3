@@ -66,7 +66,7 @@ $repList = $repartition->getAllRepartitions();
                     <td><?php echo $rep['TypeGest']; ?></td>
                     <td>
                         <a href="edit_repartition.php?Numdist=<?php echo $rep['Numdist']; ?>" class="btn btn-primary">Edit</a>
-                        <a href="delete_repartition.php?Numdist=<?php echo $rep['Numdist']; ?>" class="btn btn-danger">Delete</a>
+                        <a href="delete_repartition.php?Numdist=<?php echo $rep['Numdist']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this repartition?`);">Delete</a>
                     </td>
                 </tr>
             <?php } ?>

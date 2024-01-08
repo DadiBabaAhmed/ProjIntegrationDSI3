@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <td><?php echo $Gouvernorat['CodePostal']; ?></td>
                                             <td>
                                                 <a href="edit_Gouvernorat.php?Gouv=<?php echo $Gouvernorat['Gouv']; ?>" class="btn btn-primary">Edit</a>
-                                                <a href="delete_Gouvernorat.php?Gouv=<?php echo $Gouvernorat['Gouv']; ?>" class="btn btn-danger">Delete</a>
+                                                <a href="delete_Gouvernorat.php?Gouv=<?php echo $Gouvernorat['Gouv']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this gouvernorat?`);">Delete</a>
                                             </td>
                                         </tr>
                                 <?php

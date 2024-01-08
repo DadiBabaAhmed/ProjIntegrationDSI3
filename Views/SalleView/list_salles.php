@@ -215,10 +215,24 @@
     </section>
         <section id="delete">
     <!-- delete -->
+    <?php
+        include "../../DataBase/Database.php";
+        $db = new Database();
+        $conn = $db->getConnection();
+        $query = "SELECT Salle FROM salle";
+        $result = $conn->query($query);
+        $result = $conn->query($query);
+        ?>
     <form method="POST" action="delete.php">
         <h2>Supprimer salle</h2>
         <label for="deleteSalle">Nom de la salle à supprimer :</label>
-        <input type="text" name="deleteSalle" required>
+        <select name='deleteSalle' id='deleteSalle'>
+        <?php
+        foreach ($result1->fetch_fields() as $field) {
+            echo "<option value='" . $field['Salle'] . "'>" . $field['Salle'] . "</option>";
+        }
+        ?>
+        </select>
         <br>
         <input type="submit" name="delete" value="Supprimer Salle">
     </form>

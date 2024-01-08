@@ -43,10 +43,16 @@ if (isset($_GET["Code_Matiere"]) || ($_SERVER["REQUEST_METHOD"] === "POST" && is
         if (isset($_GET["Code_Matiere"])) {
             echo '<a class="btn btn-danger" href="delete_matiere.php?Code_Matiere=' . $_GET["Code_Matiere"] . '">Confirm Delete</a><a class="btn btn-secondary" href="list_matieres.php">Cancel</a>';
         } else {
+            $matieresList = $matieres->getMatieres();
             // If Code_Matiere is not provided in the URL, show a form to enter Code_Matiere
             echo '<form method="POST" action="delete_matiere.php">
-                <input type="text" name="Code_Matiere" placeholder="Enter Code Matiere">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="Code_Matiere">Code Matiere:</label>
+                <select class="form-control" name="Code_Matiere" id="Code_Matiere">';
+            foreach ($matieresList as $mat) {
+                echo '<option value="' . $mat["Code_Matiere"] . '">' . $mat["Code_Matiere"] .'_'. $mat["Nom_Matiere"]. '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this matiere?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_matieres.php">Cancel</a>
             </form>';
         }

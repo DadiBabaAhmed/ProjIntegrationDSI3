@@ -5,7 +5,6 @@ require '../../DataBase/connect.php';
 if(isset($_POST['supprimer_seance']))
 {
     $seance= mysqli_real_escape_string($con, $_POST['supprimer_seance']);
-
     $query = "DELETE FROM seances WHERE SEANCE='$seance' ";
     $query_run = mysqli_query($con, $query);
 

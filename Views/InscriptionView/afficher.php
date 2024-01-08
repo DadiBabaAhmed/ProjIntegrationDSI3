@@ -8,8 +8,18 @@ if(isset($_GET['action'])) {
 
     if($action == 'supprimer') {
         $NumIns = (int)$_GET['NumIns'];
-        $req_supprimer = "DELETE FROM Inscriptions WHERE NumIns = $NumIns";
-        $res_supprimer = $conn->query($req_supprimer);
+        try {
+            $req_supprimer = "DELETE FROM Inscriptions WHERE NumIns = :NumIns";
+            $stmt = $conn->prepare($req_supprimer);
+            $stmt->bindParam(':NumIns', $NumIns, PDO::PARAM_INT);
+            $stmt->execute();
+            header("Location: afficher.php");
+            exit();
+        } catch (PDOException $e) {
+            echo "<h5>Error: " . $e->getMessage()."</h5>";
+            // Add a link to go back to list_etudiants.php
+            echo '<br><a class="btn btn-secondary" href="afficher.php">Go back to list</a>';
+        }
     }
 }
 ?>
@@ -113,7 +123,7 @@ if(isset($_GET['action'])) {
                                                                 class="fas fa-pencil-alt px-2"></i></a></li>
                                                     <li><a href="?action=supprimer&NumIns=<?php echo $row['NumIns']; ?>"
                                                             class="text-danger" data-toggle tooltip title=""
-                                                            data-original-title="Delete"><i
+                                                            data-original-title="Delete" onclick="return confirm(`Are you sure you want to delete this Inscription?`);"><i
                                                                 class="far fa-trash-alt px-2"></i></a></li>
                                                 </ul>
                                             </td>

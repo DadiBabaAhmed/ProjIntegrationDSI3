@@ -54,7 +54,7 @@ $depList = $departement->getAllDepartments();
                     <td><?php echo $dep['DepartementARAB']; ?></td>
                     <td>
                         <a href="edit_departement.php?CodeDep=<?php echo $dep['CodeDep']; ?>" class="btn btn-primary">Edit</a>
-                        <a href="delete_departement.php?CodeDep=<?php echo $dep['CodeDep']; ?>" class="btn btn-danger">Delete</a>
+                        <a href="delete_departement.php?CodeDep=<?php echo $dep['CodeDep']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this departement?');">Delete</a>
                     </td>
                 </tr>
             <?php } ?>

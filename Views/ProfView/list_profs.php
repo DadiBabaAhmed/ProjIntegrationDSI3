@@ -129,7 +129,7 @@ $professors = $prof->getAllProfessors(); // Assuming you have a method to fetch 
                         <td><?php echo $row['ControlAcces']; ?></td>
                         <td>
                             <a href="edit_prof.php?Matricule=<?php echo $row['Matricule']; ?>" class="btn btn-primary">Edit</a>
-                            <a href="delete_prof.php?Matricule=<?php echo $row['Matricule']; ?>" class="btn btn-danger">Delete</a>
+                            <a href="delete_prof.php?Matricule=<?php echo $row['Matricule']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this Professeur?`);">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

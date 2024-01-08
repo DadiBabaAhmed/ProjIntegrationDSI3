@@ -14,6 +14,7 @@
 
     <title>Seances CRUD</title>
 </head>
+<?php include '../inc/header.php'; ?>
 <body>
   
     <div class="container mt-4">
@@ -78,7 +79,7 @@
                                                     <a href="seance-voir.php?SEANCE=<?= $seance['SEANCE']; ?>" class="btn btn-info btn-sm">Voir</a>
                                                 
                                                     <form action="code.php" method="POST" class="d-inline">
-                                                        <button type="submit" name="supprimer_seance" value="<?=$seance['SEANCE'];?>" class="btn btn-danger btn-sm">Supprimer</button>
+                                                        <button type="submit" name="supprimer_seance" value="<?=$seance['SEANCE'];?>" class="btn btn-danger btn-sm" onclick="return confirm(`Are you sure you want to delete this seance?`);">Supprimer</button>
                                                     </form>
                                                 </td>
                                             </tr>

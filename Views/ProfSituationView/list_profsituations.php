@@ -52,7 +52,7 @@ $profsituationList = $profsituation->getAllProfSituation();
                     <td><?php echo $profsituation['Grade']; ?></td>
                     <td>
                         <a href="edit_profsituation.php?CodeProf=<?php echo $profsituation['CodeProf']; ?>" class="btn btn-primary">Edit</a>
-                        <a href="delete_profsituation.php?CodeProf =<?php echo $profsituation['CodeProf']; ?>" class="btn btn-danger">Delete</a>
+                        <a href="delete_profsituation.php?CodeProf =<?php echo $profsituation['CodeProf']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this ProfSituation?`);">Delete</a>
                     </td>
                 </tr>
             <?php } ?>

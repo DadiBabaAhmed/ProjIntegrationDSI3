@@ -4,7 +4,7 @@ include "../../Classes/Departement.php";
 
 $db = new Database();
 $departement = new Departement($db->getConnection());
-
+try {
 if (isset($_GET["CodeDep"])) {
     $CodeDep = $_GET["CodeDep"];
     $departement->deleteDepartment($CodeDep);
@@ -16,6 +16,11 @@ if (isset($_GET["CodeDep"])) {
     $departement->deleteDepartment($CodeDep);
     header("Location: list_departements.php");
     exit();
+}
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_departements.php">Go back to list</a>';
 }
 ?>
 
@@ -37,14 +42,24 @@ if (isset($_GET["CodeDep"])) {
         if (isset($_GET["CodeDep"])) {
             echo '<a class="btn btn-danger" href="delete_departement.php?CodeDep=' . $_GET["CodeDep"] . '">Confirm Delete</a>';
         } else {
+            $departementList = $departement->getAllDepartments();
             // If Matricule Prof is not provided in the URL, show a form to enter Matricule Prof
             echo '<form method="POST" action="delete_departement.php">
-                <input type="number" name="CodeDep" placeholder="Enter CodeDep">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                <a class="btn btn-secondary" href="list_departements.php">Cancel</a>
-            </form>';
+                <label for="CodeDep">Code Departement:</label>
+                <select class="form-control" name="CodeDep" id="CodeDep">';
+            foreach ($departementList as $dep) {
+                echo '<option value="' . $dep["CodeDep"] . '">' . $dep["CodeDep"] . '</option>';
+            }
+            echo '</select>';
+
+        ?>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this departement?');">Confirm Delete</button>
+            <a class="btn btn-secondary" href="list_departements.php">Cancel</a>
+        <?php
+            echo '</form>';
         }
         ?>
+
     </div>
 
     <!-- Add Bootstrap JavaScript (Popper.js and Bootstrap JS) if needed -->

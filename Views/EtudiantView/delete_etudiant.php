@@ -5,21 +5,27 @@ include "../../Classes/Etudiant.php";
 $db = new Database();
 $etudiant = new Etudiant($db->getConnection());
 
-if (isset($_GET["NCIN"])) {
-    // If NCIN is provided in the URL, confirm and perform the delete
-    $ncin = $_GET["NCIN"];
-    $etudiant->delete($ncin);
-    header("Location: list_etudiants.php");
-    exit();
-} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["NCIN"])) {
-    // If the form is submitted, and NCIN is provided, confirm and perform the delete
-    $ncin = $_POST["NCIN"];
-    $etudiant->delete($ncin);
-    header("Location: list_etudiants.php");
-    exit();
+try {
+    if (isset($_GET["NCIN"])) {
+        $ncin = $_GET["NCIN"];
+        $etudiant->delete($ncin);
+        header("Location: list_etudiants.php");
+        exit();
+    } elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["NCIN"])) {
+        $ncin = $_POST["NCIN"];
+        $etudiant->delete($ncin);
+        header("Location: list_etudiants.php");
+        exit();
+    }
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_etudiants.php">Go back to list</a>';
 }
 ?>
 
+
+ 
 <!DOCTYPE html>
 <html>
 
@@ -38,12 +44,21 @@ if (isset($_GET["NCIN"])) {
         if (isset($_GET["NCIN"])) {
             echo '<a class="btn btn-danger" href="delete_etudiant.php?NCIN=' . $_GET["NCIN"] . '">Confirm Delete</a>';
         } else {
+            $etudiantList = $etudiant->getAllMatEtud2();
             // If NCIN is not provided in the URL, show a form to enter NCIN
             echo '<form method="POST" action="delete_etudiant.php">
-                <input type="text" name="NCIN" placeholder="Enter NCIN">
+                <label for="NCIN">NCIN:</label>
+                <select class="form-control" name="NCIN" id="NCIN">';
+            foreach ($etudiantList as $etud) {
+                echo '<option value="' . $etud["NCIN"] . '">' . $etud["Nom"] . " " . $etud["Prénom"] . '</option>';
+            }
+            echo '</select>';
+        ?>
+
                 <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                <a class="btn btn-secondary" href="list_etudiants.php">Cancel</a>
-            </form>';
+                <a class="btn btn-secondary" href="list_etudiants.php" onclick="return confirm(`Are you sure you want to delete this Etudiant?`);">Cancel</a>
+            <?php
+            echo '</form>';
         }
         ?>
     </div>

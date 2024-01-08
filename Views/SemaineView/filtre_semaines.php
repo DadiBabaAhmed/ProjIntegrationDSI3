@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <a href="edit_semaine.php?idSem=<?php echo $semaine['idSem']; ?>"
                                 class="btn btn-primary">Edit</a>
                             <a href="delete_semaine.php?idSem=<?php echo $semaine['idSem']; ?>"
-                                class="btn btn-danger">Delete</a>
+                                class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this Semain?`);">Delete</a>
                         </td>
                     </tr>
                 <?php } ?>

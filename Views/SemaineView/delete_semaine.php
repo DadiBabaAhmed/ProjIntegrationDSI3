@@ -5,33 +5,27 @@ include "../../Classes/Semaine.php";
 $db = new Database();
 $semaine = new Semaine($db->getConnection());
 
+try
+{
+    $semaineList = $semaine->getAllSemaines();
 if (isset($_GET["idSem"])) {
     $idSem = $_GET["idSem"];
     $semaine->delete($idSem);
     header("Location: list_semaines.php");
     exit();
 } elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["idSem"])) {
+    
     // If the form is submitted, and Matricule Prof is provided, confirm and perform the delete
     $idSem = $_POST["idSem"];
     $semaine->delete($idSem);
     header("Location: list_semaines.php");
     exit();
 }
-
-/*
-if (isset($_GET["Numdist"])) {
-    $Numdist = $_GET["Numdist "];
-    $repartition->delete($Numdist);
-    header("Location: list_repartitions.php");
-    exit();
-} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["Numdist"])) {
-    // If the form is submitted, and Matricule Prof is provided, confirm and perform the delete
-    $Numdist = $_POST["Numdist"];
-    $repartition->delete($Numdist);
-    header("Location: list_repartitions.php");
-    exit();
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_semaines.php">Go back to list</a>';
 }
-*/
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +48,13 @@ if (isset($_GET["Numdist"])) {
         } else {
             // If Matricule Prof is not provided in the URL, show a form to enter Matricule Prof
             echo '<form method="POST" action="delete_semaine.php">
-                <input type="number" name="idSem" placeholder="Enter idSem">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="idSem">idSem:</label>
+                <select class="form-control" name="idSem" id="idSem">';
+            foreach ($semaineList as $sem) {
+                echo '<option value="' . $sem["idSem"] . '">' . $sem["NumSem"] . "_" . $sem["Session"] . '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this Semain?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_semaines.php">Cancel</a>
             </form>';
         }

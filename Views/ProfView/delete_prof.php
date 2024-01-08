@@ -5,6 +5,7 @@ include "../../Classes/Prof.php";
 $db = new Database();
 $Prof = new Prof($db->getConnection());
 
+try{
 if (isset($_GET["Matricule"])) {
     // If Matricule Prof is provided in the URL, confirm and perform the delete
     $Matricule_Prof = $_GET["Matricule"];
@@ -17,6 +18,11 @@ if (isset($_GET["Matricule"])) {
     $Prof->delete($Matricule_Prof);
     header("Location: list_profs.php");
     exit();
+}
+} catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_profs.php">Go back to list</a>';
 }
 ?>
 
@@ -38,10 +44,16 @@ if (isset($_GET["Matricule"])) {
         if (isset($_GET["Matricule"])) {
             echo '<a class="btn btn-danger" href="delete_prof.php?Matricule=' . $_GET["Matricule"] . '">Confirm Delete</a>';
         } else {
+            $ProfList = $Prof->getAllMatProf();
             // If Matricule Prof is not provided in the URL, show a form to enter Matricule Prof
             echo '<form method="POST" action="delete_prof.php">
-                <input type="text" name="Matricule" placeholder="Enter Matricule Prof">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="Matricule">Matricule Prof:</label>
+                <select class="form-control" name="Matricule" id="Matricule">';
+            foreach ($ProfList as $prof) {
+                echo '<option value="' . $prof["Matricule"] . '">' . $prof["Nom"] . " " . $prof["Prenom"] . '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this Professeur?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_profs.php">Cancel</a>
             </form>';
         }

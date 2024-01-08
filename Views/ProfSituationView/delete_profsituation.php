@@ -5,6 +5,8 @@ include '../../Classes/ProfSituation.php';
 $db = new Database();
 $profsituation = new Profsituation($db->getConnection());
 
+try{
+    $profsituationList = $profsituation->getAllProfSituation();
 if (isset($_GET["CodeProf"])) {
     $CodeProf = $_GET["CodeProf"];
     $profsituation->delete($CodeProf);
@@ -16,6 +18,11 @@ if (isset($_GET["CodeProf"])) {
     $profsituation->delete($CodeProf);
     header("Location: list_profsituations.php");
     exit();
+}
+}catch (Exception $e) {
+    echo "<h5>Error: " . $e->getMessage()."</h5>";
+    // Add a link to go back to list_etudiants.php
+    echo '<br><a class="btn btn-secondary" href="list_profsituations.php">Go back to list</a>';
 }
 ?>
 
@@ -39,8 +46,13 @@ if (isset($_GET["CodeProf"])) {
         } else {
             // If CodeProf is not provCodeProfed in the URL, show a form to enter CodeProf
             echo '<form method="POST" action="delete_profsituation.php">
-                <input type="number" name="CodeProf" placeholder="Enter CodeProf">
-                <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                <label for="CodeProf">CodeProf:</label>
+                <select class="form-control" name="CodeProf" id="CodeProf">';
+            foreach ($profsituationList as $prof) {
+                echo '<option value="' . $prof["CodeProf"] . '">' . $prof["CodeProf"] . "_" . $prof["Sess"] . '</option>';
+            }
+            echo '</select>
+                <button type="submit" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this ProfSituation?`);">Confirm Delete</button>
                 <a class="btn btn-secondary" href="list_profsituations.php">Cancel</a>
             </form>';
         }

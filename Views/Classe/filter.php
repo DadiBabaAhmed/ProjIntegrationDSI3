@@ -92,7 +92,7 @@
                         </td>
                         <td id="actionButtons">
                             <a href="edit_classe.php?id=<?php echo $row['id']; ?>" class="btn btn-primary">Edit</a>
-                            <a href="delete_classe.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</a>
+                            <a href="delete_classe.php?id=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Classe?');">Delete</a>
                         </td>
                     </tr>
                 <?php } ?>

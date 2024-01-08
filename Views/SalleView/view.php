@@ -112,6 +112,7 @@ if (isset($_POST["select2"])) {
     } else {
         echo "<p>Nothing found</p>";
     }
+    echo "<a href='index.php'>back</a>";
 }
 
 ?>

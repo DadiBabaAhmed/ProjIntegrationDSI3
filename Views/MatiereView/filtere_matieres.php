@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     echo '<td>
                             <a href="edit_matiere.php?Code_Matiere=' . $matiere["Code_Matiere"] . '" class="btn btn-primary">Edit</a>
-                            <a href="delete_matiere.php?Code_Matiere=' . $matiere["Code_Matiere"] . '" class="btn btn-danger">Delete</a>
+                            <a href="delete_matiere.php?Code_Matiere=' . $matiere["Code_Matiere"] . '" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this matiere?`);">Delete</a>
                           </td>';
 
                     echo '</tr>';

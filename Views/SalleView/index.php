@@ -6,7 +6,9 @@ $db = new Database();
 $departement = new Departement($db->getConnection());
 
 $departementList = $departement->getDepartmentsNames();
-
+$conn = $db->getConnection();
+$query = "SELECT Salle FROM salle";
+$result = $conn->query($query);
 ?>
 <!DOCTYPE html>
 <html>
@@ -241,9 +243,15 @@ $departementList = $departement->getDepartmentsNames();
         <form method="POST" action="delete.php">
             <h2>Supprimer salle</h2>
             <label for="deleteSalle">Nom de la salle à supprimer :</label>
-            <input type="text" name="deleteSalle" required>
+            <select name='deleteSalle' id='deleteSalle'>
+        <?php
+        foreach ($result as $field) {
+            echo "<option value='" . $field['Salle'] . "'>" . $field['Salle'] . "</option>";
+        }
+        ?>
+        </select>
             <br>
-            <input type="submit" name="delete" value="Supprimer Salle">
+            <input type="submit" name="delete" value="Supprimer Salle" onclick="return confirm(`Are you sure you want to delete this salle?`);">
         </form>
     </section>
 

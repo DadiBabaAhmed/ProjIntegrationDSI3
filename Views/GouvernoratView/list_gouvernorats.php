@@ -46,7 +46,7 @@ $govList = $governorat->getGovernorats();
                     <td><?php echo $gov['CodePostal']; ?></td>
                     <td>
                         <a href="edit_gouvernorat.php?Gouv=<?php echo $gov['Gouv']; ?>" class="btn btn-primary">Edit</a>
-                        <a href="delete_gouvernorat.php?Gouv=<?php echo $gov['Gouv']; ?>" class="btn btn-danger">Delete</a>
+                        <a href="delete_gouvernorat.php?Gouv=<?php echo $gov['Gouv']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure you want to delete this gouvernorat?`);">Delete</a>
                     </td>
                 </tr>
             <?php } ?>
