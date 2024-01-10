@@ -21,7 +21,7 @@ $classList = $classes->getClasses();
 <?php include '../inc/header.php'; ?>
 
 <body>
-    <div class="container">
+    <div class="container" style = "margin-left: 85px;">
         <h2>List Classes</h2>
         <a href="add_classe.php" class="btn btn-success mb-3">Add Classe</a>
         <a href="filter.php" class="btn btn-primary mb-3">rechercher</a>

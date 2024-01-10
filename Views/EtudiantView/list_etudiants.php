@@ -13,139 +13,227 @@ $etudiants = $etudiant->read();
 <head>
     <title>List Etudiants</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom styles here if needed */
+    </style>
 </head>
+
 <?php include '../inc/header.php'; ?>
+
 <body>
     <div class="container">
         <h2 class="mt-3">List of Etudiants</h2>
-        <a class="btn btn-primary mt-3" href="list_etudiants_reduced.php">Informations réduites</a>
-            <a class="btn btn-primary mt-3" href="add_etudiant.php">Add Etudiant</a>
-        <a class="btn btn-primary mt-3" href="filtre_etudiant.php">filtrage et print</a>
+        <div class="mb-3">
+            <a class="btn btn-primary" href="list_etudiants_reduced.php">Informations réduites</a>
+            <a class="btn btn-primary" href="add_etudiant.php">Add Etudiant</a>
+            <a class="btn btn-primary" href="filtre_etudiant.php">Filtrage et Print</a>
+        </div>
     </div>
-    <table id="table-to-print" class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>NCIN</th>
 
-                <th>Nom</th>
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <table id="table-to-print" class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>NCIN</th>
 
-                <th>Date de Naissance</th>
+                        <th>Nom</th>
 
-                <th>NCE</th>
+                        <th>Date de Naissance</th>
 
-                <th>Type de Bac</th>
+                        <th>NCE</th>
 
-                <th>Prénom</th>
+                        <th>Type de Bac</th>
 
-                <th>Sexe</th>
+                        <th>Prénom</th>
 
-                <th>Lieu de Naissance</th>
+                        <th>Sexe</th>
 
-                <th>Adresse</th>
+                        <th>Lieu de Naissance</th>
 
-                <th>Ville</th>
+                        <th>Adresse</th>
 
-                <th>Code Postal</th>
+                        <th>Ville</th>
 
-                <th>Numéro de Téléphone</th>
+                        <th>Code Postal</th>
 
-                <th>Code de Classe</th>
+                        <th>Numéro de Téléphone</th>
 
-                <th>Décision du Conseil</th>
+                        <th>Code de Classe</th>
 
-                <th>Année Universitaire</th>
+                        <th>Décision du Conseil</th>
 
-                <th>Semestre</th>
+                        <th>Année Universitaire</th>
 
-                <th>Dispenser</th>
+                        <th>Semestre</th>
 
-                <th>Années d'Opt</th>
+                        <th>Dispenser</th>
 
-                <th>Date Première Inscription</th>
+                        <th>Années d'Opt</th>
 
-                <th>Gouvernorat</th>
+                        <th>Date Première Inscription</th>
 
-                <th>Mention du Bac</th>
+                        <th>Gouvernorat</th>
 
-                <th>Nationalité</th>
+                        <th>Mention du Bac</th>
 
-                <th>Code CNSS</th>
+                        <th>Nationalité</th>
 
-                <th>Nom Arabe</th>
+                        <th>Code CNSS</th>
 
-                <th>Prénom Arabe</th>
+                        <th>Nom Arabe</th>
 
-                <th>Lieu de Naissance Arabe</th>
+                        <th>Prénom Arabe</th>
 
-                <th>Adresse Arabe</th>
+                        <th>Lieu de Naissance Arabe</th>
 
-                <th>Ville Arabe</th>
+                        <th>Adresse Arabe</th>
 
-                <th>Gouvernorat Arabe</th>
+                        <th>Ville Arabe</th>
 
-                <th>Type de Bac (AB)</th>
+                        <th>Gouvernorat Arabe</th>
 
-                <th>Photo</th>
+                        <th>Type de Bac (AB)</th>
 
-                <th>Origine</th>
+                        <th>Photo</th>
 
-                <th>Situation de Départ</th>
+                        <th>Origine</th>
 
-                <th>NBAC</th>
+                        <th>Situation de Départ</th>
 
-                <th>Redoublement</th>
+                        <th>NBAC</th>
 
-                <th>Edit</th>
+                        <th>Redoublement</th>
 
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $etudiants->fetch_assoc()) : ?>
-                <tr>
-                    <td><?php echo $row["NCIN"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Nom"] ?? "vide"; ?></td>
-                    <td><?php echo $row["DateNais"] ?? "vide"; ?></td>
-                    <td><?php echo $row["NCE"] ?? "vide"; ?></td>
-                    <td><?php echo $row["TypBac"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Prénom"] ?? "vide"; ?></td>
-                    <td><?php if($row["Sexe"] ==1){echo "Homme";}else if($row["Sexe"] ==2){echo "femme";} else{ "vide";} ?></td>
-                    <td><?php echo $row["LieuNais"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Adresse"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Ville"] ?? "vide"; ?></td>
-                    <td><?php echo $row["CodePostal"] ?? "vide"; ?></td>
-                    <td><?php echo $row["N°Tél"] ?? "vide"; ?></td>
-                    <td><?php echo $row["CodClasse"] ?? "vide"; ?></td>
-                    <td><?php echo $row["DécisionduConseil"] ?? "vide"; ?></td>
-                    <td><?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Semestre"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Dispenser"] ? "oui" : "non"; ?></td>
-                    <td><?php echo $row["Anneesopt"] ?? "vide"; ?></td>
-                    <td><?php echo $row["DatePremièreInscp"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Gouvernorat"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Mention du Bac"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Nationalité"] ?? "vide"; ?></td>
-                    <td><?php echo $row["CodeCNSS"] ?? "vide"; ?></td>
-                    <td><?php echo $row["NomArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["PrenomArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["LieuNaisArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["AdresseArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["VilleArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["GouvernoratArabe"] ?? "vide"; ?></td>
-                    <td><?php echo $row["TypeBacAB"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Photo"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Origine"] ?? "vide"; ?></td>
-                    <td><?php echo $row["SituationDpart"] ?? "vide"; ?></td>
-                    <td><?php echo $row["NBAC"] ?? "vide"; ?></td>
-                    <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
-
-                    <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
-                    <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>" onclick="return confirm('Are you sure you want to delete this Etudiant?');">Delete</a></td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = $etudiants->fetch_assoc()): ?>
+                        <tr>
+                            <td>
+                                <?php echo $row["NCIN"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Nom"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["DateNais"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["NCE"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["TypBac"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Prénom"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php if ($row["Sexe"] == 1) {
+                                    echo "Homme";
+                                } else if ($row["Sexe"] == 2) {
+                                    echo "femme";
+                                } else {
+                                    "vide";
+                                } ?>
+                            </td>
+                            <td>
+                                <?php echo $row["LieuNais"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Adresse"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Ville"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["CodePostal"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["N°Tél"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["CodClasse"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["DécisionduConseil"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Semestre"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Dispenser"] ? "oui" : "non"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Anneesopt"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["DatePremièreInscp"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Gouvernorat"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Mention du Bac"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Nationalité"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["CodeCNSS"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["NomArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["PrenomArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["LieuNaisArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["AdresseArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["VilleArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["GouvernoratArabe"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["TypeBacAB"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Photo"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Origine"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["SituationDpart"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["NBAC"] ?? "vide"; ?>
+                            </td>
+                            <td>
+                                <?php echo $row["Redaut"] ?? "vide"; ?>
+                            </td>
+                            <td><a class="btn btn-warning"
+                                    href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
+                            <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>"
+                                    onclick="return confirm('Are you sure you want to delete this Etudiant?');">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Add Bootstrap JavaScript (Popper.js and Bootstrap JS) if needed -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

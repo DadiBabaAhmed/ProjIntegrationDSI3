@@ -27,7 +27,7 @@ $matiereList = $matieres->getMatieres();
 
 
 <body>
-    <div class="container">
+    <div class="container" style = "margin-left: 105px;">
         <h2>List Matieres</h2>
         <a href="add_matiere.php" class="btn btn-success">Add Matiere</a>
         <a href="filtere_matieres.php" class="btn btn-primary">filter</a>
