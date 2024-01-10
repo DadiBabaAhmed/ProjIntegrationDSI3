@@ -35,6 +35,7 @@ $govList = $governorat->getGovernorats();
     <div class="container">
         <h1>Governorat List</h1>
         <a href="add_gouvernorat.php" class="btn btn-success">Add Governorat</a>
+        <a href="filtre_gouvernorats.php" class="btn btn-success">Rechercher</a>
         <table>
             <tr>
                 <th>Governorat</th>
