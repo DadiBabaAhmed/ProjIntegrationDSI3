@@ -46,11 +46,14 @@ include '../inc/header.php';
                         echo "<td>" . $row['Session'] . "</td>";
                         echo "<td>" . $row['nomfichierpiece'] . "</td>";
                         echo '<td><a href="modifier.php?Ndossier=' . $row['Ndossier'] . '">Modifier</a> | ';
-                        echo '<a href="supprimer.php?Ndossier=' . $row['Ndossier'] . '&&nom=' . $row['nomfichierpiece'] . '">Supprimer</a></td>';
+                        echo '<a href="supprimer.php?Ndossier=' . $row['Ndossier'] . '&&nom=' . $row['nomfichierpiece'] . '" onclick="return confirm(`Are you sure you want to delete this jour?`);">Supprimer</a></td>';
                         echo "</tr>";
                     }
                 } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage() . " " . "<a href='affichage.php'>Retour</a>";
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo "<h5>Erreur : " . $e->getMessage() . "</h5>";
+                    echo '</div>';
+                    echo '<br><a class="btn btn-secondary" href="afficher.php">Retourner à la liste</a>';
                 }
 
                 $conn = null;

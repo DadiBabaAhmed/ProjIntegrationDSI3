@@ -15,6 +15,7 @@ $listgouvernorats = $gouvernorat->getAllCodes();
 $sql = "SELECT DISTINCT Annee, Sem FROM Session";
 $result = $db->getConnection()->query($sql);
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $ncin = $_POST["NCIN"];
@@ -90,6 +91,14 @@ if (isset($_GET["NCIN"])) {
     $etudiantData["DateNais"] = date("Y-m-d", strtotime($etudiantData["DateNais"]));
     $etudiantData["Anneesopt"] = date("Y-m-d", strtotime($etudiantData["Anneesopt"]));
     $etudiantData["DatePremièreInscp"] = date("Y-m-d", strtotime($etudiantData["DatePremièreInscp"]));
+}
+}catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    echo '<div class="alert alert-danger" role="alert">';
+    echo "<h5>Erreur : Une erreur inattendue s'est produite lors de la modification de l'étudiant.</h5>";
+    echo '</div>';
+    echo '<br><a class="btn btn-secondary" href="list_etudiants.php">Retourner à la liste</a>';
 }
 ?>
 

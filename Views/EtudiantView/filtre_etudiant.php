@@ -48,25 +48,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Find common elements by comparing values
     $filteredetudiant = [];
-    if(!empty($etudiants_data) && !empty($etudiants1_data)){
-    foreach ($etudiants_data as $data1) {
-        foreach ($etudiants1_data as $data2) {
-            if ($data1 === $data2) {
-                $filteredetudiant[] = $data1;
-                break;
+    if (!empty($etudiants_data) && !empty($etudiants1_data)) {
+        foreach ($etudiants_data as $data1) {
+            foreach ($etudiants1_data as $data2) {
+                if ($data1 === $data2) {
+                    $filteredetudiant[] = $data1;
+                    break;
+                }
             }
         }
+    } else if (!empty($etudiants_data) && empty($etudiants1_data)) {
+        $filteredetudiant = $etudiants_data;
+    } else if (empty($etudiants_data) && !empty($etudiants1_data)) {
+        $filteredetudiant = $etudiants1_data;
+    } else {
+        $filteredetudiant = [];
     }
-}
-else if(!empty($etudiants_data) && empty($etudiants1_data)){
-    $filteredetudiant = $etudiants_data;
-}
-else if(empty($etudiants_data) && !empty($etudiants1_data)){
-    $filteredetudiant = $etudiants1_data;
-}
-else{
-    $filteredetudiant = [];
-}
 }
 ?>
 
@@ -102,6 +99,7 @@ else{
     </style>
 
 </head>
+<?php include '../inc/header.php'; ?>
 
 <body>
     <div class="container">
@@ -137,169 +135,172 @@ else{
             </div>
     </div>
     </form>
-    <table id="table-to-print" class="table table-striped mt-3">
-        <thead>
-            <tr>
-                <th>NCIN</th>
+    <div class="container-fluid">
+        <div class="table-responsive">
+            <table id="table-to-print" class="table table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>NCIN</th>
 
-                <th>Nom</th>
+                        <th>Nom</th>
 
-                <th>Date de Naissance</th>
+                        <th>Date de Naissance</th>
 
-                <th>NCE</th>
+                        <th>NCE</th>
 
-                <th>Type de Bac</th>
+                        <th>Type de Bac</th>
 
-                <th>Prénom</th>
+                        <th>Prénom</th>
 
-                <th>Sexe</th>
+                        <th>Sexe</th>
 
-                <th>Lieu de Naissance</th>
+                        <th>Lieu de Naissance</th>
 
-                <th>Adresse</th>
+                        <th>Adresse</th>
 
-                <th>Ville</th>
+                        <th>Ville</th>
 
-                <th>Code Postal</th>
+                        <th>Code Postal</th>
 
-                <th>Numéro de Téléphone</th>
+                        <th>Numéro de Téléphone</th>
 
-                <th>Code de Classe</th>
+                        <th>Code de Classe</th>
 
-                <th>Décision du Conseil</th>
+                        <th>Décision du Conseil</th>
 
-                <th>Année Universitaire</th>
+                        <th>Année Universitaire</th>
 
-                <th>Semestre</th>
+                        <th>Semestre</th>
 
-                <th>Dispenser</th>
+                        <th>Dispenser</th>
 
-                <th>Années d'Opt</th>
+                        <th>Années d'Opt</th>
 
-                <th>Date Première Inscription</th>
+                        <th>Date Première Inscription</th>
 
-                <th>Gouvernorat</th>
+                        <th>Gouvernorat</th>
 
-                <th>Mention du Bac</th>
+                        <th>Mention du Bac</th>
 
-                <th>Nationalité</th>
+                        <th>Nationalité</th>
 
-                <th>Code CNSS</th>
+                        <th>Code CNSS</th>
 
-                <th>Nom Arabe</th>
+                        <th>Nom Arabe</th>
 
-                <th>Prénom Arabe</th>
+                        <th>Prénom Arabe</th>
 
-                <th>Lieu de Naissance Arabe</th>
+                        <th>Lieu de Naissance Arabe</th>
 
-                <th>Adresse Arabe</th>
+                        <th>Adresse Arabe</th>
 
-                <th>Ville Arabe</th>
+                        <th>Ville Arabe</th>
 
-                <th>Gouvernorat Arabe</th>
+                        <th>Gouvernorat Arabe</th>
 
-                <th>Type de Bac (AB)</th>
+                        <th>Type de Bac (AB)</th>
 
-                <th>Photo</th>
+                        <th>Photo</th>
 
-                <th>Origine</th>
+                        <th>Origine</th>
 
-                <th>Situation de Départ</th>
+                        <th>Situation de Départ</th>
 
-                <th>NBAC</th>
+                        <th>NBAC</th>
 
-                <th>Redoublement</th>
+                        <th>Redoublement</th>
 
-                <th>Edit</th>
+                        <th>Edit</th>
 
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($filteredetudiant as $row) : ?>
-                <tr>
-                    <td><?php echo $row["NCIN"] ?? "vide"; ?></td>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($filteredetudiant as $row) : ?>
+                        <tr>
+                            <td><?php echo $row["NCIN"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Nom"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Nom"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["DateNais"] ?? "vide"; ?></td>
+                            <td><?php echo $row["DateNais"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["NCE"] ?? "vide"; ?></td>
+                            <td><?php echo $row["NCE"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["TypBac"] ?? "vide"; ?></td>
+                            <td><?php echo $row["TypBac"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Prénom"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Prénom"] ?? "vide"; ?></td>
 
-                    <td><?php if ($row["Sexe"] == 1) {
-                            echo "Homme";
-                        } else if ($row["Sexe"] == 2) {
-                            echo "femme";
-                        } else {
-                            "vide";
-                        } ?></td>
+                            <td><?php if ($row["Sexe"] == 1) {
+                                    echo "Homme";
+                                } else if ($row["Sexe"] == 2) {
+                                    echo "femme";
+                                } else {
+                                    "vide";
+                                } ?></td>
 
-                    <td><?php echo $row["LieuNais"] ?? "vide"; ?></td>
+                            <td><?php echo $row["LieuNais"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Adresse"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Adresse"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Ville"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Ville"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["CodePostal"] ?? "vide"; ?></td>
+                            <td><?php echo $row["CodePostal"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["N°Tél"] ?? "vide"; ?></td>
+                            <td><?php echo $row["N°Tél"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["CodClasse"] ?? "vide"; ?></td>
+                            <td><?php echo $row["CodClasse"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["DécisionduConseil"] ?? "vide"; ?></td>
+                            <td><?php echo $row["DécisionduConseil"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?></td>
+                            <td><?php echo $row["AnnéeUnversitaire"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Semestre"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Semestre"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Dispenser"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Dispenser"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Anneesopt"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Anneesopt"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["DatePremièreInscp"] ?? "vide"; ?></td>
+                            <td><?php echo $row["DatePremièreInscp"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Gouvernorat"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Gouvernorat"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Mention du Bac"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Mention du Bac"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Nationalité"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Nationalité"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["CodeCNSS"] ?? "vide"; ?></td>
+                            <td><?php echo $row["CodeCNSS"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["NomArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["NomArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["PrenomArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["PrenomArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["LieuNaisArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["LieuNaisArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["AdresseArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["AdresseArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["VilleArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["VilleArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["GouvernoratArabe"] ?? "vide"; ?></td>
+                            <td><?php echo $row["GouvernoratArabe"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["TypeBacAB"] ?? "vide"; ?></td>
+                            <td><?php echo $row["TypeBacAB"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Photo"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Photo"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Origine"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Origine"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["SituationDpart"] ?? "vide"; ?></td>
+                            <td><?php echo $row["SituationDpart"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["NBAC"] ?? "vide"; ?></td>
+                            <td><?php echo $row["NBAC"] ?? "vide"; ?></td>
 
-                    <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
+                            <td><?php echo $row["Redaut"] ?? "vide"; ?></td>
 
-                    <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
-                    <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>" onclick="return confirm('Are you sure you want to delete this Etudiant?');">Delete</a></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+                            <td><a class="btn btn-warning" href="edit_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>">Edit</a></td>
+                            <td><a class="btn btn-danger" href="delete_etudiant.php?NCIN=<?php echo $row["NCIN"]; ?>" onclick="return confirm('Are you sure you want to delete this Etudiant?');">Delete</a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Add Bootstrap JavaScript (Popper.js and Bootstrap JS) if needed -->

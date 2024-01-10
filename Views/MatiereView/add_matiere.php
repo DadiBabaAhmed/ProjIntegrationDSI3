@@ -44,10 +44,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     catch (mysqli_sql_exception $e)
     {
         if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
-            echo "<div class='alert alert-danger'>Error: matiere deja existe: changer Code_Matiere.</div>";
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error: matiere deja existe: changer Code_Matiere.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
         } 
         else {
-            echo "<div class='alert alert-danger'>Error: An error occurred; Please try again later.</div>";
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
         }
     }
 }

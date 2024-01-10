@@ -20,9 +20,19 @@ try {
         exit();
     }
 } catch (Exception $e) {
-    echo "<h5>Error: " . $e->getMessage() . "</h5>";
-    // Add a link to go back to list_etudiants.php
-    echo '<br><a class="btn btn-secondary" href="list_grades.php">Go back to list</a>';
+    $errorCode = $e->getCode();
+
+    if ($errorCode == 1451) { // MySQL error code for foreign key constraint violation
+        echo '<div class="alert alert-danger" role="alert">';
+        echo "<h5>Error: Impossible de supprimer cette element car elle est référencée par d'autres enregistrements.</h5>";
+        echo '</div>';
+        echo '<br><a class="btn btn-secondary" href="list_grades.php">retourner à la liste</a>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert">';
+        echo "<h5>Error: Une erreur inattendue s'est produite lors de la suppression de cette grade.</h5>";
+        echo '</div>';
+        echo '<br><a class="btn btn-secondary" href="list_grades.php">retourner à la liste</a>';
+    }
 }
 ?>
 

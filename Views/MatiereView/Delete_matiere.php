@@ -17,9 +17,15 @@ if (isset($_GET["Code_Matiere"]) || ($_SERVER["REQUEST_METHOD"] === "POST" && is
     } catch (mysqli_sql_exception $e) {
         // Handle the exception here
         if ($e->getCode() == 1451) {
-            echo "<div class='alert alert-danger'>Error: Cannot delete matiere - it is referenced in other data. Please remove related records first.</div>";
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error: Impossible de supprimer cette element car elle est référencée par d'autres enregistrements.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
         } else {
-            echo "<div class='alert alert-danger'>An error occurred: " . $e->getMessage() . "</div>";
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error:Une erreur inattendue s'est produite lors de la suppression de cette element.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
         }
     }
 }

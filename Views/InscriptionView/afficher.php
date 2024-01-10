@@ -16,9 +16,19 @@ if(isset($_GET['action'])) {
             header("Location: afficher.php");
             exit();
         } catch (PDOException $e) {
-            echo "<h5>Error: " . $e->getMessage()."</h5>";
-            // Add a link to go back to list_etudiants.php
-            echo '<br><a class="btn btn-secondary" href="afficher.php">Go back to list</a>';
+                $errorCode = $e->getCode();
+            
+                if ($errorCode == 1451) { // Code d'erreur MySQL pour violation de contrainte de clé étrangère
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo "<h5>Erreur : Impossible de supprimer cette element car elle est référencée par d'autres enregistrements.</h5>";
+                    echo '</div>';
+                    echo '<br><a class="btn btn-secondary" href="afficher.php">Retourner à la liste</a>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">';
+                    echo "<h5>Erreur :Une erreur inattendue s'est produite lors de la suppression de cette element.</h5>";
+                    echo '</div>';
+                    echo '<br><a class="btn btn-secondary" href="afficher.php">Retourner à la liste</a>';
+                }
         }
     }
 }

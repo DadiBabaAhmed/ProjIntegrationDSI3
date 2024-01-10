@@ -46,7 +46,10 @@ try {
 
     }
 } catch (PDOException $e) {
-    die("Une erreur s'est produite lors de l'insertion: " . $e->getMessage());
+    die( "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profs.php'>Retourner à la liste</a>");
     
 }
 

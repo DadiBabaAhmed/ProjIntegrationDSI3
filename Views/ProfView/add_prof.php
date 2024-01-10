@@ -14,6 +14,7 @@ $departementList = $departement->getDepartmentsNames();
 
 $errors = [];
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch and sanitize form data
     // ... (Fetch all POST data and sanitize it)
@@ -87,6 +88,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $prof->add($profData);
         header("Location: list_profs.php");
         exit();
+    }
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    if ($errorCode->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error: professeur deja existe: changer Code du prof.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profs.php'>Retourner à la liste</a>";
+    } 
+    else {
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profs.php'>Retourner à la liste</a>";
     }
 }
 ?>

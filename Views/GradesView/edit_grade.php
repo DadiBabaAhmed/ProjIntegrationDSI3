@@ -7,6 +7,7 @@ $grades = new Grades($db->getConnection());
 
 $errors = [];
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve and sanitize POST data
     $gradeId = $_POST["Grade"];
@@ -36,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_GET["Grade"])) {
     $gradeId = $_GET["Grade"];
     $grade = $grades->getGradeById($gradeId);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -116,5 +118,13 @@ if (isset($_GET["Grade"])) {
 </html>
 
 <?php
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    echo '<div class="alert alert-danger" role="alert">';
+    echo "<h5>Error: Une erreur inattendue s'est produite lors de la modification de cette grade.</h5>";
+    echo '</div>';
+    echo '<br><a class="btn btn-secondary" href="list_grades.php">Return to list</a>';
 }
 ?>

@@ -13,9 +13,6 @@ $etudiants = $etudiant->read();
 <head>
     <title>List Etudiants</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Add custom styles here if needed */
-    </style>
 </head>
 
 <?php include '../inc/header.php'; ?>

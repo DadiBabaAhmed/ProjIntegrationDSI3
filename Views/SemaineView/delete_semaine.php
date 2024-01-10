@@ -5,26 +5,35 @@ include "../../Classes/Semaine.php";
 $db = new Database();
 $semaine = new Semaine($db->getConnection());
 
-try
-{
+try {
     $semaineList = $semaine->getAllSemaines();
-if (isset($_GET["idSem"])) {
-    $idSem = $_GET["idSem"];
-    $semaine->delete($idSem);
-    header("Location: list_semaines.php");
-    exit();
-} elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["idSem"])) {
-    
-    // If the form is submitted, and Matricule Prof is provided, confirm and perform the delete
-    $idSem = $_POST["idSem"];
-    $semaine->delete($idSem);
-    header("Location: list_semaines.php");
-    exit();
-}
+    if (isset($_GET["idSem"])) {
+        $idSem = $_GET["idSem"];
+        $semaine->delete($idSem);
+        header("Location: list_semaines.php");
+        exit();
+    } elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["idSem"])) {
+
+        // If the form is submitted, and Matricule Prof is provided, confirm and perform the delete
+        $idSem = $_POST["idSem"];
+        $semaine->delete($idSem);
+        header("Location: list_semaines.php");
+        exit();
+    }
 } catch (Exception $e) {
-    echo "<h5>Error: " . $e->getMessage()."</h5>";
-    // Add a link to go back to list_etudiants.php
-    echo '<br><a class="btn btn-secondary" href="list_semaines.php">Go back to list</a>';
+    $errorCode = $e->getCode();
+
+    if ($errorCode == 1451) { // Code d'erreur MySQL pour violation de contrainte de clé étrangère
+        echo '<div class="alert alert-danger" role="alert">';
+        echo "<h5>Erreur : Impossible de supprimer cette element car elle est référencée par d'autres enregistrements.</h5>";
+        echo '</div>';
+        echo '<br><a class="btn btn-secondary" href="list_semaines.php">Go back to list</a>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert">';
+        echo "<h5>Erreur : Une erreur inattendue s'est produite lors de la suppression de l'element.</h5>";
+        echo '</div>';
+        echo '<br><a class="btn btn-secondary" href="list_semaines.php">Go back to list</a>';
+    }
 }
 ?>
 

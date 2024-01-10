@@ -7,6 +7,7 @@ $grades = new Grades($db->getConnection());
 
 $errors = [];
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate and process form data to add a new grade
     // Retrieve and sanitize POST data
@@ -32,6 +33,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: list_grades.php");
         exit();
     }
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    echo '<div class="alert alert-danger" role="alert">';
+    echo "<h5>Erreur : Une erreur inattendue s'est produite lors de l'ajout d'une grade.</h5>";
+    echo '</div>';
+    echo '<br><a class="btn btn-secondary" href="list_grades.php">Retourner à la liste</a>';
 }
 ?>
 

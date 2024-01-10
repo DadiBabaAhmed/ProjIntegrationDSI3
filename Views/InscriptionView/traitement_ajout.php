@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($e->getCode() == 23000) {
                 $errors[] = "Error: Duplicate entry exists.";
             } else {
-                $errors[] = "Error: " . $e->getMessage();
+                $errors[] = "Error: Une erreur inattendue s'est produite lors de l'ajout de cette element.";
             }
         }
     }

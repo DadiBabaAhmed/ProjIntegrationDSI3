@@ -22,40 +22,48 @@ $sessionList = $conn->query($sql);
 $sql1 = "SELECT distinct NumSem FROM semaine";
 $semaineList = $conn->query($sql1);
 
+try {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        // Fetch and sanitize form data
+        // ... (Fetch all POST data and sanitize it)
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Fetch and sanitize form data
-    // ... (Fetch all POST data and sanitize it)
-    
-    // Check if NSemDeb is inferior to NSemFin
-    if ($_POST["NSemDeb"] < $_POST["NSemFin"]) {
-        $repartitionData = [
-            "NumSes" => $_POST["NumSes"],
-            "NSemDeb" => $_POST["NSemDeb"],
-            "NSemFin" => $_POST["NSemFin"],
-            "TypeSeance" => $_POST["TypeSeance"],
-            "NbGrp" => $_POST["NbGrp"],
-            "NBHDT" => $_POST["NBHDT"],
-            "CodeClasse" => $_POST["CodeClasse"],
-            "CodeProf" => $_POST["CodeProf"],
-            "CodeMat" => $_POST["CodeMat"],
-            "NBHD" => $_POST["NBHD"],
-            "TypeGest" => $_POST["TypeGest"],
-        ];
-    
-        $added = $repartition->add($repartitionData);
-    
-        if ($added) {
+        // Check if NSemDeb is inferior to NSemFin
+        if ($_POST["NSemDeb"] < $_POST["NSemFin"]) {
+            $repartitionData = [
+                "NumSes" => $_POST["NumSes"],
+                "NSemDeb" => $_POST["NSemDeb"],
+                "NSemFin" => $_POST["NSemFin"],
+                "TypeSeance" => $_POST["TypeSeance"],
+                "NbGrp" => $_POST["NbGrp"],
+                "NBHDT" => $_POST["NBHDT"],
+                "CodeClasse" => $_POST["CodeClasse"],
+                "CodeProf" => $_POST["CodeProf"],
+                "CodeMat" => $_POST["CodeMat"],
+                "NBHD" => $_POST["NBHD"],
+                "TypeGest" => $_POST["TypeGest"],
+            ];
+
+            $added = $repartition->add($repartitionData);
+
             // Successfully added, redirect to a success page or perform further actions
             header("Location: list_repartitions.php");
             exit();
         } else {
-            // Handle failure or show error message
-            echo "<div class='alert alert-danger'>Failed to add Repartition data! </div>";
+            // NSemDeb is not inferior to NSemFin, show error message
+            echo "<div class='alert alert-danger'> NSemDeb should be inferior to NSemFin! </div>";
         }
+    }
+} catch (Exception $e) {
+    if ($errorCode->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error: professeur deja existe: changer Code du prof.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_repartitions.php'>Retourner à la liste</a>";
     } else {
-        // NSemDeb is not inferior to NSemFin, show error message
-        echo "<div class='alert alert-danger'> NSemDeb should be inferior to NSemFin! </div>";
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_repartitions.php'>Retourner à la liste</a>";
     }
 }
 ?>

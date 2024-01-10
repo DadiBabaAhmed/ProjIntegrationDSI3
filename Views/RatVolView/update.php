@@ -59,9 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit(); // Terminate script execution after redirect
         }
     } catch (PDOException $e) {
-        die("Une erreur s'est produite lors de la mise à jour: " . $e->getMessage());
+        die("<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de la modification de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profs.php'>Retourner à la liste</a>");
     }
 } else {
-    die("Invalid request!");
+    die("<div class='alert alert-danger' role='alert'><h5>Invalid request!</h5></div><br><a class='btn btn-secondary' href='afficher.php'>Retourner à la liste</a>");
 }
 ?>

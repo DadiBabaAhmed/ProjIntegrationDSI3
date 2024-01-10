@@ -34,11 +34,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["add"])) {
                 header('Location: view.php');
                 exit();
             } else {
-                echo "Error: " . $insertion . "<br>" . $con->error;
+                echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='index.php'>Retourner à la liste</a>";
             }
         } else {
-            echo "Error: Missing values";
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error: Missing values</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='index.php'>Retourner à la liste</a>";
         }
     }
 }
-?>

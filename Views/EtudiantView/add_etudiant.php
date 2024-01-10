@@ -16,6 +16,7 @@ $sql = "SELECT DISTINCT Annee, Sem FROM Session";
 $result = $db->getConnection()->query($sql);
 
 $errorMessages = [];
+try{
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validation checks
@@ -90,6 +91,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 if (isset($_SESSION['errorMessages'])) {
     $errorMessages = $_SESSION['errorMessages'];
     unset($_SESSION['errorMessages']); // Clear the session variable
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    echo '<div class="alert alert-danger" role="alert">';
+    echo "<h5>Erreur : Une erreur inattendue s'est produite lors de l'ajout de l'étudiant.</h5>";
+    echo '</div>';
+    // Add a link to return to the list of students
+    echo '<br><a class="btn btn-secondary" href="list_etudiants.php">Retourner à la liste</a>';
 }
 ?>
 

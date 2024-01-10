@@ -16,6 +16,7 @@ $sessionList = $db->getConnection()->query($sql);
 
 $errors = [];
 
+try{
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'CodeProf' => $_POST['CodeProf'],
@@ -47,6 +48,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['formData'] = $data;
     header('Location: add_profsituation.php');
     exit();
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    if ($errorCode->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error: situation deja existe: changer Code du prof.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profsituations.php'>Retourner à la liste</a>";
+    } 
+    else {
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profsituations.php'>Retourner à la liste</a>";
+    }
 }
 ?>
 

@@ -9,6 +9,7 @@ $departement = new Departement($db->getConnection());
 
 $departementList = $departement->getDepartmentsNames();
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Process form data to update a matiere
     // Retrieve and sanitize POST data
@@ -175,5 +176,21 @@ if (isset($_GET["Code_Matiere"])) {
     </html>
 
     <?php
+}
+}catch(PDOException $e){
+    {
+        if ($e->getCode() == 1062) { // 1062 is the error code for 'Duplicate entry'
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error: matiere deja existe.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
+        } 
+        else {
+            echo "<div class='alert alert-danger' role='alert'>
+            <h5>Error:Une erreur inattendue s'est produite lors de la modification de cette element.</h5>
+            </div>
+            <br><a class='btn btn-secondary' href='list_matieres.php'>Retourner à la liste</a>";
+        }
+    }
 }
 ?>

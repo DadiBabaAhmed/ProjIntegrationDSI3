@@ -8,6 +8,7 @@ $Gouvernorat = new Gouvernorat($db->getConnection());
 $errors = [];
 $Gouv = '';
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty($_POST["Gouv"])) {
         $errors[] = "Please enter the Gouvernorat name.";
@@ -38,6 +39,14 @@ if (isset($_GET["Gouv"])) {
         echo "Gouvernorat with Gouv: $Gouv not found.";
         exit();
     }
+}
+} catch (Exception $e) {
+        $errorCode = $e->getCode();
+    
+        echo '<div class="alert alert-danger" role="alert">';
+        echo "<h5>Erreur : Une erreur inattendue s'est produite lors de la modification de ce gouvernorat.</h5>";
+        echo '</div>';
+        echo '<br><a class="btn btn-secondary" href="list_gouvernorats.php">Retourner à la liste</a>';
 }
 
 ?>

@@ -23,7 +23,10 @@ if (isset($_POST["update"])) {
         header('Location: view.php');
             exit();
     } else {
-        echo "Error updating: " . $con->error;
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='index.php'>Retourner à la liste</a>";
     }
 }
 }

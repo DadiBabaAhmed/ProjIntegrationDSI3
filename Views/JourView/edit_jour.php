@@ -10,6 +10,7 @@ $prof = new Prof($db->getConnection());
 
 $profList = $prof->getAllMatProf();
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $N° = $_POST["N°"];
     $jData = [
@@ -34,6 +35,22 @@ if (isset($_GET["N°"])) {
     if (!$jourData) {
         echo "jour with N°: $N° not found.";
         exit();
+    }
+}
+} catch (Exception $e) {
+    $errorCode = $e->getCode();
+
+    if ($errorCode == 1062) { // 1062 is the error code for 'Duplicate entry'
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error: jour deja existe: changer N°.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_jours.php'>Retourner à la liste</a>";
+    } 
+    else {
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de l'ajout de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_jours.php'>Retourner à la liste</a>";
     }
 }
 ?>

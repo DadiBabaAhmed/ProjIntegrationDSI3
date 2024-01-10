@@ -12,6 +12,7 @@ $departement = new Departement($db->getConnection());
 $gradeList = $grade->getAllGrades();
 $departementList = $departement->getDepartmentsNames();
 
+try{
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Fetch and sanitize form data
     // ... (Fetch all POST data and sanitize it)
@@ -86,6 +87,12 @@ if (isset($_GET["Matricule"])) {
         echo "Professor with Matricule Prof: $matriculeProf not found.";
     }
     $stmt->close();
+}
+} catch (Exception $e) {
+        echo "<div class='alert alert-danger' role='alert'>
+        <h5>Error:Une erreur inattendue s'est produite lors de la modification de cette element.</h5>
+        </div>
+        <br><a class='btn btn-secondary' href='list_profs.php'>Retourner à la liste</a>";
 }
 ?>
 

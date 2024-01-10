@@ -70,6 +70,7 @@ if (isset($_GET["Numdist"])) {
     } else {
         echo "<div class='alert alert-danger'>Repartition with Numdist: $matRep not found.<a href='list_repartitions.php' class='btn btn-danger'>Back to List</a></div>";
     }
+ 
     $stmt->close();
 }
 ?>
